@@ -1,6 +1,7 @@
 *.aux
 *.blg
 *.brf
+*.bbl
 *.aux
 *.brf
 *.fdb_latexmk
@@ -13,7 +14,7 @@
 *.lot
 *.out
 *.toc
-capitulos/capitulo001.tex
+doc/capitulos/capitulo001.tex
 *.pyc
 *.tgz
 PV/resultados/res_pv.py
