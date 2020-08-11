@@ -1,0 +1,49 @@
+% !TeX root = ../libro.tex
+% !TeX encoding = utf8
+%
+%*******************************************************
+% Introducción
+%*******************************************************
+
+% \manualmark
+% \markboth{\textsc{Introducción}}{\textsc{Introducción}}
+
+\chapter{Introducción}\label{ch:introduccion}
+
+En las dos últimas décadas, gracias al uso de las GPUs \cite{oh2004gpu} se ha hecho posible un uso potente y extendido del \textbf{aprendizaje profundo} (\textit{deep learning}), una de las subáreas del \textbf{aprendizaje automático} (\emph{machine learning}) más conocidas y usadas actualmente debido a su gran versatilidad de aplicación en diversos tipos de problemas, su fácil diseño y su buen rendimiento. Este campo intenta resolver problemas muy diversos que no tienen una solución fácil de diseñar \textbf{manualmente} (reconocimiento en imágenes, conducción autónoma, domótica...), mediante el uso de las \textbf{redes neuronales} (\emph{Neural Networks}) \cite{landahl1943statistical, hebb1949organization}: algoritmos inspirados en el sistema neuronal del cerebro que, como el propio nombre indica, se estructuran mediante capas formadas por \emph{neuronas} que están \emph{conectadas} entre sí formando así una red compleja donde se propaga la información de una capa a otra.
+
+Dentro de las muy variadas y complejas arquitecturas y tipos de capas que se han ido desarrollando destacamos las \textbf{redes neuronales necurrentes} (\emph{recurrent Neural Networks}) \cite{hopfield1982neural, jordan1997serial}, redes neuronales que introducen una novedad: la extracción y guardado de información de una entrada en un instante determinado ($x_t$) para su uso posterior ($x_{t+1}$); en otras palabras, la red utiliza no solo la entrada/dato actual si no que también \textbf{relaciones de las entradas anteriores}.
+
+Este tipo de redes se ha utilizado mucho en tareas donde existe esta dependencia temporal, donde destacan mayormente las \textbf{series temporales} (sucesiones de datos ordenados por tiempo) \cite{wang2017origin} donde existen una gran variedad de problemas como por ejemplo: predicción de valores (mercados, nº de pacientes, texto predictivo), clasificación de series (electrocardiogramas), detección de anomalías (sensores, tráfico servidores)...
+
+La más conocida dentro de este tipo de arquitecturas es la \emph{Long Short Term Memory} (LSTM) \cite{hochreiter1997long} que intenta solventar un gran problema dentro de las RNN: la pérdida de dependencias temporales \textbf{a largo plazo}. Implementa un tipo especial de \emph{neurona} llamada \textbf{célula de memoria} para solucionar esto, permitiendo aprender u olvidar información del pasado según convenga \cite{wang2017origin}.
+
+\section{Motivación}
+
+En este campo tan extenso, existen muchos problemas que se han tratado poco o que son muy recientes y todavía no se han investigado; de aquí surge nuestra idea de ahondar en estos dominios de problemas de series temporales tan poco explorados. Nos centraremos así en dar soluciones a estos problemas mediante arquitecturas de redes neuronales LSTM para aprovechar la especialización en cuanto a la extración y uso de información de patrones y dependencias temporales que generalmente existen en las series.
+
+\section{Objetivos}
+
+Los objetivos fundamentales se centrarán en el estudio, investigación y obtención de posibles resultados en problemas pocos tratados actualmente mediante el uso de técnicas basados en \emph{Deep Learning}, concretamente modelos de redes neuronales con arquitecturas que utilizan capas LSTM.
+
+Trataremos tres problemas diversos, cada uno desarrollados en una parte indpendiente:
+
+\begin{enumerate}
+  \item Selección de modelos (\autoref{part:pv})
+  \item Detección de anomalías (\autoref{part:ad})
+  \item Predicción de series temporales discretas (\autoref{part:sd})
+\end{enumerate}
+
+\section{Estructura}
+
+Comenzamos con una introducción en \autoref{ch:introduccion} donde damos brevemente el contexto del trabajo, junto con la motivación, los objetivos a alcanzar y la estructura del documento.
+
+Hacemos un repaso de los conceptos previos más relevantes para poder entender este trabajo: sobre el aprendizaje profundo en \autoref{ch:dl}, series temporales en \autoref{ch:st} y las métricas utilizadas para valorar nuestros modelos en \autoref{ch:metricas},
+
+Después estudiamos en cada parte el problema concreto que hemos ido desarrollando: en \autoref{part:pv} abordamos el problema de selección de modelos, investigando una nueva propuesta de métrica de validación de modelos llamada $PV$ (\emph{Perturbated Validation}) que estudiamos frente a la validación clásica.
+
+En \autoref{part:ad} nos centramos en la detección de anomalías, modelando una detector capaz de clasificar series anómalas y también una serie de métodos capaces de alterar las series normales para crear otras anómalas.
+
+Finalmente en \autoref{part:sd} valoramos el comportamiento de las redes neuronales en series temporales discretas, un ámbito poco frecuente de uso con redes neuronales.
+
+\endinput

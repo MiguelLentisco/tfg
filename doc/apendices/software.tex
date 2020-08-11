@@ -1,0 +1,70 @@
+% !TeX root = ../libro.tex
+% !TeX encoding = utf8
+
+\chapter{Software}\label{ap:software}
+
+\section{Archivos del proyecto}
+
+Encontramos el proyecto en la plataforma \emph{Github} [enlace], con la siguiente estructura:
+
+\begin{itemize}
+  \item $PV$: Parte selección de modelos
+    \begin{itemize}
+      \item $resultados$: contiene los resultados del experimento en .csv y .png para TS Y CMFTS.
+      \item $src$: archivos fuente.
+      \begin{itemize}
+        \item $PV.py$: contiene la clase PV.
+        \item $KNN.py$: contiene la clase KNN.
+        \item $LSTM.py$: contiene la clase LSTM.
+        \item $RClassifiers.py$: contiene las clases DTW, C45, C50, CPart y RPart.
+        \item $Utils.py$: funciones auxiliares.
+        \item $experimento\_PV.py$: experimento para selección de modelos.
+        \item $experimento\_hiper.py$: experimento para los hiperparámetros.
+      \end{itemize}
+    \end{itemize}
+  \item $AD$: Parte detección de anomalías
+    \begin{itemize}
+      \item $models$: contiene los pesos de los modelos obtenidos.
+      \item $src$: archivos fuente.
+        \begin{itemize}
+          \item $alteraciones.py$: métodos para alterar series.
+          \item $calc_pr.py$: métodos para calcular la métrica PR.
+          \item $detector.py$: detector LSTM.
+          \item $experimento\_AD.py$: experimento anomalías.
+        \end{itemize}
+    \end{itemize}
+  \item $doc$: archivos referentes a la memoria del proyecto.
+  \item $Datasets$: \emph{datsets} con las versiones TS y CMFTS.
+
+\end{itemize}
+
+\section{Lenguajes utilizados}
+
+La mayoría de código ha sido implementado en \emph{Python}, habiéndose implementado alguna función y usando paquetes de \emph{R}.
+
+\section{Librerías utilizadas}
+
+Listamos las librerías utilizadas en el proyecto. En \emph{Python}:
+
+\begin{itemize}
+  \item \emph{matplotlib}: para imprimir gráficos.
+  \item \emph{numpy}: para trabajar con arrays, matrices, tensores.
+  \item \emph{pandas}: cargar y guardar \emph{datasets}.
+  \item \emph{keras}: utilizada para implementar modelos de redes neuronales LSTM.
+  \item \emph{scikit-learn}: se han usado distintos clasificadores, métricas y preprocesado de \emph{datasets}.
+  \item \emph{scipy}: para señales gaussianas, pulso sinusoidal-gaussiano y estimación de distribución.
+  \item \emph{statsmodels}: descomposición STL.
+  \item \emph{rpy2}: interfaz para utilizar \emph{R} con \emph{Python}.
+\end{itemize}
+
+En \emph{R}:
+
+\begin{itemize}
+  \item \emph{RWeka}: árbol de decisión C4.5
+  \item \emph{C50}: árbol de decisión C5.0
+  \item \emph{rpart}: árbol de decisión RPart.
+  \item \emph{partykit}: árbol de decisión CTree.
+  \item \emph{IncDTW}: función para calcular la métrica DTW.
+\end{itemize}
+
+\endinput

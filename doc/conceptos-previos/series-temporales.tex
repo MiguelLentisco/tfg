@@ -1,0 +1,36 @@
+% !TeX root = ../libro.tex
+% !TeX encoding = utf8
+%
+%*******************************************************
+% Series Temporales
+%*******************************************************
+
+\chapter{Series Temporales}\label{ch:st}
+
+[EN CONSTRUCCIÓN]
+
+\subsection{Descomposición STL}
+
+En las series se pueden observar ciertos componentes comunes con patrones diferenciados en los que se pueden descomponer para hacer un mejor análisis y manuplacion de estas \cite{hyndman2018forecasting}:
+
+\begin{enumerate}
+  \item \textbf{Tendencia}: patrones de crecimiento o disminución a largo plazo.
+  \item \textbf{Estacionalidad}: patrones afectados por factores estacionales (un día concreto del año, una estación como verano) que suelen tener una frecuencia fija.
+  \item \textbf{Ciclo}: fluctuaciones que no parece tener una frecuencia fija, es decir, que son efímeros.
+\end{enumerate}
+
+Estas descomposiciones suelen realizarse en las componentes mencionadas: la \textbf{tendencia-cíclica} $S_t$ (se suele decir solamente tendencia), la \textbf{estacionalidad} $T_t$ y los \textbf{restos} $R_t$ (lo que sobra). Además podemos considerar un modelo aditivo \eqref{eq:aditivo} donde se suman las componentes o multiplicativo \eqref{eq:multiplicativo}; donde se multiplican \cite{hyndman2018forecasting}.
+
+\begin{equation}
+  y_t = S_t + T_t + R_t
+  \label{eq:aditivo}
+\end{equation}
+
+\begin{equation}
+  y_t = S_t \cdot T_t \cdot R_t
+  \label{eq:multiplicativo}
+\end{equation}
+
+La descomposición STL (\emph{Sesonal and Trend decomposition using Loess}) \cite{cleveland1990stl} es uno de los métodos más conocidos para realizar esta decomposición, donde solo necesita que se le pase la frecuencia de la componente estacional para realizar el método.
+
+\endinput
