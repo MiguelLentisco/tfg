@@ -14,7 +14,7 @@
 *.out
 *.toc
 capitulos/capitulo001.tex
-paquetes/mathpazo/
 *.pyc
 *.tgz
 PV/resultados/res_pv.py
+doc/README.md
