@@ -14,26 +14,26 @@ En la actualidad existen varios problemas fundamentales respecto los problemas d
 
 Para resolver lo primero, modelamos un \textbf{sistema de detección} de series temporales anómalas muy simple basado sobre una arquitectura LSTM que puede desplegarse, a falta de que se ajuste con los parámetros ideales, en cualquier dominio donde las series normales se comportan regularmente mediante un \textbf{patrón}. Patrones como estos son esperables en series que se miden cada cierto \textbf{periodo} de tiempo como por ejemplo electrocardiogramas, sensores, servidores...
 
-Para el segundo problema proporcionamos una serie de técnicas que nos permiten modificar series ya existentes mediante \textbf{perturbaciones}, creando así otras nuevas que pueden servir para proporcionar nuevos \emph{datasets} artificiales con ejemplos anómalos que permitan validar los modelos de detección. Aunque sean artificiales intentan suplir esta \textbf{falta de datos} para poder al menos dar una idea de como se comportan los modelos ante perturbaciones de las series, que se pueden parametrizar a gusto para ver el rendimiento a distintas escalas de valores.
+Para el segundo problema proporcionamos una serie de técnicas que nos permiten modificar series ya existentes mediante \textbf{perturbaciones}, creando así otras nuevas que pueden servir para proporcionar nuevos \emph{datasets} artificiales con ejemplos anómalos que permitan validar los modelos de detección. Aunque sean artificiales intentan suplir esta \textbf{falta de datos} para poder al menos dar una idea de cómo se comportan los modelos ante perturbaciones de las series, que están parametrizadas para ver el rendimiento a distintas escalas de valores.
 
-Analizaremos \textbf{experimentalmente} con ejemplos como aprende y se comporta el sistema, valídandolo usando los métodos comentados para alterar las series. \textbf{Analizaremos la eficacia} del sistema frente a \textbf{distintos tipos e intensidades} de alteraciones, observando la eficacia del detector y de las perturbaciones.
+Analizaremos \textbf{experimentalmente} con ejemplos como aprende y se comporta el sistema, validándolo usando los métodos comentados para alterar las series. \textbf{Analizaremos la eficacia} del sistema frente a \textbf{distintos tipos e intensidades} de alteraciones, observando la eficacia del detector y de las perturbaciones.
 
 \chapter{Sistema LSTM para detección de series anómalas}\label{ch:ad-detector}
 
 Supongamos que las series vienen de una distribución desconocida $\mathcal{P}$ que podemos dividir en dos tipos: las normales y las anómalas. Las normales son las señales que podemos esperar con una \textbf{probabilidad muy alta}, mientras que las anómalas son las que su \textbf{frecuencia es inusual}.
 
-El sistema que diseñamos intenta aprender la distribución de estas señales normales, su patrón, de manera que una señal será anomála si no se parece a lo que ha aprendido el sistema. Así diferenciamos dos partes fundamentales en nuestro modelo:
+El sistema que diseñamos intenta aprender la distribución de estas señales normales, su patrón, de manera que una señal será anómala si no se parece a lo que ha aprendido el sistema. Así diferenciamos dos partes fundamentales en nuestro modelo:
 
 \begin{enumerate}
   \item \textbf{\emph{Autoencoder LSTM}} que aprende este patrón mediante reconstrucción de la entrada.
-  \item \textbf{Detector de anómalias} en base a la distribución de los errores entre las series normales y sus reconstrucciones.
+  \item \textbf{Detector de anomalías} en base a la distribución de los errores entre las series normales y sus reconstrucciones.
 \end{enumerate}
 
 \section{Autoencoder LSTM}
 
-El \emph{autoencoder LSTM} se encarga de aprender mediante aprendizaje \textbf{no supervisado} devolver la misma señal que se proporciona como entrada, forzando al sistema a que aprenda el patrón subyacente de los datos.
+El \emph{autoencoder LSTM} se encarga de aprender mediante aprendizaje \textbf{no supervisado} cómo devolver la misma señal que se proporciona como entrada, forzando al sistema a que aprenda el patrón subyacente de los datos.
 
-Para la arquitectura de este modelo usaremos una estructura \emph{autoencoder}, sin la subdimensión codificada ya que no necesitamos está representación, que está formada por dos partes: el \textbf{codificador} (\emph{encoder}) y el \textbf{descodificador} (\emph{decoder}). El \emph{encoder} obtiene de la serie características mediante capas LSTM, cuyo tamaño va decreciendo hasta llegar al subespacio de codificación de la series, que saltaremos hasta pasar directamente al \emph{decoder} que se encarga de usar capas LSTM con tamaño creciente hasta llegar al tamaño original de las series mediante una capa completamente conectada (\emph{Dense}) que se encargará de reproducir los valores de la serie. Además todas las capas LSTM tienen como función no lineal de activación \emph{ReLU}.
+Para la arquitectura de este modelo usaremos una estructura \emph{autoencoder}, sin la subdimensión codificada ya que no necesitamos esta representación, que está formada por dos partes: el \textbf{codificador} (\emph{encoder}) y el \textbf{descodificador} (\emph{decoder}). El \emph{encoder} obtiene de la serie características mediante capas LSTM, cuyo tamaño va decreciendo hasta llegar al subespacio de codificación de la series, que saltaremos hasta pasar directamente al \emph{decoder} que se encarga de usar capas LSTM con tamaño creciente hasta llegar al tamaño original de las series mediante una capa completamente conectada (\emph{Dense}) que se encargará de reproducir los valores de la serie. Además todas las capas LSTM tienen como función no lineal de activación \emph{ReLU}.
 
 Por ejemplo para un \emph{dataset} cuyas series tienen longitud 82 y solo se tiene una característica esta sería la arquitectura \autoref{fig:ad-lstm-model}. Si tuviese otra longitud o número de características lo único que cambiaría sería la dimensión de la entrada y la salida, ajustándose a la del \emph{dataset} concreto.
 
@@ -41,21 +41,21 @@ Por ejemplo para un \emph{dataset} cuyas series tienen longitud 82 y solo se tie
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=0.35\textwidth]{model_plot}
-  \caption{Arquitectura del modelo \emph{autoencoder}}
+  \caption{Arquitectura del modelo \emph{autoencoder}.}
   \label{fig:ad-lstm-model}
 \end{figure}
 
-Además se pueden modificar ciertos hiperparámetros como el número de neuronas de las capas LSTM, el parámetro de regularización de las capas, la tasa de aprendizaje, el número de épocas, el tamaño de los \emph{batches}. El método para actualizar la red es el usual de \textbf{Adam}, usando como \textbf{función de perdida} el Error Cuadrático Medio (\emph{Mean Squared Error} \eqref{eq:mse} que es el usual para problemas de regresión y que se adecua a nuestro problema ya que estamos prediciendo valores continuos (los de la serie) y queremos que lo minimice para que reconstruya la entrada en la salida.
+Además se pueden modificar ciertos hiperparámetros como el número de neuronas de las capas LSTM, el parámetro de regularización de las capas, la tasa de aprendizaje, el número de épocas, el tamaño de los \emph{batches}. El método para actualizar la red es el usual de \textbf{Adam}, usando como \textbf{función de pérdida} el Error Cuadrático Medio (\emph{Mean Squared Error} \eqref{eq:mse} que es el usual para problemas de regresión y que se adecúa a nuestro problema ya que estamos prediciendo valores continuos (los de la serie) y queremos que lo minimice para que reconstruya la entrada en la salida.
 
 \section{Detección}
 
 La detección está basada en la \textbf{distribución de los errores} (por ejemplo, el error cuadrático medio) de distribución obtenidos en el conjunto de entrenamiento de las señales normales con las reconstrucciones del modelo LSTM. Podemos clasificar una serie \textbf{anómala} cuando el error de reconstrucción supere una cierto \textbf{umbral} fijado por nosotros. Para ser más flexibles y evitar ser tan \textbf{discriminativos}, devolveremos \textbf{probabilidades} para dar una idea más clara de cuan grave puede ser un error.
 
-Estas probabilidades estarán basadas en la \textbf{función de probabilidad} de la distribución de los errores, de manera que para errores poco frecuentes o mucho más grandes de los vistos, tendremos una probabilidad asignada cercana a 100\% de ser anómala. Obviamente para muchas series normales se tendrán probabilidades altas, de ahí que se quiera tomar un \textbf{umbral} alto para asegurarnos que lo que se detecte sea una anomalía.
+Estas probabilidades estarán basadas en la \textbf{función de probabilidad} de la distribución de los errores, de manera que para errores poco frecuentes o mucho más grandes de los vistos, tendremos una probabilidad asignada cercana a 100\% de ser anómala. Obviamente para muchas series normales se tendrán probabilidades altas, de ahí que se quiera tomar un \textbf{umbral} alto para asegurarnos que lo que se detecte sea realmente una anomalía.
 
 La función de probabilidad como ya sabemos se puede obtener integrando la función de densidad, que \textbf{estimaremos} con una cantidad razonable de datos con cualquiera de los métodos ya existentes. Por lo que esta parte fundamentalmente se encargará de \textbf{aprender una función de densidad} basada en los errores de reconstrucción del \emph{dataset} de entrenamiento.
 
-Cabe añadir que estamos partiendo del hecho de que solo tenemos series normales, \textbf{desconocemos} cómo pueden o con qué frecuencia pueden ser las anomalías  que suele ser las circunstancias en muchos problemas reales, por lo que la probabilidad que devolvemos no es más que una \textbf{estimación}. Conforme se obtengan nuevas muestras se puede ir \textbf{mejorando el sistema}, incorporando la distribución de las series anómalas, ajustando así la probabilidad para que sea mucho más exacta.
+Cabe añadir que estamos partiendo del hecho de que solo tenemos series normales, \textbf{desconocemos} tanto la forma como la frecuencia de las anomalías que suele ser las circunstancias en muchos problemas reales, por lo que la probabilidad que devolvemos no es más que una \textbf{estimación}. Conforme se obtengan nuevas muestras se puede ir \textbf{mejorando el sistema}, incorporando la distribución de las series anómalas, ajustando así la probabilidad para que sea mucho más exacta.
 
 Finalmente, si observamos que los errores suelen ser mucho más grandes que los de entrenamiento se podría considerar usar un umbral fijo, aunque en nuestro caso \textbf{alteraremos muy poco} las series por lo que es esperable que muchos errores puedan ser muy sutiles y verse casi como series normales, a lo que nos interesa que el intervalo de probabilidades se mueva dentro de los errores de las series normales.
 
@@ -63,10 +63,10 @@ Finalmente, si observamos que los errores suelen ser mucho más grandes que los 
 
 Proporcionaremos cuatro tipos distintos de alteraciones para series temporales: dos basados en \textbf{ruido gaussiano} y los otros dos en la \textbf{descomposición STD}. Estas alteraciones intentan ser lo más \textbf{genéricas} posibles para poder ser aplicadas en un \textbf{alto rango} de dominios de problemas y lo más \textbf{naturales} posibles, intentando imitar las anomalías reales que se dan.
 
-Si consideramos que a veces las anomalías como tales están consideradas así bajo un \textbf{criterio concreto} de un dominio específico del problema es muy difícil intentar tomarlas todas en cuenta; sin embargo si hay generalmente unos pocas anomalías típicas que suelen querer detectar:
+Si consideramos que a veces las anomalías como tales están consideradas así bajo un \textbf{criterio concreto} de un dominio específico del problema es muy difícil intentar tomarlas todas en cuenta; sin embargo sí hay generalmente unas pocas anomalías típicas que se suele querer detectar:
 
 \begin{enumerate}
-  \item \textbf{\emph{Pico}}: se dice que hay un \emph{pico} en la serie cuando en un periodo muy pequeño de tiempo toma un valor muy alto o muy bajo de lo usual.
+  \item \textbf{\emph{Pico}}: se dice que hay un \emph{pico} en la serie cuando en un periodo muy pequeño de tiempo toma un valor muy alto o muy bajo de lo usual en comparación en un entorno local.
   \item \textbf{Cambio estacional}: cuando en una serie donde se ve un patrón estacional (cada cierto periodo se repite una estructura) en uno de los periodos la intensidad de la señal cambia, aumentando o decrementándose.
   \item \textbf{Fluctuación}: cuando en la señal tiene un cambio de forma (fluctúa) en un periodo corto de tiempo, aunque no tiene por qué variar mucho en cuanto a la intensidad.
 \end{enumerate}
@@ -98,7 +98,7 @@ La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para inte
 
 Para hacer que el muestro sea significativo, esto es, que la mayoría de puntos tomados tengan un valor no nulo, tomamos $\sigma = longitud / 6$. Finalmente se multiplica todo otra vez por un parámetro $\sigma$ que se le pasa al algoritmo para controlar el grado de \textbf{intensidad} de la alteración.
 
-Si queremos picos muy \textbf{pronunciados} solo tendremos que tomar una longitud de alteración pequeña y un $\sigma$ alto. Para otros \emph{picos} más suaves aumentamos un poco la longitud y disminuimos el $\sigma$. En cualquier caso, independientemente de la longitud total de la serie, la longitud de la perturbación no debería muy grande puesto que estaríamos afectando a un porcentaje mayor de la serie (ya no sería una anomalía puntual) y la perturbación se aplana ya que la desviación de la gaussiana se vuelve mayor.
+Si queremos picos muy \textbf{pronunciados} solo tendremos que tomar una longitud de alteración pequeña y un $\sigma$ alto. Para otros \emph{picos} más suaves aumentamos un poco la longitud y disminuimos el $\sigma$. En cualquier caso, independientemente de la longitud total de la serie, la longitud de la perturbación no debería ser muy grande puesto que estaríamos afectando a un porcentaje mayor de la serie (ya no sería una anomalía puntual) y la perturbación se aplana ya que la desviación de la gaussiana se vuelve mayor.
 
 Podemos ver distintos muestreos con varios tamaños y $\sigma$ en \autoref{fig:ad-ruido-gaussiano}, observándose que efectivamente se tiene un muestreo correcto, con intensidad moldeable por $\sigma$ y que según la longitud deseada se puede hacer un cambio más brusco o suave.
 
@@ -162,7 +162,7 @@ Visualizamos unas 50 muestras \autoref{fig:ad-cosenos} y comprobamos que efectiv
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{cosenos}
-  \caption{\emph{Dataset} de cosenos}
+  \caption{\emph{Dataset} de cosenos.}
   \label{fig:ad-cosenos}
 \end{figure}
 
@@ -234,7 +234,7 @@ Inspeccionamos 10 series del \emph{dataset} para ver si ciertamente hay algún p
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{dataset-two}
-  \caption{Algunas series de \emph{TwoLeadECG}}
+  \caption{Algunas series de \emph{TwoLeadECG}.}
   \label{fig:ad-dataset-two}
 \end{figure}
 
@@ -248,7 +248,7 @@ Mostramos el resultado del entrenamiento de la función de pérdida MSE en \auto
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{training_model}
-  \caption{Entrenamiento del modelo LSTM}
+  \caption{Entrenamiento del modelo LSTM.}
   \label{fig:ad-entrenamiento}
 \end{figure}
 
@@ -261,7 +261,7 @@ En general vemos que las reconstrucciones son casi idénticas, habiendo un poco 
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{two_reconstruccion}
-  \caption{Reconstrucciones en \emph{train}}
+  \caption{Reconstrucciones en \emph{train}.}
   \label{fig:ad-reconstruccion-two-train}
 \end{figure}
 
@@ -269,7 +269,7 @@ En general vemos que las reconstrucciones son casi idénticas, habiendo un poco 
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{two_reconstruccion_test}
-  \caption{Reconstrucciones en \emph{test}}
+  \caption{Reconstrucciones en \emph{test}.}
   \label{fig:ad-reconstruccion-two-test}
 \end{figure}
 
@@ -279,11 +279,11 @@ Ahora pasamos a estudiar la distribución de errores MSE entre las series y sus 
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=1.\textwidth]{two-hists}
-  \caption{Histogramas de error en \emph{train} y \emph{test}}
+  \caption{Histogramas de error en \emph{train} y \emph{test}.}
   \label{fig:ad-hist-two}
 \end{figure}
 
-Observamos que los errores se distribuyen parecido a una distribución gaussiana (esperable del ruido blanco) aunque si que hay un pequeño aumento a la izquierda, probablemente debido al ajuste que se da en el primer tramo que habíamos visto. En cualquier caso, los errores son bastante pequeños y parecen que se distribuyen igual tanto en \emph{train} como en \emph{test} (funciones de densidad estimada parecidas), por lo que el ajuste parece indicarnos que es bueno.
+Observamos que los errores se distribuyen parecido a una distribución gaussiana (esperable del ruido blanco) aunque sí que hay un pequeño aumento a la izquierda, probablemente debido al ajuste que se da en el primer tramo que habíamos visto. En cualquier caso, los errores son bastante pequeños y parecen que se distribuyen igual tanto en \emph{train} como en \emph{test} (funciones de densidad estimada parecidas), por lo que el ajuste parece indicarnos que es bueno.
 
 Por lo tanto ya tenemos el aprendizaje del modelo: el \emph{autoencoder} LSTM que ha aprendido a reconstruir las series y el detector que se encarga de asignar probabilidades a las series en función del error de reconstrucción usando la función de densidad estimada en el conjunto \emph{train}.
 
@@ -319,7 +319,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-gauss-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{gauss-1}
-  \caption{Alteraciones con ruido gaussiano a $\sigma = 0.75$}
+  \caption{Alteraciones con ruido gaussiano a $\sigma = 0.75$.}
   \label{fig:ad-gauss-1}
 \end{figure}
 
@@ -327,7 +327,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-gauss-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{gauss-2}
-  \caption{Alteraciones con ruido gaussiano a $\sigma = 0.9$}
+  \caption{Alteraciones con ruido gaussiano a $\sigma = 0.9$.}
   \label{fig:ad-gauss-2}
 \end{figure}
 
@@ -335,7 +335,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-gauss-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{gauss-3}
-  \caption{Alteraciones con ruido gaussiano a $\sigma = 1$}
+  \caption{Alteraciones con ruido gaussiano a $\sigma = 1$.}
   \label{fig:ad-gauss-3}
 \end{figure}
 
@@ -343,7 +343,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-gauss-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{gauss-4}
-  \caption{Alteraciones con ruido gaussiano a $\sigma = 1.25$}
+  \caption{Alteraciones con ruido gaussiano a $\sigma = 1.25$.}
   \label{fig:ad-gauss-4}
 \end{figure}
 
@@ -352,7 +352,7 @@ Observamos que generalmente las reconstrucciones son buenas hasta que llega al t
 También notamos que la mayoría de perturbaciones no son especialmente bruscas, incluso según con la posición de la alteración, a veces no se diferencia casi nada
 de la serie original.
 
-Ahora pongamos a validar el modelo con la métrica $PR$, para ello crearemos tanto para \emph{train} como para \emph{test} una parte de anomalías con tamaño proporcional a cada uno, respectivamente. Tomaremos los ratios $\{0.05, 0.1, 0.2, 0.3\}$ para ver cual es el efecto con muy pocas muestras y aumentando hasta que el tamaño de anomalías sea representativo de las posibles perturbaciones que se pueden aplicar. Finalmente por cada ratio tomaremos los $sigma$ en $\{0.75, 0.9, 1, 1.25\}$ para notar la diferencias a distinta escala.
+Ahora pongamos a validar el modelo con la métrica $PR$, para ello crearemos tanto para \emph{train} como para \emph{test} una parte de anomalías con tamaño proporcional a cada uno, respectivamente. Tomaremos los ratios $\{0.05, 0.1, 0.2, 0.3\}$ para ver cuál es el efecto con muy pocas muestras y aumentando hasta que el tamaño de anomalías sea representativo de las posibles perturbaciones que se pueden aplicar. Finalmente por cada ratio tomaremos los $sigma$ en $\{0.75, 0.9, 1, 1.25\}$ para notar la diferencias a distinta escala.
 
 Los resultados de \emph{train} los tenemos en \autoref{fig:ad-gauss-train} y de \emph{test} en \autoref{fig:ad-gauss-test}.
 
@@ -372,7 +372,7 @@ Los resultados de \emph{train} los tenemos en \autoref{fig:ad-gauss-train} y de 
   \label{fig:ad-gauss-test}
 \end{figure}
 
-Se refleja claramente que a cuanta mayor proporción de anomalías mejor valores mejor se comporta aunque probablemente se estabilice entre $[0.2, 0.3]$ que probablemente se deba a la aleatoriedad existente a la hora de escoger la posición y la longitud de la perturbación. También parece que conforme es más intensa la perturbación no parece influir tanto el ratio.
+Se refleja claramente que a cuanta mayor proporción de anomalías mejor se comporta el modelo (mayor valores de $PR$), aunque probablemente se estabilice entre $[0.2, 0.3]$ que probablemente se deba a la aleatoriedad existente a la hora de escoger la posición y la longitud de la perturbación. También parece que conforme es más intensa la perturbación no parece influir tanto el ratio.
 
 En cualquiera de los casos, todos los resultados indican que el modelo se comporta mejor que el clasificador base (tanto visualmente como con valores de la métrica) por lo que por lo menos el detector funciona en cierta manera. Los peores resultados que puede que se vean están en \emph{test} con $0.05$ pero seguramente debido a que son muy pocas anomalías.
 
@@ -386,7 +386,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-pulso-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{pulso-1}
-  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 0.75$}
+  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 0.75$.}
   \label{fig:ad-pulso-1}
 \end{figure}
 
@@ -394,7 +394,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-pulso-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{pulso-2}
-  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 0.9$}
+  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 0.9$.}
   \label{fig:ad-pulso-2}
 \end{figure}
 
@@ -402,7 +402,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-pulso-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{pulso-3}
-  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 1$}
+  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 1$.}
   \label{fig:ad-pulso-3}
 \end{figure}
 
@@ -410,11 +410,11 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-pulso-1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{pulso-4}
-  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 1.25$}
+  \caption{Alteraciones con pulso gaussiano-sinusoidal a $\sigma = 1.25$.}
   \label{fig:ad-pulso-4}
 \end{figure}
 
-Se aprecia correctamente los pulsos que cambian la forma de la señal, sin tener unos cambios muy bruscos en el rango de valores de la señal original, notándose más cuando $\sigma = 1.25$. También es digno de notar que, a diferencia que en el ruido gaussiano, aquí las alteraciones cambian poco la reconstrucción debiéndose quizás al carácter sinusoidal de la perturbación aunque no podemos asegurar nada.
+Se aprecia correctamente los pulsos que cambian la forma de la señal, sin tener unos cambios muy bruscos en el rango de valores de la señal original, notándose más cuando $\sigma = 1.25$. También es digno de notar que, a diferencia con el ruido gaussiano, aquí las alteraciones cambian poco la reconstrucción debiéndose quizás al carácter sinusoidal de la perturbación aunque no podemos asegurar nada.
 
 Repetimos de nuevo el cálculo del $PR$ con los mismos tamaños, escalas de $\sigma$ y ratios de proporción; obteniendo \autoref{fig:ad-pulso-train} en \textbf{train} y \autoref{fig:ad-pulso-test} en \emph{test}.
 
@@ -438,7 +438,7 @@ El comportamiento respecto el ratio es igual que el ruido gaussiano, da mejores 
 
 Los resultados vuelven a indicar que el detector consigue realizar un buen trabajo a todas las escalas y con muy pocas muestras anómalas, de hecho parece que se consiguen muchos mejores resultados que el ruido gaussiano, aunque también puede deberse a que hayamos aumentado el tamaño mínimo de las perturbaciones.
 
-Cuando la escala es la más pequeña ($\sigma = 0.75$) se comporta bastante peor y con el menor ratio no sobresale tanto; sin embargo no es de extrañar puesto que aunque estemos fluctuando la forma de la señal en esa escala los cambios son muy pequeños y no se diferencian de la original demasiado. A pesar de todo esto el sistema es capaz de hacer un buen trabajo frente al clasificador base y va mejorando bastante las puntuaciones con mayor proporción de anomalías.
+Cuando la escala es la más pequeña ($\sigma = 0.75$) se comporta bastante peor aunque solo con con el menor ratio. Sin embargo, no es de extrañar puesto que aunque estemos fluctuando la forma de la señal en esa escala los cambios son muy pequeños y no se diferencian demasiado de la original. A pesar de todo esto el sistema es capaz de hacer un buen trabajo frente al clasificador base y va mejorando bastante las puntuaciones con mayor proporción de anomalías.
 
 Resumiendo, el sistema es capaz de detectar bastante bien las clases existentes que habíamos clasificado como anómalas y también las alteraciones artificiales que hemos creado a distintas escalas, tamaños y proporciones; indicando el buen rendimiento de este detector.
 
@@ -446,15 +446,15 @@ Resumiendo, el sistema es capaz de detectar bastante bien las clases existentes 
 
 \subsection{Descripción}
 
-Para demostrar los métodos basados en descomposición STL, usaremos el \emph{dataset} basado en funciones sino que habíamos creado a modo de ejemplo anteriormente. Recordamos que muestreábamos una función coseno, le añadíamos tendencia ascendente y ruido blanco; finalmente se estandarizaban. Volvemos a dejar un 20\% para \emph{test}.
+Para demostrar los métodos basados en descomposición STL, usaremos el \emph{dataset} basado en funciones coseno que habíamos creado a modo de ejemplo anteriormente. Recordamos que muestreábamos una función coseno, le añadíamos tendencia ascendente y ruido blanco; finalmente se estandarizaban. Volvemos a dejar un 20\% para \emph{test}.
 
-Inspeccionamos 10 series del \emph{dataset}  para ver si hay un patrón, aunque ya sabemos que si lo va a haber. En \autoref{fig:ad-dataset-cosenos} vemos claramente el patrón, aunque observamos el ruido introducido provoca pequeñas oscilaciones.
+Inspeccionamos 10 series del \emph{dataset}  para ver si hay un patrón, aunque ya sabemos que sí lo va a haber. En \autoref{fig:ad-dataset-cosenos} vemos claramente el patrón, aunque observamos el ruido introducido provoca pequeñas oscilaciones.
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.7\textwidth]{dataset-cos}
-  \caption{Algunas series del \emph{dataset} \emph{Cosenos}}
+  \caption{Algunas series del \emph{dataset} \emph{Cosenos}.}
   \label{fig:ad-dataset-cosenos}
 \end{figure}
 
@@ -468,7 +468,7 @@ El resultado del entrenamiento mostrando la función de pérdida MSE se muestra 
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{train-cos}
-  \caption{Entrenamiento del modelo LSTM en \emph{Cosenos}}
+  \caption{Entrenamiento del modelo LSTM en \emph{Cosenos}.}
   \label{fig:ad-entrenamiento-cos}
 \end{figure}
 
@@ -478,7 +478,7 @@ Observemos algunas series en \emph{train} y \emph{test} con varias reconstruccio
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{cos-reconst-train}
-  \caption{Reconstrucciones en \emph{train}}
+  \caption{Reconstrucciones en \emph{train}.}
   \label{fig:ad-reconstruccion-cos-train}
 \end{figure}
 
@@ -486,7 +486,7 @@ Observemos algunas series en \emph{train} y \emph{test} con varias reconstruccio
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{cos-reconst-test}
-  \caption{Reconstrucciones en \emph{test}}
+  \caption{Reconstrucciones en \emph{test}.}
   \label{fig:ad-reconstruccion-cos-test}
 \end{figure}
 
@@ -498,7 +498,7 @@ Estudiamos ahora la distribución de errores MSE entre las series y las reconstr
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=1.\textwidth]{cos-hists}
-  \caption{Histogramas de error en \emph{train} y \emph{test}}
+  \caption{Histogramas de error en \emph{train} y \emph{test}.}
   \label{fig:ad-hist-cos}
 \end{figure}
 
@@ -508,7 +508,7 @@ Habiendo obtenido la función de densidad estimada, el modelo ya ha sido entrena
 
 \subsection{Validación}
 
-Para este dataset usaremos la validación usando las alteraciones basadas en la descomposición STL para comprobar su eficacia y a la vez el rendimiento del detector ante este tipo de anomalías.
+Para este conjunto de datos usaremos la validación usando las alteraciones basadas en la descomposición STL para comprobar su eficacia y a la vez el rendimiento del detector ante este tipo de anomalías.
 
 Volvemos a usar como métrica $PR$ para valorar el modelo.
 
@@ -522,7 +522,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-season1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{season1}
-  \caption{Modificación de la estacionalidad a $\sigma = 0.01$}
+  \caption{Modificación de la estacionalidad a $\sigma = 0.01$.}
   \label{fig:ad-season1}
 \end{figure}
 
@@ -530,7 +530,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-season1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{season2}
-  \caption{Modificación de la estacionalidad a $\sigma = 0.05$}
+  \caption{Modificación de la estacionalidad a $\sigma = 0.05$.}
   \label{fig:ad-season2}
 \end{figure}
 
@@ -538,7 +538,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-season1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{season3}
-  \caption{Modificación de la estacionalidad a $\sigma = 1.8$}
+  \caption{Modificación de la estacionalidad a $\sigma = 1.8$.}
   \label{fig:ad-season3}
 \end{figure}
 
@@ -546,11 +546,11 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-season1}, \autoref{fi
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{season4}
-  \caption{Modificación de la estacionalidad a $\sigma = 2$}
+  \caption{Modificación de la estacionalidad a $\sigma = 2$.}
   \label{fig:ad-season4}
 \end{figure}
 
-Conseguimos el efecto deseado: para $\sigma < 1$ amortiguamos la estacionalidad y para $\sigma > 1$ se amplifica, modificando la serie de una manera sinusoidal debido al carácter propio de su estacionalidad. La reconstrucción se mantiene casi sin alteraciones por lo que queda en evidencia clara la anomalía que se muestra, aunque debido al ruido que había en el \emph{dataset} no es fácil determinar si es un anomalía completamente.
+Conseguimos el efecto deseado: para $\sigma < 1$ amortiguamos la estacionalidad y para $\sigma > 1$ se amplifica, modificando la serie de una manera sinusoidal debido al carácter propio de su estacionalidad. La reconstrucción se mantiene casi sin alteraciones por lo que queda en evidencia clara la anomalía que se muestra, aunque debido al ruido que había en el \emph{dataset} no es fácil determinar si es una anomalía completamente.
 
 Validemos calculando la métrica $PR$ de la misma manera que hicimos con el otro \emph{dataset}: tomando \emph{train} y \emph{test} y creando alteraciones con un número proporcional al tamaño de cada uno respectivamente, en concreto los ratios $\{0.05, 0.1, 0.2, 0.3\}$. La configuración de las alteraciones es la misma que la de los ejemplos.
 
@@ -588,7 +588,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-trend1}, \autoref{fig
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{trend1}
-  \caption{Modificación de la tendencia a $\sigma = -1$}
+  \caption{Modificación de la tendencia a $\sigma = -1$.}
   \label{fig:ad-trend1}
 \end{figure}
 
@@ -596,7 +596,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-trend1}, \autoref{fig
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{trend2}
-  \caption{Modificación de la tendencia a $\sigma = 0.001$}
+  \caption{Modificación de la tendencia a $\sigma = 0.001$.}
   \label{fig:ad-trend2}
 \end{figure}
 
@@ -605,7 +605,7 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-trend1}, \autoref{fig
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{trend3}
-  \caption{Modificación de la tendencia a $\sigma = 3$}
+  \caption{Modificación de la tendencia a $\sigma = 3$.}
   \label{fig:ad-trend3}
 \end{figure}
 
@@ -614,11 +614,11 @@ Mostramos 4 ejemplos para cada $\sigma$ en \autoref{fig:ad-trend1}, \autoref{fig
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.8\textwidth]{trend4}
-  \caption{Modificación de la tendencia a $\sigma = 4$}
+  \caption{Modificación de la tendencia a $\sigma = 4$.}
   \label{fig:ad-trend4}
 \end{figure}
 
-Como en este caso la tendencia es como una recta que toma valores en $[-0.5 0.5]$ las alteraciones se notarán más en los extremos ya que conforme nos acercamos al centro de las series la tendencia se anula, haciendo que cualquier variación sea imperceptible.
+Como en este caso la tendencia es como una recta que toma valores en $[-0.5, 0.5]$ las alteraciones se notarán más en los extremos ya que conforme nos acercamos al centro de las series la tendencia se anula, haciendo que cualquier variación sea imperceptible.
 
 Con $\sigma = -1$ conseguimos invertir la tendencia y como vemos, en las zonas extremas de las series se puede notar más estas alteraciones; en todo caso como la tendencia no era muy grande en valor absoluto las modificaciones suelen ser pequeñitas.
 
@@ -654,7 +654,7 @@ Mediante una arquitectura muy simple, capaz de ser desplegada en distintos domin
 
 Para ampliaciones futuras sería muy interesante realizar arquitecturas que permitan codificar distintos patrones y no solamente uno como en nuestro caso, ya que suele haber señales regulares que exhiben varios patrones claramente distintos en tramos de las series. Una modificación simple para intentar resolver esto podría consistir en añadir más decodificadores y que cada uno aprendiese un patrón distinto.
 
-También podría estudiarse como el detector pudiera mejorar incorporando a la función de probabilidad estimada interna, la distribución de las señales anómalas permitiendo corregir estas probabilidades para una mejor exactitud.
+También podría estudiarse cómo el detector pudiera mejorar incorporando a la función de probabilidad estimada interna, la distribución de las señales anómalas permitiendo corregir estas probabilidades para una mejor exactitud.
 
 Respecto a los métodos de alteraciones, hemos visto que son maneras muy simples que nos permiten modificar las series de distintas formas permitiéndonos valorar los detectores cuando no tenemos ningún tipo de ejemplo anómalo y siendo perfectamente modificables por los parámetros de longitud y $\sigma$ para adaptarlos al los datos concretos que se tengan.
 

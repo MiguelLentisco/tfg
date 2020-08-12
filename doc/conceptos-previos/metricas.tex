@@ -13,7 +13,7 @@ Según la tipología del problema podemos encontrar distintas métricas donde ve
 
 \section{Clasificación}
 
-En los problemas de clasificación nos encontramos con aprendizaje \textbf{supervisado} ya que generalmente tenemos unas etiquetas asociados a los datos que queremos predecir correctamente. Según el modelo puede tener dos tipos de enfoque para los que tendremos distintos tipos de métricas: predicción de etiquetas (clasificador "duro") o predicción de probabilidades asociadas a las clases (clasificador "flexible").
+En los problemas de clasificación nos encontramos con aprendizaje \textbf{supervisado} ya que generalmente tenemos unas etiquetas ascoiadas a los datos que queremos predecir correctamente. Según el modelo puede tener dos tipos de enfoque para los que tendremos distintos tipos de métricas: predicción de etiquetas (clasificador "duro") o predicción de probabilidades asociadas a las clases (clasificador "flexible").
 
 Planteamos antes el problema general de clasificación con $n$ clases (\autoref{def:clasgen}).
 
@@ -24,7 +24,7 @@ Planteamos antes el problema general de clasificación con $n$ clases (\autoref{
 
   \begin{align*}
     f : \mathcal{X} & \to Y \\
-    \textbf{x} & \mapsto f(\textbf{x}) \in \{0, 1, 2, \ldots, n - 1\}
+    \textbf{x} & \mapsto f(\textbf{x}) \in \{0, 1, 2, \ldots, n - 1\}.
   \end{align*}
   \label{def:clasgen}
 \end{definicion}
@@ -38,44 +38,44 @@ Si nuestro clasificador devuelve etiquetas, suponiendo que la muestra tiene las 
 Sea la función aprendida por un modelo $h \in \mathcal{H}$, definimos $acc$ como \refeq{eq:acc}. Considerando que $acc \in [0, 1]$ se puede también usar la función de pérdida asociada como \refeq{eq:acc_loss}, aunque es más frecuente usar $acc$.
 
 \begin{equation}
-  acc(h) = \frac{1}{n} \sum \limits^N_{i = 1}[[h(\textbf{x}_i) = y_i]]
+  acc(h) = \frac{1}{n} \sum \limits^N_{i = 1}[[h(\textbf{x}_i) = y_i]],
   \label{eq:acc}
 \end{equation}
 
 \begin{equation}
-  E(h) = 1 - acc(h)
+  E(h) = 1 - acc(h).
   \label{eq:acc_loss}
 \end{equation}
 
-Cuando la clase positiva importa más que la negativa tenemos que medir de otra manera que sea influya más una clase que la otra. Para ello introducimos los los conceptos de \textbf{precisión} ($precision$) y \textbf{sensibilidad} ($recall$):
+Cuando la clase positiva importa más que la negativa tenemos que medir de otra manera para tener en cuenta que una clase influye más que la otra. Para ello introducimos los los conceptos de \textbf{precisión} ($precision$) y \textbf{sensibilidad} ($recall$):
 
 \begin{enumerate}
-  \item \textbf{Precisión}: definido en \eqref{eq:precision}, evalúa la proporción de las clases positivas correctamente clasificadas frente a todas las etiquetas como la clase positiva. Si el modelo es muy preciso nos indica que cuando el modelo etiqueta un dato con la clase positiva casi seguro que lo sea.
+  \item \textbf{Precisión}: definido en \eqref{eq:precision}, evalúa la proporción de las clases positivas correctamente clasificadas frente a todas las etiquetadas como la clase positiva. Si el modelo es muy preciso nos indica que cuando el modelo etiqueta un dato con la clase positiva casi seguro que lo sea.
   \item \textbf{Sensibilidad}: definido en \eqref{eq:recall}, evalúa la proporción de las clases positivas correctamente clasificadas frente a todas las clases positivas que hay, bien o mal clasificadas. Si el modelo es muy sensibile nos indica que clasifica correctamente la mayoría de datos con etiqueta positiva.
 \end{enumerate}
 
 \begin{equation}
-  precision = \dfrac{verdaderos\_positivos}{verdaderos\_positivos + falsos\_positivos}
+  precision = \dfrac{verdaderos\_positivos}{verdaderos\_positivos + falsos\_positivos},
   \label{eq:precision}
 \end{equation}
 
 \begin{equation}
-  recall = \dfrac{verdaderos\_positivos}{verdaderos\_positivos + falsos\_negativos}
+  recall = \dfrac{verdaderos\_positivos}{verdaderos\_positivos + falsos\_negativos}.
   \label{eq:recall}
 \end{equation}
 
-Usando estos dos valores se obtiene la métrica $F_\beta$ \eqref{eq:fscore}, donde variamos el $\beta$ usado según la matriz de costes asociados a los falsos positivos y negativos. Generalmente se usa $F_1$ cuando cuestan igual, $F_{0.5}$ si los falsos positivos cuestan mas y $F_{2}$ si son los falsos negativos.
+Usando estos dos valores se obtiene la métrica $F_\beta$ \eqref{eq:fscore}, donde variamos el $\beta$ usado según la matriz de costes asociados a los falsos positivos y negativos. Generalmente se usa $F_1$ cuando cuestan igual, $F_{0.5}$ si los falsos positivos cuestan más y $F_{2}$ si son los falsos negativos los que más cuestan.
 
 \begin{equation}
-  F_\beta = (1 + \beta^2) \cdot \dfrac{precision \cdot recall}{(\beta^2 \cdot precision) + recall}
+  F_\beta = (1 + \beta^2) \cdot \dfrac{precision \cdot recall}{(\beta^2 \cdot precision) + recall}.
   \label{eq:fscore}
 \end{equation}
 
 \subsection{Probabilidades}
 
-Aunque el clasificador devuelve probabilidades generalmente necesitamos dar una respuesta con etiquetas, por lo que se suele dar un \textbf{umbral} para el que clasificar de una clase (problema binario) o tomar la clase con mayor probabilidad si se están prediciendo probabilidades para todas las clases.
+Aunque el clasificador devuelve probabilidades generalmente necesitamos dar una respuesta con etiquetas, por lo que se suele dar un \textbf{umbral} para el que clasificar como una clase (problema binario) o tomar la clase con mayor probabilidad si se están prediciendo probabilidades para todas las clases.
 
-En cualquier caso las dos métricas mas usadas generalmente son las que miden el \textbf{área bajo la curva} de las funciones \textbf{precision-recall} ($PR-AUC$) y \textbf{Receiver Operating Characteristic} ($ROC-AUC$). En ambos casos se crea una curva en el cuadradado $[0,1] \times [0,1]$ donde se integra para obtener el área que deja la curva, haciendo que ambas métricas tomen valores en $[0, 1]$ siendo mejor el modelo cuanto más alto valga.
+En cualquier caso las dos métricas más usadas generalmente son las que miden el \textbf{área bajo la curva} de las funciones \textbf{precision-recall} ($PR-AUC$) y \textbf{Receiver Operating Characteristic} ($ROC-AUC$). En ambos casos se crea una curva en el cuadradado $[0,1] \times [0,1]$ donde se integra para obtener el área que deja la curva, haciendo que ambas métricas tomen valores en $[0, 1]$ siendo mejor el modelo cuanto más alto valga.
 
 Cuando la clase positiva importa igual que la clase negativa se toma $ROC-AUC$ que mide el comportamiento del modelo obteniendo las tasas de falsos positivos ($falsos\_positivos$) y verdaderos positivos ($verdaderos\_positivos$) para cada umbral de probabilidad que se va poniendo al modelo. Se suele imprimir el gráfico con la curva que forma comparando con el clasificador aleatorio para compararlo (\autoref{fig:ej-roc} \cite{scikit2020roc}).
 
@@ -99,7 +99,7 @@ Por otro lado, si la clase positiva tiene mayor importancia entonces se coge $PR
 
 \section{Regresión}
 
-Un problema de regresión no es más que un problema de clasificación donde las etiquetas no son discretas si no continuas (\autoref{def:probregresion}).
+Un problema de regresión no es más que un problema de clasificación donde las etiquetas no son discretas sino continuas (\autoref{def:probregresion}).
 
 \begin{definicion}[Problema de regresión]
   Sea $M \in \N$ la longitud de las series y $N \in \N$ el número de series y $n$ la dimensión de las etiquetas, se considera el espacio $\mathcal{X} \times \mathcal{Y} \subseteq \R^M \times \R^n$ del que se extrae una muestra $(X, Y) \in \mathcal{X}^N \times \mathcal{Y}^N$ que sigue una distribución $\mathcal{P}$ desconocida y el espacio de funciones del modelo dado $\mathcal{H}$.
@@ -108,7 +108,7 @@ Un problema de regresión no es más que un problema de clasificación donde las
 
   \begin{align*}
     f : \mathcal{X} & \to \mathcal{Y} \\
-    \textbf{x} & \mapsto f(\textbf{x}) \in \R^n
+    \textbf{x} & \mapsto f(\textbf{x}) \in \R^n.
   \end{align*}
   \label{def:probregresion}
 \end{definicion}
@@ -122,17 +122,17 @@ Generalmente se usan las siguientes métricas principales, donde todas toman val
 \end{enumerate}
 
 \begin{equation}
-  MAE(h) = \dfrac{1}{n} \sum \limits^N_{i = 1} || \textbf{y}_i - h(\textbf{x}_i) ||_1
+  MAE(h) = \dfrac{1}{n} \sum \limits^N_{i = 1} || \textbf{y}_i - h(\textbf{x}_i) ||_1,
   \label{eq:mae}
 \end{equation}
 
 \begin{equation}
-  MSE(h) = \dfrac{1}{n} \sum \limits^N_{i = 1} || \textbf{y}_i - h(\textbf{x}_i)) ||^2_2
+  MSE(h) = \dfrac{1}{n} \sum \limits^N_{i = 1} || \textbf{y}_i - h(\textbf{x}_i)) ||^2_2,
   \label{eq:mse}
 \end{equation}
 
 \begin{equation}
-  RMSE(h) = \sqrt{MSE(h)}
+  RMSE(h) = \sqrt{MSE(h)}.
   \label{eq:rmse}
 \end{equation}
 

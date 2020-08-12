@@ -147,7 +147,7 @@ Esta clase y sus métodos se encuentran en el archivo $LSTM.py$.
 La clase LSTM que implementa el clasificador LSTM. Guarda el modelo LSTM, el número de clases, la longitud de las series, opciones de entrenamiento y para gráficas de entrenamiento.
 
 \begin{lstlisting}
-class LSTM:
+class LSTM(BaseEstimator):
     """
         Implementación de una red neuronal con capas LSTM.
 
@@ -177,7 +177,8 @@ class LSTM:
 Constructor de la clase LSTM que guarda opciones de entrenamiento.
 
 \begin{lstlisting}
-def __init__(self, epochs, n_neurs = 80, verbose = 0, save_hist = False):
+def __init__(self, epochs, n_neurs = 80, verbose = 0, save_hist = False,
+             n_clases = -1):
         """
             Inicializamos la red LSTM.
 
@@ -191,6 +192,8 @@ def __init__(self, epochs, n_neurs = 80, verbose = 0, save_hist = False):
                 Información sobre el entrenamiento
             save_hist : boolean
                 Si guardar las gráficas de los entrenamientos
+            n_clases : int
+                Número de clases a predecir
         """
 \end{lstlisting}
 

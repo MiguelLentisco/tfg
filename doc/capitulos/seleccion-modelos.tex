@@ -5,35 +5,35 @@
 
 La \textbf{selección de modelos} es una tarea muy importante en la resolución de problemas del aprendizaje automático (y profundo) ya que de entre varios modelos propuestos como solución querremos escoger el mejor.
 
-Para valorar esto recurrimos a las \textbf{métricas}, aplicaciones que miden cuantitatívamente usando algún criterio la semejanza la función $f$ que estamos intentando aprender, y la función $h$ aprendida por el modelo.
+Para valorar esto recurrimos a las \textbf{métricas}, aplicaciones que miden cuantitativamente, usando algún criterio, la semejanza entre la función $f$ que estamos intentando aprender y la función $h$ aprendida por el modelo.
 
 Usando una métrica podemos comparar los resultados entre distintos modelos y escoger el que mayor valor arroje, sin embargo aquí entra el problema de la \textbf{validación}. Si solo nos basamos con el resultado de la métrica en el mismo conjunto donde hemos entrenado los datos, puede que estemos sobrestimando bastante el valor real debido al efecto del \textbf{sobreajuste}.
 
-Recordemos que este efecto se daba cuando el modelo se ajustaba demasiado a los datos de la muestra actual obteniendo un sesgo muy bajo, sin embargo, vimos que también la varianza aumentaba mucho, provocando que para otra muestra distinta de la distribución el modelo obtuviese un rendimiento muy peor al de la muestra donde fue entrenada.
+Recordemos que este efecto se daba cuando el modelo se ajustaba demasiado a los datos de la muestra actual obteniendo un sesgo muy bajo, sin embargo, vimos que también la varianza aumentaba mucho, provocando que para otra muestra distinta de la distribución el modelo obtuviese un rendimiento mucho peor al de la muestra donde fue entrenada.
 
 Por esta razón es necesaria una manera más realista de medir los modelos para evitar el sobreajuste, surgiendo así la \textbf{división clásica} entrenamiento/test. Este método consiste en, o bien obtener dos muestras independientes de la distribución o dividir una única muestra en dos antes de manipular los datos. La muestra de entrenamiento se usa para entrenar el modelo y la muestra de test para valorar los modelos, ya que es una nueva muestra que no ha visto el modelo anteriormente.
 
-Aunque este método ya resuelva nuestro problema también se puede querer hacer la selección de los modelos antes de realizar la valoración en el conjunto de test para, por ejemplo, quedarnos con un subconjunto menor de modelos de un gran número de modelos considerados para reducir tiempo de cómputo innecesario; también entra aquí la \textbf{selección de hiperparámetros} que es una selección de modelos solo que considerando el mismo modelo base y lo que cambia entre modelos es algún hiperparámetro (por ejemplo el número de neuronas en una red neuronal).
+Aunque este método ya resuelva nuestro problema también se puede querer hacer la selección de los modelos antes de realizar la valoración en el conjunto de test para, por ejemplo, quedarnos con un subconjunto menor de modelos de un gran número de modelos considerados para reducir tiempo de cómputo innecesario. También entra aquí la \textbf{selección de hiperparámetros} que es una selección de modelos solo que considerando el mismo modelo base y lo que cambia entre modelos es algún hiperparámetro (por ejemplo el número de neuronas en una red neuronal).
 
 Para resolver esto hay generalmente dos alternativas: hacer una partición más del conjunto de entrenamiento, quedándonos en total con el de entrenamiento, test y el de \textbf{validación}; o bien utilizar el método de \textbf{validación cruzada}.
 
-La validación cruzada consiste \emph{a grosso modo} en dividir la muestra de entrenamiento en $k$ conjuntos de mismo tamaño y repetir $k$ veces usando un conjunto como de validación y el resto de entrenamiento. Este método intenta dar un valor más robusto que usando un único conjunto de validación, y además puede indicar una idea de como de variable será en función a la varianza de los resultados.
+La validación cruzada consiste \emph{a grosso modo} en dividir la muestra de entrenamiento en $k$ conjuntos del mismo tamaño y repetir $k$ veces la validación usando un conjunto como \emph{test} y el resto de entrenamiento. Este método intenta dar un valor más robusto que usando un único conjunto de validación, y además puede indicar una idea de cómo de variable será en función a la varianza de los resultados.
 
-Estos son los métodos clásicos que se han usado generalmente para obtener valores de la métrica realistas y que nos permiten comparar modelos y por tanto, elegir los mejores en base a esto. Sin embargo, esta clase de validaciones confía que en la muestras de datos recogidas de la distribución es \textbf{suficientemente representativa} de la distribución subyacente, y que han sido recogidos \textbf{sin sesgo} alguno \cite{zhang2019perturbation}.
+Estos son los métodos clásicos que se han usado generalmente para obtener valores de la métrica realistas y que nos permiten comparar modelos y por tanto, elegir los mejores en base a esto. Sin embargo, esta clase de validaciones confía que en las muestras de datos recogidas de la distribución es \textbf{suficientemente representativa} de la distribución subyacente, y que han sido recogidos \textbf{sin sesgo} alguno \cite{zhang2019perturbation}.
 
-Esta clase de problemas se puede presentar perfectamente cuando el problema es muy grande y es muy difícil obtener muchas muestras, o cuando se ha cometido algún error al tomar las muestras que nadie se ha percatado. Por ejemplo, en la detección de caras en imágenes, debido a la gran cantidad de posibilidades de formas en las que podrían estar, se necesita una muestra muy grande que abarque múltiples y diversas maneras para poder tener una representación buena de la distribución y además que no haya sesgos (solo salen caras en fotos con buena iluminación, o de gente con tez blanca...).
+Estos problemas se puede presentar perfectamente cuando el problema es muy grande y es muy difícil obtener muchas muestras, o cuando se ha cometido algún error al tomar las muestras que nadie se ha percatado. Por ejemplo, en la detección de caras en imágenes, debido a la gran cantidad de posibilidades de formas en las que podrían estar, se necesita una muestra muy grande que abarque múltiples y diversas maneras para poder tener una representación buena de la distribución y además que no haya sesgos (solo salen caras en fotos con buena iluminación, o de gente con tez blanca...).
 
-Por estas razones se presenta un nuevo método para valorar modelos basado en una heurística: $PV$ (\emph{Perturbated Validation}) \cite{zhang2019perturbation}. Este método \textbf{no} utiliza las mismas técnicas clásicas de utilizar un conjunto aparte si no que considera todo el conjunto entero, sin divisiones. En lineas generales trata de valorar si el modelo ha entendido realmente \textbf{la relación subyacente de los datos} midiendo como varía el comportamiento del modelo frente a \textbf{perturbaciones graduales} en los datos.
+Por estas razones se presenta un nuevo método para valorar modelos basado en una heurística: $PV$ (\emph{Perturbated Validation}) \cite{zhang2019perturbation}. Este método \textbf{no} utiliza las mismas técnicas clásicas de utilizar un conjunto aparte sino que considera todo el conjunto entero, sin divisiones. En lineas generales trata de valorar si el modelo ha entendido realmente \textbf{la relación subyacente de los datos} midiendo como varía el comportamiento del modelo frente a \textbf{perturbaciones graduales} en los datos.
 
-Nuestro objetivo será ver el funcionamiento de esta heurística, su comportamiento en casos reales, mediante una experimentación utilizando muchos modelos y conjuntos de datos para observar y analizar si nos es de utilidad y puede aportar algo nuevo en el paradigma actual de selección de modelos.
+Nuestro objetivo será ver el funcionamiento de esta heurística, su comportamiento en casos reales, mediante una experimentación utilizando muchos modelos y conjuntos de datos para observar y analizar si nos resulta de utilidad y puede aportar algo nuevo en el paradigma actual de selección de modelos.
 
 \chapter{Selección de modelos}\label{ch:pv}
 
-Planteamos el problema de la selección de modelos para problemas de clasificación multiclase en dominios de series temporales: sea $M \in \N$ la longitud de cada serie temporal, $N$ el número de series temporales, $n$ el número de clases y $k$ el número de modelos a ajustar, consideramos el espacio $\mathcal{X} \times Y \subseteq R^m \times \{0, 1, \ldots, n - 1\} $ del que se obtiene una muestra $(X, \textbf{y}) \in \mathcal{X}^N \times Y^N$ (datos $X$ y etiquetas $\textbf{y}$) que sigue una distribución de probabilidad $\mathcal{P}$ desconocida. Sean también el espacio de hipótesis de los modelos considerados $\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_k\}$ de los que se ha obtenido una función cada uno $h_i \in \mathcal{H_i}, \, i = 1, \ldots, k$ que intentan aproximar a la función de etiquetado $f$ definida por:
+Planteamos el problema de la selección de modelos para problemas de clasificación multiclase en dominios de series temporales: sea $M \in \N$ la longitud de cada serie temporal, $N$ el número de series temporales, $n$ el número de clases y $k$ el número de modelos a ajustar, consideramos el espacio $\mathcal{X} \times Y \subseteq R^m \times \{0, 1, \ldots, n - 1\} $ del que se obtiene una muestra $(X, \textbf{y}) \in \mathcal{X}^N \times Y^N$ (datos $X$ y etiquetas $\textbf{y}$) que sigue una distribución de probabilidad $\mathcal{P}$ desconocida. Sean también el espacio de hipótesis de los modelos considerados $\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_k\}$ de los que se ha obtenido una función cada uno $h_i \in \mathcal{H}_i, \, i = 1, \ldots, k$ que intentan aproximar a la función de etiquetado $f$ definida por:
 
 \begin{align*}
   f : \mathcal{X} & \to Y \\
-  \textbf{x} & \mapsto f(\textbf{x}) \in \{0, 1, \ldots, n-1\}
+  \textbf{x} & \mapsto f(\textbf{x}) \in \{0, 1, \ldots, n-1\}.
 \end{align*}
 
 Se pide valorar bajo un criterio determinado la aproximación de las funciones de hipótesis a la función de etiquetado (valorar $f \approx h_i$) de manera que se establezca un orden entre los modelos, permitiéndonos seleccionar los modelos con mejor valoración bajo este criterio.
@@ -51,9 +51,9 @@ Consideramos la selección de modelos clásica: primero tomamos la muestra o \em
 \end{figure}
 
 
-La validación en este caso es entrenar el modelo en el subconjunto de entrenamiento y obtener el valor de la métrica en el subconjunto test; una vez se obtienen los $k$ valores de la métrica se toma el valor final como la media de los valores aunque también se suele devolver la desviación típica o la varianza para tener una idea de como puede variar este valor (en que intervalo de confianza se mueve la métrica).
+La validación en este caso consiste en entrenar el modelo en el subconjunto de entrenamiento y obtener el valor de la métrica en el subconjunto test; una vez se obtienen los $k$ valores de la métrica se toma el valor final como la media de los valores aunque también se suele devolver la desviación típica o la varianza para tener una idea de cómo puede variar este valor (en qué intervalo de confianza se mueve la métrica).
 
-Para problemas de clasificación consideraremos la métrica \emph{accuracy} $acc$ que ya vimos en \autoref{ch:metricas} que básicamente se mide el porcentaje de etiquetas predichas correctamente. Utilizando esta métrica junto a la validación cruzada para cada modelo se obtendrá $acc_{CV}$, y en base a este valor podremos hacer la selección de modelos tomando en cuenta que es un estimador de la métrica en el conjunto test $acc_{test}$ s; por tanto lo esperable es que el mejor $acc_{CV}$ será probablemente el mejor $acc_{test}$.
+Para problemas de clasificación consideraremos la métrica \emph{accuracy} $acc$ que ya vimos en \autoref{ch:metricas} que básicamente mide el porcentaje de etiquetas predichas correctamente. Utilizando esta métrica junto a la validación cruzada para cada modelo se obtendrá $acc_{CV}$, y en base a este valor podremos hacer la selección de modelos tomando en cuenta que es un estimador de la métrica en el conjunto test $acc_{test}$; por tanto lo esperable es que el mejor $acc_{CV}$ será probablemente el mejor $acc_{test}$.
 
 \section{Perturbated Validation}
 
@@ -68,14 +68,14 @@ Si un modelo es bueno y capta bien la relación de los datos con las etiquetas e
   %\hspace*{-2.5cm}
   %\vspace*{-1.5cm}
   \includegraphics[width=0.8\textwidth]{ej_pv}
-  \caption{Idea general de funcionamiento del $PV$}
+  \caption{Idea general de funcionamiento del $PV$.}
   \label{fig:ej-pv}
 \end{figure}
 
-Así, el $PV$ intenta medir la correspondencia entre la función de etiquetado real con la aprendida del modelo y por tanto se esperan dos consecuencias:
+Así, el $PV$ intenta medir la correspondencia entre la función de etiquetado real con la aprendida a partir del modelo y del que se esperan dos consecuencias:
 
 \begin{itemize}
-  \item Para un valor muy alto las función aprendida $h$ debe ser muy parecida a $f$ y por tanto debería tener valores muy altos de $acc$ en cualquier conjunto.
+  \item Para un valor muy alto la función aprendida $h$ debe ser muy parecida a $f$ y por tanto debería tener valores muy altos de $acc$ en cualquier conjunto.
   \item Para un valor muy bajo la función no se parece, donde pueden pasar dos cosas:
     \begin{itemize}
       \item Si $acc_{train}$ es bajo, entonces es que el modelo tiene un ajuste directamente malo y en $acc_{test}$ también lo será.
@@ -83,7 +83,7 @@ Así, el $PV$ intenta medir la correspondencia entre la función de etiquetado r
     \end{itemize}
 \end{itemize}
 
-Sin embargo puede haber casos en los que tengamos un $PV$ bajo y obtengamos $acc_{test}$ bastantes altos, esto es consecuencia de como sean las muestras obtenidas de la distribución desconocida, si tienen alguno de los problemas que hemos mencionado (sesgo o representatividad insuficiente) entonces no se verá reflejado el problema en el conjunto de test y los modelos funcionarán igual de bien.
+Sin embargo, puede haber casos en los que tengamos un $PV$ bajo y obtengamos $acc_{test}$ bastantes altos, esto es consecuencia de cómo sean las muestras obtenidas de la distribución desconocida, si tienen alguno de los problemas que hemos mencionado (sesgo o representatividad insuficiente) entonces no se verá reflejado el problema en el conjunto de test y los modelos funcionarán igual de bien.
 
 Veamos esto con un ejemplo de \cite{zhang2019perturbation} \autoref{fig:pv-decision} donde se han creado tres \emph{datasets} sintéticos con unas funciones de etiquetado bien definidas, en forma de lunas, círculos y lineal, y se han entrenando con distintos modelos obteniendo tres valores de las métricas utilizadas, PV ($PV$), CV ($acc_{CV}$) y TA ($acc_{test}$) junto con la funciones aprendidas de cada modelo (se corresponde el valor de la etiqueta con un color).
 
@@ -95,16 +95,16 @@ Veamos esto con un ejemplo de \cite{zhang2019perturbation} \autoref{fig:pv-decis
   \label{fig:pv-decision}
 \end{figure}
 
-Observando los valores PV vemos como son mucho más altos cuando la función aprendida del modelo se corresponde con la \emph{forma} original de la función y esto se corresponde con valores casi perfectos de CV y TA. Por otro lado se asignan valores bajos de PV para los modelos con funciones con una forma más complicada (Random Forest por ejemplo) o cuando no es capaz de captar bien la relación de los datos (Linear SVM), aunque en el primer caso se sigue teniendo valores casi perfectos de CV y TA reflejando lo que habíamos comentado previamente.
+Observando los valores PV vemos cómo son mucho más altos cuando la función aprendida del modelo se corresponde con la \emph{forma} original de la función y esto se corresponde con valores casi perfectos de CV y TA. Por otro lado, se asignan valores bajos de PV para los modelos con funciones con una forma más complicada (Random Forest por ejemplo) o cuando no es capaz de captar bien la relación de los datos (Linear SVM), aunque en el primer caso se sigue teniendo valores casi perfectos de CV y TA reflejando lo que habíamos comentado previamente.
 
-Desde luego entre varios modelos con valores CV de en torno a 1 podríamos hacer otra selección con quien tenga un mayor valor de PV ya que preferimos quedarnos con un modelo que lo hace igual de bien que el resto pero la función que ha aprendido se adapta mucho más a la \textbf{distribución real de los datos}.
+Desde luego entre varios modelos con valores CV en torno a 1 podríamos hacer otra selección con quien tenga un mayor valor de PV ya que preferimos quedarnos con un modelo que lo hace igual de bien que el resto pero la función que ha aprendido se adapta mucho más a la \textbf{distribución real de los datos}.
 
 \subsection{Definición}
 
 Sea $r \in [0, 1]$ el ratio de etiquetas perturbadas para cada clase (para mantener las distribución), consideramos una sucesión creciente de ratios $\{r_i\}_{1 \leq i \leq n}$ e $\textbf{y}_{r_i}$ el conjunto de etiquetas con un $r_i$ porcentaje de etiquetas perturbadas por clase. Finalmente notamos $acc(S)$ como el máximo valor de la métrica obtenido con $\mathcal{H}$ en $S = (X, \textbf{y}_{r_i})$, es decir \eqref{eq:acc_rel} \cite{zhang2019perturbation}.
 
 \begin{equation}
-  acc(S) = \max_{h \in \mathcal{H}} acc(h) \text{, con } S = (X, \textbf{y}_{r_i})
+  acc(S) = \max_{h \in \mathcal{H}} acc(h) \text{, con } S = (X, \textbf{y}_{r_i}).
   \label{eq:acc_rel}
 \end{equation}
 
@@ -113,12 +113,12 @@ Con todos estos elementos ya podemos definir formalmente la heurística $PV$ (\a
 \begin{definicion}[Perturbated Validation]\label{def:pv}
   $PV$ es el valor absoluto del coeficiente de la regresión lineal (la pendiente) entre la variable independiente, ratio de etiquetas perturbadas $r_i$, frente la variable dependiente, acierto en el \emph{dataset} perturbado $acc(S_{r_i})$, es decir,
 
-  $$PV = \Bigg|\dfrac{\sum \limits^n_{i = 0} (r_i - \overline{r})(acc(S_{r_{i}}) - \overline{acc(S_r)})}{\sum \limits^n_{i = 0}(r_i - \overline{r})^2}\Bigg|$$
+  $$PV = \Bigg|\dfrac{\sum \limits^n_{i = 0} (r_i - \overline{r})(acc(S_{r_{i}}) - \overline{acc(S_r)})}{\sum \limits^n_{i = 0}(r_i - \overline{r})^2}\Bigg|.$$
 \end{definicion}
 
 \section{Implementación}
 
-Se ha implementado en una clase en \emph{Python} denominada \textbf{$PV$} que nos permite evaluar los modelos usando la descripción mencionada anteriormente. La documentación se puede encontrar en [Referencia apéndice código], aunque merece la pena describir el algoritmo general con pseudocódigo: \autoref{alg:create_pv} para crear los conjuntos de etiquetas perturbados y \autoref{alg:calc_pv} para calcular el $PV$ para un modelo dado.
+Se ha implementado en una clase en \emph{Python} denominada \textbf{$PV$} que nos permite evaluar los modelos usando la descripción mencionada anteriormente. La documentación se puede encontrar en \autoref{ap:documentacion}, aunque merece la pena describir el algoritmo general con pseudocódigo: \autoref{alg:create_pv} para crear los conjuntos de etiquetas perturbados y \autoref{alg:calc_pv} para calcular el $PV$ para un modelo dado.
 
 \begin{algorithm}[htbp]
 \SetAlgoLined
@@ -194,7 +194,7 @@ Minimizamos mediante \textbf{ADAM} (modificación de SGD) la función de pérdid
 \begin{definicion}[Entropía cruzada categórica]
   Sea $n$ el número de clases e $\textbf{y}$ el vector de probabilidades real, dado $\hat{\textbf{y}}$ el vector de probabilidades obtenido por un modelo, la entropía cruzada categórica es una función $E : [0, 1]^n \to \R$ definida por:
 
-  $$ L(\hat{\textbf{y}} ; \textbf{y}) = \sum \limits^n_{i = 1} y_i \log(\hat{y}_i)$$
+  $$ L(\hat{\textbf{y}} ; \textbf{y}) = \sum \limits^n_{i = 1} y_i \log(\hat{y}_i).$$
   \label{def:crossentropy}
 \end{definicion}
 
@@ -217,16 +217,16 @@ Las Máquinas de Soporte Vectorial (\emph{Support Vector Machine}, SVM) \cite{co
 Además se puede incluir una transformación no lineal en los datos para intentar conseguir una mejor separación en otros espacios, mediante la denominada función \emph{kernel}. Las más usadas son las siguientes, siendo $\gamma$ un hiperparámetro:
 
   \begin{enumerate}
-    \item Polinómica de grado $d$ y radio $r$: $(\gamma<x, x'> + r)^d$
+    \item Polinómica de grado $d$ y radio $r$: $(\gamma<x, x'> + r)^d$.
     \item Base radial (\emph{Radial Basis Function}, RBF): $\exp(-\gamma||x - x'||^2_2)$.
-    \item Sigmoide de radio $r$: $\tanh(\gamma<x, x'> + r)$
+    \item Sigmoide de radio $r$: $\tanh(\gamma<x, x'> + r)$.
   \end{enumerate}
 
-Para nuestro modelo fijamos el parámetro de regularización $C$ a 1, usando como función \emph{kernel} RBF y dejamos que $\gamma$ tome un valor heurístico a $1 / (M * Var(X))$ siendo $M$ el número de características y $X$ los datos.
+Para nuestro modelo fijamos el parámetro de regularización $C$ a 1 (cuanto más vale, menos fallos permite), usando como función \emph{kernel} RBF y dejamos que $\gamma$ tome un valor heurístico a $1 / (M * Var(X))$ siendo $M$ el número de características y $X$ los datos.
 
 \subsection{Árboles de decisión}
 
-Los árboles de decisión son un modelo muy simple que se puede entender como un conjunto de \textbf{reglas} asociadas a las características (\autoref{fig:ej-dt}), o como una serie de hiperplanos paralelos a los ejes que particionan el espacio. Estas reglas nos permiten \textbf{entender} porque el árbol llega a la predicción, cosa que no suele suceder en la mayoría de modelos.
+Los árboles de decisión son un modelo muy simple que se puede entender como un conjunto de \textbf{reglas} asociadas a las características (\autoref{fig:ej-dt}), o como una serie de hiperplanos paralelos a los ejes que particionan el espacio. Estas reglas nos permiten \textbf{entender} porqué el árbol llega a la predicción, cosa que no suele suceder en la mayoría de modelos.
 
 \begin{figure}[htbp]
   \centering
@@ -243,7 +243,7 @@ Usamos unos cuantos subtipos/implementaciones usualmente utilizados:
 \begin{itemize}
   \item \textbf{CART}: Classification and Regression Trees \cite{breiman1984classification} implementado en \emph{Python} en la librería \emph{scikit-learn} \cite{scikit2020dt}. Fijamos la profundidad máxima a 20 para evitar sobreajuste.
   \item \textbf{C4.5}: \cite{quinlan2014c4} implementado en \emph{R} en el paquete \emph{partykit} \cite{hornik2020c45}.
-  \item \textbf{C5.0}: mejora de C4.5 \cite{quinlan2019c50} implementado en \emph{R} en el paquete \emph{C50} \cite{kuhn2020c50}. Se añade un modelo sin \emph{boosting} y otro sí, con 10 árboles.
+  \item \textbf{C5.0}: mejora de C4.5 \cite{quinlan2019c50} implementado en \emph{R} en el paquete \emph{C50} \cite{kuhn2020c50}. Se añade un modelo sin \emph{boosting} y otro con 10 árboles.
   \item \textbf{RPart}: Recursive partitioning for classification trees \cite{breiman1984classification} implementado en \emph{R} en el paquete \emph{rpart} \cite{atkinson2019rpart}.
   \item \textbf{CTree}: Conditional inference tree \cite{hothorn2006unbiased, hothorn2015ctree} implementado en \emph{R} en el paquete \emph{ctree} \cite{hothorn2020ctree}.
 \end{itemize}
@@ -280,11 +280,11 @@ $k$-Nearest Neighbors ($k$-NN) \cite{cover1967nearest} usando como base la imple
   \label{fig:ej-knn}
 \end{figure}
 
-Para nuestro modelo consideramos la métrica usual euclidea $||\cdot||_2$ y usamos la regla heurística que recomienda usar $k \approx \sqrt{N}$ siendo $N$ el número de series del \emph{dataset} de entrenamiento.
+Para nuestro modelo consideramos la métrica usual euclídea $||\cdot||_2$ y usamos la regla heurística que recomienda usar $k \approx \sqrt{N}$ siendo $N$ el número de series del \emph{dataset} de entrenamiento.
 
 Como estamos en el contexto de las series temporales, se ha decidido añadir otro modelo $k$-NN pero en vez de usar la métrica euclidea usamos la \emph{semi}-métrica \emph{Dynamic Time Warping} ($DTW$) \cite{berndt1994using}. Esta \emph{semi-}métrica \cite{jain2018semi} mide la distancia con el \textbf{alineamiento óptimo} entre dos series temporales, de manera que es muy útil para medir series que exhiben ciertos patrones pero que tienen \textbf{pequeñas variaciones} (por ejemplo, una pequeña amplitud o desplazamiento) entre sí. Si suponemos que las series con misma etiqueta siguen una cierta forma bajo esta distancia deberían obtener valores muy bajos, si lo unimos con el algoritmo $k$-NN tenemos un modelo que puede funcionar bastante bien.
 
-Ejemplificamos visualmente lo que calcula $DTW$ comparando con la métrica euclidea en \autoref{fig:ej-dtw} \cite{volny2012employing}; observamos que para cada punto se busca la mejor coincidencia con la otra serie, consiguiendo una buena correspondencia entre series parecidas.
+Ejemplificamos visualmente lo que calcula $DTW$ comparando con la métrica euclídea en \autoref{fig:ej-dtw} \cite{volny2012employing}; observamos que para cada punto se busca la mejor coincidencia con la otra serie, consiguiendo una buena correspondencia entre series parecidas.
 
 \begin{figure}[htbp]
   \centering
@@ -294,7 +294,7 @@ Ejemplificamos visualmente lo que calcula $DTW$ comparando con la métrica eucli
   \label{fig:ej-dtw}
 \end{figure}
 
-Sin embargo $DTW$ es muy \textbf{costoso} de usar, puesto que para cada punto de la serie se calcula una distancia ($||\cdot||_1$ o $||\cdot||_2$) con el resto de puntos de la otra serie, y si tenemos en cuenta que en $k$-NN se calculan las distancias de cada serie que se quiera etiquetar con todas las series de entrenamiento el tiempo empleado en cómputos se dispara. Por ello para nuestro modelo usaremos una implementación eficiente en R \cite{leodolter2020dtw} junto al uso de una ventana de tamaño 5 (solo se buscan las coincidencias en un entorno de radio 5). Finalmente fijamos $k = 3$ ya que esperamos una mejor agrupación con $DTW$ (podríamos haber cogido $k=1$ pero si hacemos esto provocaríamos que $acc_{train} = 1$, sobreajustando demasiado) y evitamos aumentar aún más los cálculos.
+Sin embargo, $DTW$ es muy \textbf{costoso} de usar, puesto que para cada punto de la serie se calcula una distancia ($||\cdot||_1$ o $||\cdot||_2$) con el resto de puntos de la otra serie, y si tenemos en cuenta que en $k$-NN se calculan las distancias de cada serie que se quiera etiquetar con todas las series de entrenamiento el tiempo empleado en cómputos se dispara. Por ello para nuestro modelo usaremos una implementación eficiente en R \cite{leodolter2020dtw} junto al uso de una ventana de tamaño 5 (solo se buscan las coincidencias en un entorno de radio 5). Finalmente fijamos $k = 3$ ya que esperamos una mejor agrupación con $DTW$ (podríamos haber cogido $k=1$ pero si hacemos esto provocaríamos que $acc_{train} = 1$, sobreajustando demasiado) y evitamos aumentar aún más los cálculos.
 
 El modelo $k-NN$ euclideo para tomar el $k$ automático se ha implementado en \emph{Python} y para $k$-NN + $DTW$ se ha usado otra vez la librería \emph{rpy2} para usar el paquete de \emph{R} en \emph{Python}.
 
@@ -314,19 +314,19 @@ Antes de hacer un trabajo de experimentación extenso se hicieron varias pruebas
   \item \textbf{Rango} de valores del $PV$: como reflejan en \cite{zhang2019perturbation} la mayoría de valores del $PV$ obtenidos se encuentran en el intervalo $[0, 1]$ si bien se obtienen a veces valores por encima. Para los valores en $[1, 2]$, en \cite{zhang2019perturbation} se propone corregirlos al $[0, 1]$ penalizándolos con la   transformación \eqref{eq:pv-penalizacion}. En nuestro caso dejaremos los datos originales sin transformar, para notar explícitamente que se han obtenido estos valores por encima de los usuales.
 
   \begin{equation}
-    PV_{corregido} = 1 - |PV - 1|
+    PV_{corregido} = 1 - |PV - 1|.
     \label{eq:pv-penalizacion}
   \end{equation}
 
-  \item \textbf{Interpretabilidad} del $PV$: el $PV$ nos indica en líneas generales si el modelo se ha entendido correctamente el patrón subyacente en los datos. Observamos que conforme \textbf{aumenta} $PV$, el valor de las métricas $acc_{train}$ y $acc_{test}$ también lo hace y la tendencia del sobreajuste disminuye.
+  \item \textbf{Interpretabilidad} del $PV$: el $PV$ nos indica en líneas generales si el modelo ha entendido correctamente el patrón subyacente en los datos. Observamos que conforme \textbf{aumenta} $PV$, el valor de las métricas $acc_{train}$ y $acc_{test}$ también lo hace y la tendencia del sobreajuste disminuye.
 
-  \item \textbf{Resultados} del $PV$: observamos que modelos que obtienen un $PV \approx 0$ suelen tener un $acc_{train}$ bastante alto mientras que en $acc_{CV}$ y $acc_{test}$ bajan bastante, haciéndose evidente el sobreajuste que existe. Además, un modelo puede tener mejor $PV$ que otro pero no tiene por qué mantenerse el orden con $acc_{test}$; lo que si observamos es que conforme aumenta $PV$, la tasa de $acc_{train}$ y $acc_{test}$ aumentan y el sobreajuste disminuye.
+  \item \textbf{Resultados} del $PV$: observamos que modelos que obtienen un $PV \approx 0$ suelen tener un $acc_{train}$ bastante alto mientras que en $acc_{CV}$ y $acc_{test}$ bajan bastante, haciéndose evidente el sobreajuste que existe. Además, un modelo puede tener mejor $PV$ que otro pero no tiene por qué mantenerse el orden con $acc_{test}$; lo que sí observamos es que conforme aumenta $PV$, la tasa de $acc_{train}$ y $acc_{test}$ aumentan y el sobreajuste disminuye.
 
-  \item \textbf{Cambio en las perturbaciones}: se intentó probar a perturbar los datos en sí en vez de las etiquetas (para poder trasladar el $PV$ a problemas con métricas continuas o problemas no supervisados) con distintas pruebas, por ejemplo ruido gaussiano; pero no tuvieron el efecto deseado y al no tener unos resultados muy claros se decidió descartar esta linea.
+  \item \textbf{Cambio en las perturbaciones}: se intentó probar a perturbar los datos en sí en vez de las etiquetas (para poder trasladar el $PV$ a problemas con métricas continuas o problemas no supervisados) con distintas pruebas, por ejemplo ruido gaussiano; pero no tuvieron el efecto deseado y al no tener unos resultados muy claros se decidió descartar esta línea.
 
 \end{enumerate}
 
-Como los resultados de \cite{zhang2019perturbation} se parecían corresponder con estos preliminares dimos el visto bueno para pasar a la experimentación extendida para comprobar de una manera más extendida y analizar detalladamente la eficacia y los resultados del $PV$.
+Como los resultados de \cite{zhang2019perturbation} parecían corresponder con estos preliminares dimos el visto bueno para pasar a la experimentación extendida para comprobar de una manera más extendida y analizar detalladamente la eficacia y los resultados del $PV$.
 
 \section{Elección del mejor modelo}
 
@@ -346,7 +346,7 @@ Por tanto lo que esperamos en este experimento es:
 
 \subsubsection{Datasets}
 
-Utilizamos la base de datos "\emph{UEA \& UCR Time Series Classification}" \cite{bagnall2020ts} que reune 158 \emph{dataset} de series temporales estandarizadas para problemas de clasificación. Cogeremos los 114 \emph{datasets} de series temporales\textbf{unidimensionales} para evitar altos tiempos en entrenamiento, mezclamos la partición ya hecha en \emph{train}/\emph{test} ya que muchos \emph{datasets} \emph{train} tienen \textbf{muy} pocas series y hay un gran desequilibrio, y volvemos a partir pero con un 80/20\%. Finalmente nos quedaremos con los que el \emph{dataset} \emph{train} cumpla las siguientes condiciones:
+Utilizamos la base de datos "\emph{UEA \& UCR Time Series Classification}" \cite{bagnall2020ts} que reune 158 \emph{dataset} de series temporales estandarizadas para problemas de clasificación. Cogeremos los 114 \emph{datasets} de series temporales \textbf{unidimensionales} para evitar altos tiempos en entrenamiento, mezclamos la partición ya hecha en \emph{train}/\emph{test} ya que muchos \emph{datasets} \emph{train} tienen \textbf{muy} pocas series y hay un gran desequilibrio, y volvemos a partir pero con un 80/20\%. Finalmente nos quedaremos con los que el \emph{dataset} \emph{train} cumpla las siguientes condiciones:
 
 \begin{enumerate}
   \item Tiene al menos \textbf{100 series}: aunque puede depender de la distribución, en general necesitamos muchos datos para que los modelos aprendan. Además un número tan pequeño de series puede ocasionar una gran inestabilidad a la hora de obtener el $PV$.
@@ -568,7 +568,7 @@ Unimos todos los datos obtenidos para poder visualizar la relación entre la heu
   \centering
   %\hspace*{-1cm}
   \includegraphics[width=0.7\textwidth]{dist_pv}
-  \caption{Distribución de valores del $PV$}
+  \caption{Distribución de valores del $PV$.}
   \label{fig:dist-pv}
 \end{figure}
 
@@ -641,68 +641,103 @@ En ambos grupos, como ya veníamos viendo de los resultados globales, se mantien
   \item En el caso de Random Forest y CART se nota mucho más el \textbf{fuerte sobreajuste} a los que tienden estos modelos que obtienen valores muy pequeños de $PV$, propiciando valores perfectos de $acc_{train}$ pero muy dispersos en $acc_{test}$.
 \end{itemize}
 
-En el grupo 2 vemos unos resultados parecidos en general aunque aquí ya se observan los valores atípicos más frecuentes, que llegan incluso por encima de 2. De hecho los datos de LSTM presentan valores peores (puntos con $PV$ altos pero $acc_{test}$ bajos, sobreajustes muy por encima de los normales) probablemente de una alta varianza que obtenga soluciones inestables.
+En el grupo 2 vemos unos resultados parecidos en general aunque aquí ya se observan los valores atípicos más frecuentes, que llegan incluso por encima de 2. De hecho los datos de LSTM presentan valores peores (puntos con $PV$ altos pero $acc_{test}$ bajos, sobreajustes muy por encima de los normales) probablemente de una alta varianza que obtenga soluciones inestables. También sea efecto de usar una configuración y entrenamiento fijados para un montón de modelos diferentes, ya que las redes neuronales necesitan estudiar si el entrenamiento está siendo adecuado y converge a una solución correctamente.
 
 Para acabar, resumamos lo obtenido: nuestras hipótesis sobre el $PV$ se cumplen, si bien parece que hay ciertos modelos como el LSTM que pueden presentar una mayor inestabilidad a la hora de obtener el $PV$ por lo que habría que tener cuidado y comprobar que se calcula correctamente. No podemos considerar sustituir la selección clásica con el $PV$ ya que como hemos visto, no tiene por qué tomar el mejor modelo en base al menor error en una muestra distinta. Sin embargo sí podemos utilizarlo como \textbf{selección complementaria}, ayudándonos a hacer una criba más entre modelos con rendimientos muy parecidos asegurándonos así de que escogemos un modelo que ha aprendido mejor \textbf{la relación de los datos}.
 
 \section{Hiperparametrización}
 
-[EN CONSTRUCCIÓN]
-
 \subsection{Descripción}
 
 \subsubsection{Objetivos}
 
-Comprobada la eficacia de la heurística $PV$, en el contexto de la elección de los \textbf{mejores hiperparámetros} de un modelo es especialmente útil ya que normalmente nos encontramos con muchos valores para los que los modelos obtienen un $acc_{cv}/acc_{test}$ \textbf{muy parecidos} mientras que la complejidad va cambiando. Esto es de especial interés, ya que lo ideal es buscar un modelo con un buen ajuste y que generalice lo mejor posible para evitar tiempos de computación innecesarios y sobreajustes que pudieran darse.
+Comprobada la utilidad de la heurística $PV$, en el contexto de la elección de los \textbf{mejores hiperparámetros} de un modelo es especialmente útil ya que normalmente nos encontramos con muchos valores para los que los modelos obtienen un $acc_{cv}/acc_{test}$ \textbf{muy parecidos} mientras que la complejidad va cambiando. Esto es de especial interés, ya que lo ideal es buscar un modelo con un buen ajuste y que generalice lo mejor posible para evitar tiempos de computación innecesarios y sobreajustes que pudieran darse.
 
 Buscaremos así  si $PV$ destaca en la búsqueda de la mejor configuración de hiperparámetros posible para un modelo dado, frente a la métrica clásica $acc_{CV}$. Para ello escogeremos unos cuantos \emph{datasets} y unos cuantos modelos típicos buscando los hiperparámetros óptimos de cada modelo en cada dataset, y veremos cual es el comportamiento entre las métricas frente a la variación de los hiperparámetros.
 
 \subsubsection{Datasets}
 
-Cogeremos
+Cogemos cuatro \emph{dataset} de "\emph{UEA \& UCR Time Series Classification}" \cite{bagnall2020ts} (\autoref{table:pv-datasets1}, \autoref{table:pv-datasets2}): \emph{ChlorineConcentration}, \emph{PowerCons}, \emph{SmoothSubspace}, \emph{ProximalPhalanxTW}.
 
 \subsubsection{Clasificadores}
 
+Hemos seleccionado cuatro clasificadores de los que habíamos usado en el anterior experimento que tienen hiperparámetros fáciles de comprender. En principio usamos las mismas configuraciones que el anterior experimento, variando solamente los hiperparámetros que comentamos:
+
+\begin{itemize}
+  \item \textbf{LSTM}: el espacio de hiperparámetros es el número de neuronas de la capa LSTM donde cuantas más neuronas se tengan más complejo es el modelo. El espacio de búsqueda serán 10 enteros equidistantes en el intervalo $[10, 110]$.
+  \item \textbf{SVM}: variamos el hiperparámetro $C$ que nos indica cuanto se permite ignorar el error de clasificación, cuanto más alto menos fallos se permite por lo que baja el error a costa de menor generalización y mayor tiempos de cálculo. Para la búsqueda tomamos 15 puntos equidistantes en el intervalo $[-4, 4]$ como exponentes para $10$ (escala logarítmica).
+  \item \textbf{Random Forest}: variamos la profundidad máxima de los árboles que creamos. Cuanto menor sea, los árboles son más simples y tienen mayor error pero reducen la varianza y también los tiempos de cómputo. Tomamos el espacio $\{1, 2, \ldots, 14\}$.
+  \item \textbf{$k$-NN}: el hiperparámetro a cambiar es el número de vecinos considerado $k$ que en este caso cuanto más alto mas \emph{simple} será pero añadirá más tiempos de cálculo. Tomamos 20 enteros equidistantes en el intervalo $[2, 60]$ (excluimos el 1 ya que siempre sobreajusta).
+\end{itemize}
 
 \subsubsection{Métricas}
 
+Mediremos para cada configuración de cada modelo los siguientes valores:
 
-
-
-
-
-[...]
-
-Escoger unos cuantos modelos (random forest, svm, LSTM) y tocar sus hiperparámetros (C, max\_deep, n\_estimators, n\_capas ...) comparando $acc_{CV}$, $acc_{test}$ y $PV$.
+\begin{itemize}
+  \item $PV$: con $n = 5$, $r_1 = 0.1$ y $r_n = 0.3$.
+  \item $acc_{CV}$: con 5 particiones.
+  \item $acc_{test}$
+\end{itemize}
 
 \subsection{Resultados}
 
-Ejemplos posibles con SVM \autoref{fig:hiper1} y Random Forest \autoref{fig:hiper2}.
+Mostramos una imagen por cada modelo, mostrando a la vez los resultados en los cuatro \emph{datasets} donde se han dibujado las tres curvas correspondientes a cada métrica obtenida.
+
+Los resultados se muestran en orden para LSTM (\autoref{fig:hiper-LSTM}), SVM (\autoref{fig:hiper-SVM}), Random Forest (\autoref{fig:hiper-RF}) y $k$-NN (\autoref{fig:hiper-KNN}).
 
 \begin{figure}[htbp]
   \centering
-  %\hspace*{-1cm}
-  \includegraphics[width=0.7\textwidth]{hiper1}
-  \caption{Métricas respecto $C$ en SVM}
-  \label{fig:hiper1}
+  \hspace*{-1cm}
+  \includegraphics[width=1.2\textwidth]{hiper_LSTM}
+  \caption{Resultados hiperparámetros LSTM.}
+  \label{fig:hiper-LSTM}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
-  %\hspace*{-1cm}
-  \includegraphics[width=0.7\textwidth]{hiper2}
-  \caption{Métricas respecto $max\_depth$ en Random Forest}
-  \label{fig:hiper2}
+  \hspace*{-1cm}
+  \includegraphics[width=1.2\textwidth]{hiper_SVM}
+  \caption{Resultados hiperparámetros SVM.}
+  \label{fig:hiper-SVM}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \hspace*{-1cm}
+  \includegraphics[width=1.2\textwidth]{hiper_RF}
+  \caption{Resultados hiperparámetros Random Forest.}
+  \label{fig:hiper-RF}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \hspace*{-1cm}
+  \includegraphics[width=1.2\textwidth]{hiper_KNN}
+  \caption{Resultados hiperparámetros $k$-NN.}
+  \label{fig:hiper-KNN}
 \end{figure}
 
 \subsection{Análisis}
 
-Una combinación de $acc_{CV}$ y $PV$ para estimar la mejor configuración posible, considerando el conjunto de los $acc_{CV}$ más altos y tomando el $PV$ más alto en consideración de la complejidad deseada.
+Primero analicemos los resultados modelo a modelo. Para LSTM observamos que en los 4 \emph{datasets} para $acc_{CV}$ se obtienen valores muy similares donde no hay ninguno que resalte especialmente, mientras que $PV$ presenta una mayor variación. Además los valores más grandes de $PV$ parecen ir ligados con los más altos de $acc_{test}$ aunque habría que tener cuidado, debido a la posible inestabilidad que habíamos comentado sobre el modelo LSTM.
 
-\section{Conclusiones y trabajo futuro}
+En SVM, las curvas obtenidas aquí son más \emph{suaves} y vemos como $PV$ capta bien los cambios importantes de acierto: cuando las métricas empiezan a cambiar substancialmente, esto se refleja con un crecimiento en el $PV$ pero a diferencia de las métricas que vuelven a estabilizarse, $PV$ vuelve a decrecer. En todo caso parece que los valores máximos del $PV$ parecen coincidir con las métricas clásicas, pero en cuanto el modelo es muy complejo o simple se castiga con valores bajos.
 
-Hemos comprobado que $PV$ puede ser una nueva métrica complementaria para usar con $acc_{test}$ tanto para poder elegir modelos con rendimientos muy iguales que \textbf{generalicen mejor} en \emph{datasets} no vistos y a la hora de elegir los mejores \textbf{hiperparámetros} de un modelo específico.
+Para Random Forest pasa algo muy parecido a SVM: en este caso las métricas clásicas van unidas pero no se da ningún valor al hecho de que estamos aumentando innecesariamente la profundidad y por tanto, la complejidad del modelo. $PV$ es capaz él solo de determinar cual es el hiperparámetro óptimo que nos da el mejor rendimiento sin pasarse de complejidad.
 
-[...]
+En $k$-NN tenemos unas curvas de $PV$ más \emph{espinosas} pero se repiten los mismos hechos que hemos observado.
+
+Recapitulando, vemos que $PV$ es capaz de \textbf{discriminar} mejor que $acc_{CV}$ permitiendo considerar no solo el buen ajuste del modelo sino también la complejidad del modelo donde $acc_{CV}$ puede mantener valores iguales. Además los valores máximos de $PV$ se parecen corresponder con los máximos de $acc_{test}$ más o menos y que pudiera reemplazarse directamente por $acc_{CV}$, pero también se pueden usar \textbf{conjuntamente} para tener una mayor seguridad si se quiere obtener el mejor ajuste posible. Finalmente confirmamos la relación del anterior experimento de a mayor $PV$, mayor $acc_{test}$.
+
+\chapter{Conclusiones y trabajo futuro}
+
+Hemos comprobado que $PV$ puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado el que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
+
+También resalta su eficacia en la búsqueda de hiperparámetros, que capta donde se realizan los cambios importantes en la métrica y permite ser discernir los hiperparámetros al considerar también la complejidad del espacio, cosa que no tiene en cuenta la métrica clásica.
+
+Sin embargo, hay que tener cuidado con modelos que presentan una alta varianza a la hora de aprender las soluciones, como es el caso de las redes neuronales que puede haber problemas de aprendizaje o convergencia. En este caso habría que hacer un diseño y entrenamiento mejor adaptado que una estructura estándar y comprobar que el $PV$ se calcula de una manera correcta.
+
+En un desarrollo posterior sería interesante ver si se pueden mejorar los resultados del $PV$ cambiando los propios parámetros como el número de puntos tomados, o el rango de errores. Otra linea de trabajo sería pensar en alguna forma de extender correctamente este método a los problemas de regresión.
 
 \endinput
