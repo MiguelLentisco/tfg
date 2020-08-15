@@ -648,18 +648,6 @@ Como era de esperar debido a que la tendencia se anula por el centro de las seri
 
 Destaca el peor rendimiento de $\sigma = 0.001$ aunque no es ninguna sorpresa, ya que las modificaciones muchas veces son casi imperceptibles debido a que puede mezclarse con ruido perfectamente o casi no hay efecto al estar cerca del centro. A pesar de ser el peor caso, el detector sigue realizando un mejor trabajo que el detector aleatorio.
 
-\chapter{Conclusiones y trabajo futuro}\label{ch:ad-conclusiones}
-
-Mediante una arquitectura muy simple, capaz de ser desplegada en distintos dominios, hemos conseguido construir un detector capaz de detectar bastante bien distintas anomalías en cuanto a forma y amplitud, siendo estas alteraciones muy sutiles ya que a veces era difícil distinguirlas del ruido blanco propio que podemos encontrar generalmente.
-
-Para ampliaciones futuras sería muy interesante realizar arquitecturas que permitan codificar distintos patrones y no solamente uno como en nuestro caso, ya que suele haber señales regulares que exhiben varios patrones claramente distintos en tramos de las series. Una modificación simple para intentar resolver esto podría consistir en añadir más decodificadores y que cada uno aprendiese un patrón distinto.
-
-También podría estudiarse cómo el detector pudiera mejorar incorporando a la función de probabilidad estimada interna, la distribución de las señales anómalas permitiendo corregir estas probabilidades para una mejor exactitud.
-
-Respecto a los métodos de alteraciones, hemos visto que son maneras muy simples que nos permiten modificar las series de distintas formas permitiéndonos valorar los detectores cuando no tenemos ningún tipo de ejemplo anómalo y siendo perfectamente modificables por los parámetros de longitud y $\sigma$ para adaptarlos al los datos concretos que se tengan.
-
-En un desarrollo futuro podría verse muchas más alteraciones que incorporar a esta lista, creando así un conjunto de herramientas amplio capaz de crear \emph{datasets} de anomalías muy variados. Así, podríamos estudiar si estas muestras serían capaces de entrenar detectores basados directamente como aprendizaje supervisado y ampliar el conjunto de modelos usados actualmente, siendo actualmente la mayoría de tipo no supervisado.
-
 \endinput
 %------------------------------------------------------------------------------------
 % FIN DEL CAPÍTULO.

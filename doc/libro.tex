@@ -205,21 +205,28 @@ estadísticos y basados en Deep Learning\xspace}
 % \pagestyle{scrheadings} % A partir de ahora sí imprime cabeceras
 
 \include{preliminares/introduccion}
-\include{conceptos-previos/aprendizaje-profundo}
-\include{conceptos-previos/series-temporales}
-\include{conceptos-previos/metricas}
+
 
 % --------------------------------------------------------------------
 % MAINMATTER
 % --------------------------------------------------------------------
 %\mainmatter % activa la numeración de capítulos, resetea la numeración de las páginas y usa números arábigos
+\setpartpreamble[c][0.75\linewidth]{
+	\bigskip % Deja un espacio vertical en la parte superior
+  Hacemos un repaso de conceptos básicos para tener los conocimientos necesarios a la hora de entender los trabajos y resultados del proyecto. En \autoref{ch:dl} desarrollamos la parte del aprendizaje profundo: se proporciona una breve introducción histórica, el funcionamiento básico de las redes neuronales, las arquitecturas más importantes utilizadas actualmente y el modelo concreto LSTM que usaremos en nuestros modelos. En \autoref{ch:st} presentamos la teoría matemática detrás de las series temporales, junto con el estudio y desarrollo necesario para poder trabajar y analizarlas. Finalmente en \autoref{ch:metricas} vemos rápidamente las métricas: funciones que usaremos para valorar el rendimiento de nuestros modelos.
+}
+
+\part{Conceptos previos}\label{part:conceptos-previos}
+\include{conceptos-previos/aprendizaje-profundo}
+\include{conceptos-previos/series-temporales}
+\include{conceptos-previos/metricas}
 
 \setpartpreamble[c][0.75\linewidth]{
 	\bigskip % Deja un espacio vertical en la parte superior
   Estudiamos una nueva heurística alternativa a la selección clásica de modelos: \emph{Perturbation Validation} ($PV$).
   Este método intenta medir si la función aprendida por un modelo se ajusta correctamente a la función que se está intentando aprender, intentando ser un \textbf{método complementario} a la selección en base a la validación clásica de usar particiones entrenamiento/test junto a la validación cruzada. Este método nuevo es bastante útil para la \textbf{búsqueda de hiperparámetros} del modelo, donde la validación clásica a veces no es capaz de discernir entre varios modelos con un rendimiento parecido, pero que alguno puede estar sobreajustando mucho más los datos.
 
-  En \autoref{ch:pv-introduccion} se introduce el contexto bajo el que surge el $PV$ y que se va a intentar obtener, definiéndolo formalmente y describiendo su implementación en \autoref{ch:pv}. Finalmente, realizamos los experimentos para comprobar su utilidad, junto con los resultados y las conclusiones en \autoref{ch:pv-experimentacion}.
+  En \autoref{ch:pv-introduccion} se introduce el contexto bajo el que surge el $PV$ y que se va a intentar obtener, definiéndolo formalmente y describiendo su implementación en \autoref{ch:pv}. Finalmente, realizamos los experimentos para comprobar su utilidad, junto con los resultados y análisis de estos en \autoref{ch:pv-experimentacion}.
 }
 \part{Selección de modelos}\label{part:pv}
 \include{capitulos/seleccion-modelos}
@@ -228,7 +235,7 @@ estadísticos y basados en Deep Learning\xspace}
 	\bigskip % Deja un espacio vertical en la parte superior
   Modelamos un \textbf{detector de anomalías} para series temporales basado en arquitectura LSTM que sea fácilmente desplegable en diversos dominios de los que se quiera reconocer patrones normales y detectar los anómalos. Además proporcionamos \textbf{métodos de alteraciones} de series temporales para poder crear muestras con las que poder realizar la validación del modelo, así como también para poder crear \emph{datasets} con datos anómalos que suplan en cierta medida la falta de estos. Usaremos las propias alteraciones para validar nuestro detector y comprobar: el buen rendimiento del modelo y la gran utilidad de las alteraciones para validarlo.
 
-  En \autoref{ch:ad-introduccion} introducimos los problemas actuales en el dominio de detección de anomalías, donde aportamos un sistema de detección de anomalías LSTM fácil de usar y extender a muchos dominios en \autoref{ch:ad-detector} y también los métodos de alteración de series para transformarlas en anómalas en \autoref{ch:ad-alteraciones}. Probamos experimentalmente ambos resultados mediante dos experimentos: uno en un \emph{dataset} real y otro artificial, comentando los resultados y analizándolos en \autoref{ch:ad-experimentacion}. Finalmente damos las conclusiones y posible trabajo futuro en \autoref{ch:ad-conclusiones}.
+  En \autoref{ch:ad-introduccion} introducimos los problemas actuales en el dominio de detección de anomalías, donde aportamos un sistema de detección de anomalías LSTM fácil de usar y extender a muchos dominios en \autoref{ch:ad-detector} y también los métodos de alteración de series para transformarlas en anómalas en \autoref{ch:ad-alteraciones}. Probamos experimentalmente ambos resultados mediante dos experimentos: uno en un \emph{dataset} real y otro artificial, comentando los resultados y analizándolos en \autoref{ch:ad-experimentacion}.
 }
 \cleardoublepage\part{Detección de Anomalías}\label{part:ad}
 \include{capitulos/deteccion-anomalias}
@@ -236,6 +243,8 @@ estadísticos y basados en Deep Learning\xspace}
 
 \cleardoublepage\part{Predicción de Series Temporales Discretas}\label{part:sd}
 \include{capitulos/series-discretas}
+
+\include{capitulos/conclusiones-trabajo}
 
 % --------------------------------------------------------------------
 % APPENDIX: Opcional

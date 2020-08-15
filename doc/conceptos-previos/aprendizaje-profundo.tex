@@ -83,9 +83,9 @@ $$ X = \begin{bmatrix} \textbf{x}_1^T \\ \textbf{x}_2^T \\ \vdots \\ \textbf{x}_
   \label{def:clasbin}
 \end{definicion}
 
-Efectivamente, sin más que cambiar los valores de la función de activación $\sigma$ de $\{0, 1\}$ a $\{-1, +1\}$ el perceptrón es capaz de aprender funciones capaces de solucionar estos problemas. De hecho generalmente en el perceptrón se adopta en vez de la función $\sigma$ anteriormente comentada, la función $\sign$.
+Sin más que cambiar los valores de la función de activación $\sigma$ de $\{0, 1\}$ a $\{-1, +1\}$ el perceptrón es capaz de aprender funciones capaces de solucionar estos problemas. De hecho, generalmente en el perceptrón se adopta en vez de la función $\sigma$ anteriormente comentada, la función $\sign$.
 
-Es fácil ver que el problema de clasificación binaria es equivalente a encontrar una función que separe dos conjuntos de datos agrupados por la clase, es decir a la separabilidad de dos conjuntos, que es lo que está haciendo el hiperplano $\textbf{w}$ del perceptrón (\autoref{fig:perceptron-ej} \cite{wikipedia2017separ}).
+Podemos ver que el problema de clasificación binaria es equivalente a encontrar una función que separe dos conjuntos de datos agrupados por la clase, es decir a la separabilidad de dos conjuntos, que es lo que está haciendo el hiperplano $\textbf{w}$ del perceptrón (\autoref{fig:perceptron-ej} \cite{wikipedia2017separ}).
 
 \begin{figure}[htpb]
   \centering
@@ -97,7 +97,7 @@ Es fácil ver que el problema de clasificación binaria es equivalente a encontr
 
 Gracias al Teorema de Convergencia del Perceptrón \cite{novikoff1963convergence} tenemos un resultado fuerte sobre la clase de funciones que puede aprender el perceptrón: se prueba que el modelo es capaz de aprender siempre una función $h$ que separa perfectamente dos conjuntos de datos que sean linealmente separables. Es decir, el perceptrón encuentra una solución muy buena $h \approx f$ ya que coinciden completamente, al menos en la muestra obtenida.
 
-La pregunta restante es cómo conseguir encontrar la función $h$, cuya respuesta está en el \textbf{proceso de aprendizaje}. Este proceso es un método que tiene cada modelo de usar la información de la muestra recogida para poder aprender la función de etiquetado, que en el caso del perceptrón será una simple regla que actualiza los pesos por cada dato de la muestra \eqref{eq:percep-rule}.
+Mediante el \textbf{proceso de aprendizaje} se consigue que el modelo aprenda la función $h$ que buscamos. Este proceso es un método que tiene cada modelo de usar la información de la muestra recogida para poder aprender la función de etiquetado, que en el caso del perceptrón será una simple regla que actualiza los pesos por cada dato de la muestra \eqref{eq:percep-rule}.
 
 \begin{equation}
   \textbf{w}_{(t + 1)} =
@@ -108,13 +108,13 @@ La pregunta restante es cómo conseguir encontrar la función $h$, cuya respuest
   \label{eq:percep-rule}
 \end{equation}
 
-A pesar de todo, en cuanto los datos dejan de ser linealmente separables el perceptrón no tiene por qué converger siquiera a una solución. Si bien se puede arreglar esto, quedándose con la mejor solución hasta el momento por ejemplo, las soluciones encontradas no suelen ser muy buenas. Por esta razón se necesitaba encontrar una manera de mejorar este modelo.
+A pesar de todo, en cuanto los datos dejan de ser linealmente separables el perceptrón no tiene por qué converger siquiera a una solución. Si bien se puede arreglar quedándose con la mejor solución hasta el momento, las soluciones encontradas no suelen ser muy buenas. Por esta razón se necesitaba encontrar una manera de mejorar este modelo.
 
 \subsection{Perceptrón MultiCapa}
 
 Basándonos \cite{abu2012learning} explicaremos el proceso lógico que se lleva a cabo para poder aumentar la potencialidad del modelo del perceptrón.
 
-Consideremos la siguiente función de la figura (\autoref{fig:xor}, \cite{abu2012learning}) que es bastante simple aunque está claro que la función $f$ no se puede aprender con un solo perceptrón (tomando una muestra vemos que los datos no son separables).
+Consideremos la siguiente función de la figura (\autoref{fig:xor}, \cite{abu2012learning}) que es bastante simple aunque la función $f$ no se puede aprender con un solo perceptrón (tomando una muestra se ve que los datos no son separables).
 
 \begin{figure}[htpb]
   \centering
@@ -124,7 +124,7 @@ Consideremos la siguiente función de la figura (\autoref{fig:xor}, \cite{abu201
   \label{fig:xor}
 \end{figure}
 
-Ahora bien, usemos dos perceptrones que aprendan cada uno de los hiperplanos separadores (\autoref{fig:dos-percep}, \cite{abu2012learning}) y fijémonos en las áreas de las clases. La función $f$ tiene la clase $+1$ cuando $h_1$ y $h_2$ tienen $(+1, -1)$ ó $(-1, +1)$; y la clase $-1$ cuando $(+1, +1)$ ó $(-1, -1)$. Este comportamiento es análogo a la función booleana $XOR$, por lo que podemos representarla como si lo fuera en base a las salidas de $h_1$ y $h_2$ ($f = XOR(h_1, h_2)$) siendo $+1$ \emph{Verdadero} y $-1$ \emph{Falso}. Usando notación booleana podemos reescribir $f = h_1\overline{h_2} + \overline{h_1}h_2$.
+Usemos dos perceptrones que aprendan cada uno de los hiperplanos separadores (\autoref{fig:dos-percep}, \cite{abu2012learning}) y fijémonos en las áreas de las clases. La función $f$ tiene la clase $+1$ cuando $h_1$ y $h_2$ tienen $(+1, -1)$ ó $(-1, +1)$; y la clase $-1$ cuando $(+1, +1)$ ó $(-1, -1)$. Este comportamiento es análogo a la función booleana $XOR$, por lo que podemos representarla como si lo fuera en base a las salidas de $h_1$ y $h_2$ ($f = XOR(h_1, h_2)$) siendo $+1$ \emph{Verdadero} y $-1$ \emph{Falso}. Usando notación booleana podemos reescribir $f = h_1\overline{h_2} + \overline{h_1}h_2$.
 
 \begin{figure}[htpb]
   \centering
@@ -172,7 +172,7 @@ Ahora tendríamos que usar dos perceptrones $AND$ para implementar $h_1\overline
   \label{fig:and2}
 \end{figure}
 
-Ya casi hemos acabado: falta obtener $h_1$ y $h_2$, pero si recordamos que se tenía que $h_1 = \sign(\textbf{w}^T_1 \textbf{x})$ y $h_2 = \sign(\textbf{w}^T_2 \textbf{x})$ que eran los dos perceptrones iniciales. Los incorporamos a nuestro esquema que ya estaría completo (\autoref{fig:mlp}, \cite{abu2012learning}).
+Falta obtener $h_1$ y $h_2$, pero si recordamos que se tenía que $h_1 = \sign(\textbf{w}^T_1 \textbf{x})$ y $h_2 = \sign(\textbf{w}^T_2 \textbf{x})$ que eran los dos perceptrones iniciales. Los incorporamos a nuestro esquema que ya estaría completo (\autoref{fig:mlp}, \cite{abu2012learning}).
 
 \begin{figure}[htpb]
   \centering

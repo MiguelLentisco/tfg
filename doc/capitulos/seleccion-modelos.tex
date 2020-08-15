@@ -17,7 +17,7 @@ Aunque este método ya resuelva nuestro problema también se puede querer hacer 
 
 Para resolver esto hay generalmente dos alternativas: hacer una partición más del conjunto de entrenamiento, quedándonos en total con el de entrenamiento, test y el de \textbf{validación}; o bien utilizar el método de \textbf{validación cruzada}.
 
-La validación cruzada consiste \emph{a grosso modo} en dividir la muestra de entrenamiento en $k$ conjuntos del mismo tamaño y repetir $k$ veces la validación usando un conjunto como \emph{test} y el resto de entrenamiento. Este método intenta dar un valor más robusto que usando un único conjunto de validación, y además puede indicar una idea de cómo de variable será en función a la varianza de los resultados.
+La validación cruzada consiste en dividir la muestra de entrenamiento en $k$ conjuntos del mismo tamaño y repetir $k$ veces la validación usando un conjunto como \emph{test} y el resto de entrenamiento. Este método intenta dar un valor más robusto que usando un único conjunto de validación, y además puede indicar una idea de cómo de variable será en función a la varianza de los resultados.
 
 Estos son los métodos clásicos que se han usado generalmente para obtener valores de la métrica realistas y que nos permiten comparar modelos y por tanto, elegir los mejores en base a esto. Sin embargo, esta clase de validaciones confía que en las muestras de datos recogidas de la distribución es \textbf{suficientemente representativa} de la distribución subyacente, y que han sido recogidos \textbf{sin sesgo} alguno \cite{zhang2019perturbation}.
 
@@ -59,9 +59,15 @@ Para problemas de clasificación consideraremos la métrica \emph{accuracy} $acc
 
 \subsection{Funcionamiento}
 
-La idea general del $PV$ es ir midiendo la métrica $acc$ del modelo conforme se van añadiendo perturbaciones graduales en función de una ratio de error $r$ en la muestra de datos, tomando el valor del $PV$ como la \textbf{pendiente} absoluta de la recta de regresión con los puntos formados por las tasas de acierto y error $(acc, r)$.
+La idea general del $PV$ es ir midiendo la métrica $acc$ del modelo conforme se van añadiendo perturbaciones graduales en función de una ratio de error $r$ en la muestra de datos, tomando el valor del $PV$ como el valor absoluto de la \textbf{pendiente} de la recta de regresión con los puntos formados por las tasas de acierto y error $(acc, r)$.
 
-Si un modelo es bueno y capta bien la relación de los datos con las etiquetas entonces el $acc$ debería ir decrementando conforme aumenta el ratio de error, ya que no se deja llevar por los datos perturbados. Si por el contrario el modelo es muy complejo y se ajusta demasiado a los datos, provocando \textbf{sobreajuste}, veremos que la métrica no cambia casi nada aunque se perturben muchos datos. Finalmente si el modelo no tiene buenos resultados en ningún caso, la variación también será pequeña. (\autoref{fig:ej-pv} \cite{zhang2019perturbation}).
+En otras palabras, crearemos $n$ conjuntos copiando las etiquetas originales y cada conjunto con un $r$\% de etiquetas cambiadas. El modelo se entrena por separado con cada conjunto de etiquetas perturbadas y evaluando la métrica en el mismo conjunto, obteniendo así $n$ valores del $acc$ distintos. Es importante entender que el modelo no se reentrena, es como si copiásemos $n$ veces el modelo y cada uno se entrenase y evaluase en un conjunto distinto \textbf{independientemente}.
+
+Teniendo ahora $n$ puntos $\{(r_1, acc_1), \ldots, (r_n, acc_n)\}$ ordenados por $r_1 < \ldots < r_n$ que podemos representar en $\R^2$, usamos regresión lineal para intentar ajustar una recta a los puntos lo mejor posible. El $PV$ entonces será simplemente el valor absoluto de la pendiente de esta recta.
+
+Si el modelo es bueno y capta bien la relación de los datos con las etiquetas entonces no debería ser \emph{engañado} por las etiquetas mal puestas. Esto implica que cuando las etiquetas están casi sin alterar el modelo obtiene un $acc$ muy alto, pero conforme aumentan las perturbaciones el $acc$ va bajando. Entonces al hacer la regresión lineal obtendremos una recta con una pendiente muy pronunciada que se traduce en un $PV$ alto.
+
+Si por el contrario el modelo es muy complejo y se ajusta demasiado a los datos, provocando \textbf{sobreajuste}, entonces obtendrá valores de $acc$ muy altos en todos los casos. La recta de regresión obtenida será muy horizontal y por tanto, con un $PV$ casi nulo. Finalmente, si la complejidad del modelo es insuficiente para captar los datos obtendrá $acc$ muy bajos, variando muy poco y obteniendo una recta horizontal también (\autoref{fig:ej-pv} \cite{zhang2019perturbation}).
 
 \begin{figure}[htpb]
   \centering
@@ -116,7 +122,7 @@ Con todos estos elementos ya podemos definir formalmente la heurística $PV$ (\a
   $$PV = \Bigg|\dfrac{\sum \limits^n_{i = 0} (r_i - \overline{r})(acc(S_{r_{i}}) - \overline{acc(S_r)})}{\sum \limits^n_{i = 0}(r_i - \overline{r})^2}\Bigg|.$$
 \end{definicion}
 
-\section{Implementación}
+\subsection{Implementación}
 
 Se ha implementado en una clase en \emph{Python} denominada \textbf{$PV$} que nos permite evaluar los modelos usando la descripción mencionada anteriormente. La documentación se puede encontrar en \autoref{ap:documentacion}, aunque merece la pena describir el algoritmo general con pseudocódigo: \autoref{alg:create_pv} para crear los conjuntos de etiquetas perturbados y \autoref{alg:calc_pv} para calcular el $PV$ para un modelo dado.
 
@@ -170,6 +176,8 @@ Para crear los \emph{datasets} perturbados tomamos los errores de manera que sea
 Para obtener el $PV$ introducimos el modelo con el resultado del algoritmo anterior, obteniendo un $acc_i$ asociado con cada entrenamiento y medición de rendimiento del modelo (notar que se copia el modelo para que se entrene desde cero). Finalmente obtenemos el $PV$ para el modelo pasado.
 
 \chapter{Experimentación}\label{ch:pv-experimentacion}
+
+En este capítulo vamos a realizar un experimento empírico para investigar la eficacia del $PV$ en problemas de selección de modelos. Para ello consideraremos una serie de modelos usuales utilizados para clasificación, incluyendo un modelo basado en redes LSTM, que entrenaremos en múltiples conjuntos de series temporales, midiendo tanto $PV$ como las medidas clásicas. En base a los resultados haremos un análisis del efecto de esta nueva herramienta.
 
 \section{Modelos}
 
@@ -341,7 +349,7 @@ Por tanto lo que esperamos en este experimento es:
 \begin{enumerate}
   \item Que un $PV$ alto indique que el modelo sea \textbf{bueno}: esperamos que un modelo sea bueno si la función aprendida se \textbf{corresponde con la función de la distribución} de los datos. Sin embargo como desconocemos esta función no podemos compararlas para comprobarlo directamente pensamos que si el modelo ha aprendido la función correcta deberá obtener una \textbf{buena tasa de acierto} en \textbf{cualquier conjunto} de datos, es decir deberá obtener un valor en ambas métricas $acc_{train}$ y $acc_{test}$ y ser muy iguales, ya que no debería haber \textbf{sobreajuste}.
 
-  \item Si $PV \approx 0$ el modelo \textbf{sobreajustará}: si el $PV \approx 0$ entendemos que el modelo se ha pasado con la complejidad o bien no ha conseguido entender nada de la función de etiquetado. En cualquier caso esperamos que en otra muestra distinta el modelo lo haga mucho peor, notando una tasa de $acc_{test}$ peor y probablemente con una gran diferencia con $acc_{train}$ si el modelo se ha pasado con la complejidad.
+  \item Si $PV \approx 0$ el modelo \textbf{sobreajustará}: si el $PV \approx 0$ entendemos que la complejidad del modelo es superior a la necesaria o bien no ha conseguido entender nada de la función de etiquetado. En cualquier caso esperamos que en otra muestra distinta el modelo lo haga mucho peor, notando una tasa de $acc_{test}$ peor y probablemente con una gran diferencia con $acc_{train}$ si el modelo se ha pasado con la complejidad.
 \end{enumerate}
 
 \subsubsection{Datasets}
@@ -729,15 +737,5 @@ Para Random Forest pasa algo muy parecido a SVM: en este caso las métricas clá
 En $k$-NN tenemos unas curvas de $PV$ más \emph{espinosas} pero se repiten los mismos hechos que hemos observado.
 
 Recapitulando, vemos que $PV$ es capaz de \textbf{discriminar} mejor que $acc_{CV}$ permitiendo considerar no solo el buen ajuste del modelo sino también la complejidad del modelo donde $acc_{CV}$ puede mantener valores iguales. Además los valores máximos de $PV$ se parecen corresponder con los máximos de $acc_{test}$ más o menos y que pudiera reemplazarse directamente por $acc_{CV}$, pero también se pueden usar \textbf{conjuntamente} para tener una mayor seguridad si se quiere obtener el mejor ajuste posible. Finalmente confirmamos la relación del anterior experimento de a mayor $PV$, mayor $acc_{test}$.
-
-\chapter{Conclusiones y trabajo futuro}
-
-Hemos comprobado que $PV$ puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado el que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
-
-También resalta su eficacia en la búsqueda de hiperparámetros, que capta donde se realizan los cambios importantes en la métrica y permite ser discernir los hiperparámetros al considerar también la complejidad del espacio, cosa que no tiene en cuenta la métrica clásica.
-
-Sin embargo, hay que tener cuidado con modelos que presentan una alta varianza a la hora de aprender las soluciones, como es el caso de las redes neuronales que puede haber problemas de aprendizaje o convergencia. En este caso habría que hacer un diseño y entrenamiento mejor adaptado que una estructura estándar y comprobar que el $PV$ se calcula de una manera correcta.
-
-En un desarrollo posterior sería interesante ver si se pueden mejorar los resultados del $PV$ cambiando los propios parámetros como el número de puntos tomados, o el rango de errores. Otra linea de trabajo sería pensar en alguna forma de extender correctamente este método a los problemas de regresión.
 
 \endinput
