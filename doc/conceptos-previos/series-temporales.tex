@@ -165,7 +165,7 @@ Podemos definir la función \textbf{varianza} como un caso especial de la funci�
 
 \subsection{Procesos estacionarios}
 
-Una propiedad muy interesante y que puede ayudarnos al modelar los procesos, es la característica de la \textbf{estacionalidad}. De manera informal, un proceso es estacionario si sus propiedades estadísticas (momentos) no cambian con el tiempo.
+Una propiedad muy interesante y que puede ayudarnos al modelar los procesos, es cuando es \textbf{estacionario}. De manera informal, un proceso es estacionario si sus propiedades estadísticas (momentos) no cambian con el tiempo.
 
 Veamos que significa formalmente que un proceso sea \textbf{estrictamente estacionario} (\autoref{def:estrictamente-estacionario}).
 
@@ -200,7 +200,7 @@ Como las dimensiones del coeficiente de autocovarianza depende de las unidades d
 
 Aunque pareciera que no existen muchos procesos que mantengan la misma distribución en todo el tiempo, si existen muchos procesos con una distribución \textbf{de equilibrio}. Estos procesos cumplen que la distribución de probabilidad de $X_t$ tiende a una distribución limite (de equilibrio) cuando $t \to \infty$ y no dependen de las condiciones iniciales. Por tanto si las condiciones iniciales se fijan para ser iguales que la distribución de equilibrio, el proceso es fuertemente estacionario.
 
-Sin embargo, podemos relajar las condiciones de la estacionalidad para hacerlas más prácticas en casos reales, poniendo únicamente condiciones a los momentos de primer y segundo orden. Definimos los procesos \textbf{débilmente estacionarios} o \textbf{estacionarios de segundo orden} como \autoref{def:debilmente-estacionario}.
+Sin embargo, podemos relajar las condiciones de la propiedad para hacerlas más prácticas en casos reales, únicamente con condiciones a los momentos de primer y segundo orden. Definimos los procesos \textbf{débilmente estacionarios} o \textbf{estacionarios de segundo orden} como \autoref{def:debilmente-estacionario}.
 
 \begin{definicion}[Proceso estacionario de segundo orden]
   Sea un proceso estocástico $\{X_t\}_{t \in T}$, se dice que el proceso es débilmente estacionario o estacionario de segundo orden si se cumple lo siguiente:
@@ -291,6 +291,62 @@ Podemos generar caminos aleatorios fácilmente mediante un proceso $IDD(\mu, \si
   \label{fig:ej-random-walk}
 \end{figure}
 
+\subsection{Propiedades de la funciones de autocovarianza y autocorrelación}
+
+Finalmente veremos unas pocas propiedades interesantes sobre las funciones de autocovarianza $\gamma$ y autocorrelación $\rho$ de un proceso estacionario. Primero veamos las propiedades de la autocovarianza (\autoref{prop:propiedades-gamma}).
+
+\begin{proposicion}[Propiedades de $\gamma$]
+  Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con función de autocovarianza definida como
+
+  $$\gamma(\tau) = Cov(X_{t + \tau}, X_t), \; \forall \tau \in T,$$
+
+  entonces se cumplen las siguientes afirmaciones
+
+  \begin{enumerate}
+    \item $\gamma(0) = \sigma^2 \geq 0$.
+    \item $|\gamma(\tau)| \leq \gamma(0), \, \forall \tau \in T$.
+    \item $\gamma$ es par: $\gamma(\tau) = \gamma(-\tau), \, \forall \tau \in T$.
+  \end{enumerate}
+  \label{prop:propiedades-gamma}
+\end{proposicion}
+
+\begin{proof}
+  La primera propiedad es consecuencia directa de que $Var[X_t] = \sigma^2 \geq 0, \, \forall t \in T$. Para la segunda aplicamos la desigualdad de Cauchy-Schwarz para el valor absoluto de la covarianza
+
+    $$|\gamma(\tau)| = |Cov(X_{t+\tau}, X_t)| \leq \sqrt{Var[X_{t+\tau}]Var[X_t]} = \sqrt{\gamma(0)\gamma(0)} = \sqrt{\gamma(0)^2} = \gamma(0), \; \forall \tau \in T.$$
+
+  Finalmente la tercera propiedad es inmediata
+
+  $$\gamma(\tau) = Cov(X_{t + \tau}, X_t) = Cov(X_t, X_{t + \tau}) = \gamma(\tau), \; \forall \tau \in T.$$
+\end{proof}
+
+Como $\rho$ está definida en base a $\gamma$, las propiedades se siguen de estas (\autoref{prop:propiedades-rho}).
+
+\begin{proposicion}[Propiedades de $\rho$]
+  Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con función de autocorrelación definida como
+
+  $$\rho(\tau) = \dfrac{\gamma(\tau)}{\gamma(0)} = \dfrac{\gamma(\tau)}{\sigma^2}, \; \forall \tau \in T,$$
+
+  entonces se cumplen las siguientes afirmaciones
+
+  \begin{enumerate}
+    \item $\rho(0) = 1$.
+    \item $|\rho(\tau)| \leq 1, \, \forall \tau \in T$.
+    \item $\rho$ es par: $\rho(\tau) = \rho(-\tau), \, \forall \tau \in T$.
+  \end{enumerate}
+  \label{prop:propiedades-rho}
+\end{proposicion}
+
+\begin{proof}
+  Todas se demuestran por consecuencia de las propiedades de $\gamma$: la primera ya que $\gamma(0) = \sigma^2$, y por tanto $\rho(0) = \gamma(0) / \sigma^2 = 1$. La segunda por $|\gamma(\tau)| \leq \sigma^2$ se tiene
+
+  $$|\rho(\tau)| = \dfrac{|\gamma(\tau)|}{\sigma^2} \leq \dfrac{\sigma^2}{\sigma^2} = 1, \; \forall \tau \in T.$$
+
+  Finalmente la tercera por ser $\gamma$ par tenemos
+
+  $$\rho(\tau) = \dfrac{\gamma(\tau)}{\sigma^2} = \dfrac{\gamma(-\tau)}{\sigma^2} = \rho(-\tau), \; \forall \tau \in T.$$
+\end{proof}
+
 \section{Modelos estacionarios}
 
 El objetivo del análisis de series es como encontrar en las series un proceso que sea estacionario para poder modelar correctamente simulaciones y predicciones de la serie.
@@ -306,7 +362,7 @@ En cualquier caso obtendremos un proceso estacionario que queremos modelar para 
 
 \subsection{Procesos de medias móviles}
 
-Primero mostramos el proceso de\textbf{medias móviles} que construye el proceso tomando una combinación lineal de $q$ valores anteriores de un proceso de ruido (\autoref{def:media-movil}).
+Primero mostramos el proceso de \textbf{medias móviles} que construye el proceso tomando una combinación lineal de $q$ valores anteriores de un proceso de ruido (\autoref{def:media-movil}).
 
 \begin{definicion}[Proceso de media móvil]
   Sea un proceso de ruido blanco $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$ y constantes reales $\{\theta_t\}_{t = 0}^q \subset \R$. Se define el proceso de media móvil de orden $q$, denotado como $\{X\}_{t \in T} \sim MA(q)$, con la siguiente expresión:
@@ -458,6 +514,53 @@ Simulemos unos cuantos procesos autorregresivos mediante ruido $Z_t \sim N(0, 1)
 
 Observamos como los correlogramas van convergiendo a 0, decreciendo absolutamente. Cuando $1 > \phi > 0$ (1er y 3er proceso) los valores son todos positivos mientras que cuando $-1 < \phi < 0$ (2o proceso) se van alternando entre positivos (desfase par) y negativos (desfase negativo).
 
+Por otro lado, la función de autocovarianza \eqref{eq:ar-autocovarianza} era posible obtenerla de otra manera. Asumimos de antemano que el proceso es estacionario, entonces $E[X_t]$ debe ser constante (asumamos que es 0). Si multiplicamos el modelo \eqref{eq:ar-simple} por $X_{t-k}$ y tomamos esperanzas obtenemos \eqref{eq:ar-truco}
+
+\begin{equation}
+  \gamma(\tau) = \phi \gamma(-\tau + 1), \; \forall \tau > 0,
+  \label{eq:ar-truco}
+\end{equation}
+
+ya que $E[Z_t X_{t-\tau}] = 0$, $\forall \tau > 0$ debido a la incorrelación de las $Z_t$. Además como $\gamma$ es función par entonces \eqref{eq:ar-truco2}
+
+\begin{equation}
+  \gamma(\tau) \phi \gamma(\tau - 1), \; \forall \tau > 0.
+  \label{eq:ar-truco2}
+\end{equation}
+
+Finalmente como $\gamma(0) = \sigma^2_X$ entonces $\gamma(\tau) = \phi^\tau \sigma^2_X, \; \forall \tau \geq 0$ y además $\rho(\tau) = \phi^\tau, \; \forall \tau > 0$.
+
+Recordando una de las propiedades de $\rho$ cuando el proceso era estacionario se tenía que $|\rho(\tau)| \leq 1, \, \forall \tau \geq 0$ entonces se debe cumplir que $|\phi| \leq 1$. Excluimos el caso degenerado $|\phi| = 1$ y por tanto se debe cumplir que $|\phi| < 1$.
+
+Esta forma alternativa es aplicable para el caso de un modelo $AR(p)$ general, obteniendo Las siguiente ecuaciones para la función de autocorrelación \eqref{eq:ar-general}
+
+\begin{equation}
+  \rho(\tau) = \phi_1 \rho(\tau - 1) + \cdots + \phi_p \rho(\tau - p) =
+  \begin{cases}
+    \sigma^2, & \tau = 0 \\
+    0, & 0 < \tau \leq p
+  \end{cases}
+  \label{eq:ar-general}
+\end{equation}
+
+Estas son las llamadas ecuaciones de Yule-Walker \cite{yule1971method, walker1931periodicity}, un conjunto de ecuaciones en diferencias que tienen la solución general \eqref{eq:sol-general}
+
+\begin{equation}
+  \rho(\tau) = A_1 \pi_1^{|\tau|} + \cdots + A_p \pi_p^{|\tau|}, \; \forall \tau > 0,
+  \label{eq:sol-general}
+\end{equation}
+
+donde $\{\pi_i\}_{i = 0}^p$ son las raíces de la ecuación auxiliar \eqref{eq:sol-auxiliar}
+
+\begin{equation}
+  y^p - \phi_1 y^{p-1} - \cdots - \phi_p = 0.
+  \label{eq:sol-auxiliar}
+\end{equation}
+
+Las constantes $\{A_i\}_{i = 0}^p$ se escogen para satisfacer las condiciones iniciales dependientes de $\rho(0) = 1$, que implican que $\sum_{i = 0}^p A_i = 1$. Las $(p - 1)$ primeras ecuaciones de Yule-Walker añaden $(p-1)$ restricciones más en $\{A_i\}_{i = 0}^p$ usando $\rho(0) = 1$ e $\rho(\tau) = \rho(\tau)$.
+
+De la solución \eqref{eq:sol-general} vemos que $\rho(\tau)$ no depende de $t$ por lo que lo único que necesitamos para que el proceso $AR(p)$ sea estacionario es que los $|\pi_i| < 1$, $i = 1, \ldots, p$, que de hecho es una condición necesaria y suficiente.
+
 \subsection{Procesos lineales}
 
 Si generalizamos el funcionamiento de los modelos $AR$ y $MA$ llegamos a los procesos lineales (\autoref{def:proceso-lineal}).
@@ -538,21 +641,51 @@ De hecho, esta parte determinista está asociada a la media del proceso por lo q
 
 \subsection{Procesos ARMA}
 
-Finalmente introducimos uno de los procesos más importantes en el modelado de series temporales: los procesos ARMA. La gran importancia de estos modelos reside en que para una clase grande de funciones de autocovarianza $\gamma$ es posible encontrar un proceso ARMA cuya función de autocovarianza $\gamma_X$ está aproximada.
+Finalmente introducimos uno de los procesos más importantes en el modelado de series temporales: los procesos ARMA (modelos autorregresivos de media móvil). La gran importancia de estos modelos reside en que para una clase grande de funciones de autocovarianza $\gamma$ es posible encontrar un proceso ARMA cuya función de autocovarianza $\gamma_X$ está aproximada.
 
-Este modelo está formado combinando los dos modelos que hemos considerado, $MA$ y $AR$ (\autoref{def:arma}).
+Este modelo está formado combinando los dos modelos que hemos considerado, $MA$ y $AR$ (\autoref{def:arma}, \cite{whittle1951arma}).
 
 \begin{definicion}[Proceso ARMA]
-  Sea un proceso $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, se define un proceso ARMA de orden $(p, q)$ como
+  Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso $ARMA(p, q)$ si $\{X_t\}$ es estacionario y se cumple que
 
-  $$X_t = \psi X_{t-1} + \ldots + \psi_p X_{t-p} + Z_t + \theta_1 Z_{t-1} + \ldots + \theta_q Z_{t - q}, \; \forall t \in T.$$
+  $$X_t = \psi X_{t-1} + \ldots + \psi_p X_{t-p} + Z_t + \theta_1 Z_{t-1} + \ldots + \theta_q Z_{t - q}, \; \forall t \in T,$$
+
+  donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$ y además los polinomios $\phi(z) = 1 - \phi_1 z - \ldots - \phi_p z^p$ y $\theta(z) = 1 + \theta_1z + \ldots + z_q z^q$ no tienen factores comunes.
 \label{def:arma}
 \end{definicion}
 
+La condición de que los polinomios no tengan factores comunes se impone para que el modelo no se pueda reducir a uno más simple, así evitamos parámetros redundantes.
+
+Si un modelo $ARMA(p, q)$ cumple que $p = 0$ o que $\phi_i = 0, \, \forall i = 1, \ldots, p$ entonces se convierte en un modelo $MA(q)$. Por el contrario si $q = 0$ o $\theta_i = 0, \, \forall i = 1, \ldots, q$, entonces el modelo sería un $AR(q)$.
+
+En la definición vemos que es esencial que $\{X_t\}$ sea estacionario, haciendo un estudio del proceso se obtiene un teorema que nos asegura la existencia y unicidad con una condición muy simple (\autoref{th:existencia-unicidad-arma}, demostración en \cite{brockwell2002introduction} Sección 3.1).
+
+\begin{teorema}[Existencia y unicidad de ARMA]
+  Existe una solución estacionaria $\{X_t\}_{t \in T}$ para el modelo $ARMA(p, q)$, y además es la única, si y solo si
+
+  $$\phi(z) = 1 - \phi_1 z - \cdots - \phi_p z^p \neq 0, \; \forall |z| = 1.$$
+  \label{th:existencia-unicidad-arma}
+\end{teorema}
+
+Para calcular las funciones de autocovarianza y autocorrelación se vuelve a utilizar el método de las ecuaciones de Yule-Walker, donde la diferencia con los modelos $AR(p)$ reside en que tiene condiciones iniciales diferentes. También es posible utilizar el resultado \autoref{prop:proceso-estacionario}.
+
+Mostramos dos ejemplos simulados de procesos $ARMA$, uno $ARMA(1,1)$ expresado como $X_t = \frac{7}{10}X_{t-1} + Z_t - \frac{2}{5}Z_{t-1}$ con $Z-t \sim N(0, 1)$ y otro $ARMA(2,2)$ con $X_t = \frac{9}{10}X_{t-1} - \frac{1}{2}X_{t-2} + Z_t - \frac{1}{5}Z_{t-1} + \frac{1}{4}Z_{t-2}$ con $Z_t \sim N(0, \frac{1}{2})$ en \autoref{fig:arma-ej} (\cite{chatfield2019analysis}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.85\textwidth]{arma-ej}
+  \caption{Ejemplos $ARMA(1,1)$ (arriba) y $ARMA(2,2)$ (abajo) con sus correlogramas.}
+  \label{fig:arma-ej}
+\end{figure}
+
+Hemos obtenido un modelo muy potente con el que podemos adaptar con los parámetros $p$ y $q$ según la serie observada y la función de autocorrelación estimada.
+
+No entraremos en detalles para la realización de predicciones con un modelo $ARMA(p,q)$ debido al largo y complejo desarrollo que debe hacerse, tanto como la estimación de parámetros $\{\phi_i\}$, $\{\theta_i\}$ para adaptar el modelo a la serie observada, como el cálculo de predicciones en base al modelo.
 
 \section{Descomposición}
 
-Una parte importante del análisis de series se centra en el modelado de los procesos mediante la descomposición en varias componentes que suelen exhibir. Veremos cuáles son estas componentes y distintas maneras para obtener esta descomposición.
+Una parte importante del análisis de series se centra en el modelado de los procesos mediante la descomposición en varias componentes que suelen exhibir, obteniendo una parte estacionaria al que aplicaremos los modelos vistos. Veremos cuáles son estas componentes y distintas maneras para obtener esta descomposición.
 
 \subsection{Patrones}
 
@@ -708,14 +841,14 @@ donde se puede ver el proceso estimado como una media móvil con pesos decrecien
 
 \subsection{Descomposición completa}
 
-Ahora consideramos la descomposición completa, añadiendo al modelo que hemos estado utilizando la componente estacional. Esperamos que esta componente se repita siempre cada cierto periodo de tiempo $T$ y además que la suma de los valores en un periodo sea cero (\autoref{def:descomposicion-entera}).
+Ahora consideramos la descomposición completa, añadiendo al modelo que hemos estado utilizando la componente estacional. Esperamos que esta componente se repita siempre cada cierto periodo de tiempo $S$ y además que la suma de los valores en un periodo sea cero (\autoref{def:descomposicion-entera}).
 
 \begin{definicion}[Descomposición completa]
   Sea $\{X_t\}$ un proceso entonces una descomposición completa está definida por:
 
   $$ X_t = m_t + s_t + Y_t, \; \forall t \in T,$$
 
-  donde $m_t$ es la tendencia, $s_t$ es la estacionalidad con periodo $T$ e $Y_t$ los residuos.  Además se tiene que $E[Y_t] = 0$, $s_{t + T} = s_{t}$ y $\sum \limits^{T}_{i = 1} s_i = 0$, $\forall t \in T$.
+  donde $m_t$ es la tendencia, $s_t$ es la estacionalidad con periodo $S$ e $Y_t$ los residuos.  Además se tiene que $E[Y_t] = 0$, $s_{t + S} = s_{t}$ y $\sum \limits^{S}_{i = 1} s_i = 0$, $\forall t \in T$.
   \label{def:descomposicion-entera}
 \end{definicion}
 
@@ -723,35 +856,35 @@ Ahora consideramos la descomposición completa, añadiendo al modelo que hemos e
 
 Explicaremos el método clásico básico para obtener una descomposición de un proceso ya que es el funcionamiento básico del resto de descomposiciones que han ido surgiendo.
 
-El primer paso es estimar la tendencia $\hat{m}_t$ mediante una media móvil con pesos especiales para eliminar la estacionalidad y disminuir el ruido. Si el periodo $T$ es par, elegimos $q = T / 2$ y obtenemos la estimación como \eqref{eq:decomp-1}
+El primer paso es estimar la tendencia $\hat{m}_t$ mediante una media móvil con pesos especiales para eliminar la estacionalidad y disminuir el ruido. Si el periodo $S$ es par, elegimos $q = S / 2$ y obtenemos la estimación como \eqref{eq:decomp-1}
 
 \begin{equation}
-  \hat{m}_t = \dfrac{\dfrac{1}{2}X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + \dfrac{1}{2}X_{t + q}}{T}, \; t = q + 1, \ldots, n - q,
+  \hat{m}_t = \dfrac{\dfrac{1}{2}X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + \dfrac{1}{2}X_{t + q}}{S}, \; t = q + 1, \ldots, n - q,
   \label{eq:decomp-1}
 \end{equation}
 
 y si el periodo es impar tomamos $q = (d-1)/2$ y estimando como \eqref{eq:decomp-2}
 
 \begin{equation}
-  \hat{m}_t = \dfrac{X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + X_{t + q}}{T}, \; t = q + 1, \ldots, n - q.
+  \hat{m}_t = \dfrac{X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + X_{t + q}}{S}, \; t = q + 1, \ldots, n - q.
   \label{eq:decomp-2}
 \end{equation}
 
 El siguiente paso es estimar la componente estacional $\hat{s}_t$, para ello primero calculamos la media de las desviaciones de la serie respecto la tendencia estimada \eqref{eq:decomp-3}
 
 \begin{equation}
-  w_t = \dfrac{T}{n - 2q} \sum \limits^{\frac{n - q - t}{T}}_{i = \frac{q - t}{T} + 1} \left(X_{t + iT} - \hat{m}_{t + iT}\right), \; t = 1, \ldots, T,
+  w_t = \dfrac{S}{n - 2q} \sum \limits^{\frac{n - q - t}{S}}_{i = \frac{q - t}{S} + 1} \left(X_{t + iS} - \hat{m}_{t + iS}\right), \; t = 1, \ldots, T,
   \label{eq:decomp-3}
 \end{equation}
 
 que ajustamos para conseguir que la suma sea 0 \eqref{eq:decomp-4}
 
 \begin{equation}
-  \hat{s}_t = w_t - \dfrac{1}{T}\sum \limits^T_{i = 1} w_i, \; t = 1, \ldots, T.
+  \hat{s}_t = w_t - \dfrac{1}{S}\sum \limits^S_{i = 1} w_i, \; t = 1, \ldots, T.
   \label{eq:decomp-4}
 \end{equation}
 
-Es posible obtener la serie sin la componente sin estacionalidad \eqref{eq:decomp-5}
+Es posible obtener la serie sin la componente de estacionalidad \eqref{eq:decomp-5}
 
 \begin{equation}
   d_t = X_t - \hat{s}_t, \; t = 1, \ldots, n,
@@ -797,10 +930,10 @@ Una vez realizada la de composición de un proceso, nos planteamos como poder pr
 
 \subsubsection{Predictores simples}
 
-Empecemos primero por el \textbf{método medio} (\emph{average method}), que considera la media de la serie (\autoref{def:metodo-medio}).
+Empecemos primero por el \textbf{método de la media} (\emph{average method}), que considera la media de la serie (\autoref{def:metodo-medio}).
 
-\begin{definicion}[Método medio]
-  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
+\begin{definicion}[Método de la media]
+  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método de la media como el predictor dado por
 
   $$\hat{x}_{n + \tau | n} = \hat{x} = \dfrac{1}{n}\sum \limits^n_{i = 1} x_i, $$
 
@@ -822,9 +955,9 @@ Para series con una alta estacionalidad funciona muy bien el \textbf{método de 
 \begin{definicion}[Método de la ingenuidad estacional]
   Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
 
-  $$\hat{x}_{n + \tau | n} = x_{n + \tau - T(k + 1)},$$
+  $$\hat{x}_{n + \tau | n} = x_{n + \tau - S(k + 1)},$$
 
-  donde $T$ es el periodo de la componente estacional y $k$ la parte integral de $(\tau - 1)/T$.
+  donde $S$ es el periodo de la componente estacional y $k$ la parte integral de $(\tau - 1)/S$.
   \label{def:seasonal-naive}
 \end{definicion}
 
@@ -837,23 +970,23 @@ Finalmente el \textbf{método de deriva} (\emph{drift method}) que modifica el m
   \label{def:metodo-deriva}
 \end{definicion}
 
-Mostramos un ejemplo de funcionamiento de predicción de los métodos medio (\emph{mean}, en rojo), camino aleatorio (\emph{naïve}, en verde) e ingenuo estacional (\emph{seasonal naïve}, en azul) en \autoref{fig:ej-metodos1} (\cite{hyndman2018forecasting}).
+Mostramos un ejemplo de funcionamiento de predicción de los métodos de la media (\emph{mean}, en rojo), del camino aleatorio (\emph{naïve}, en verde) e ingenuo estacional (\emph{seasonal naïve}, en azul) en \autoref{fig:ej-metodos1} (\cite{hyndman2018forecasting}).
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.65\textwidth]{ej-metodos1}
-  \caption{Ejemplo de predictores medio, camino aleatorio e ingenuo estacional.}
+  \caption{Ejemplo de predictores de la media, del camino aleatorio e ingenuo estacional.}
   \label{fig:ej-metodos1}
 \end{figure}
 
-Y otro con el método de deriva (\emph{drift}, en rojo), medio (\emph{mean}, en verde) y camino aleatorio (\emph{naïve}, en azul) en \autoref{fig:ej-metodos2} (\cite{hyndman2018forecasting}).
+Y otro con el método de deriva (\emph{drift}, en rojo), de la media (\emph{mean}, en verde) y del camino aleatorio (\emph{naïve}, en azul) en \autoref{fig:ej-metodos2} (\cite{hyndman2018forecasting}).
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.65\textwidth]{ej-metodos2}
-  \caption{Ejemplo de predictores deriva, medio y  camino aleatorio.}
+  \caption{Ejemplo de predictores de deriva, de la media y del camino aleatorio.}
   \label{fig:ej-metodos2}
 \end{figure}
 
@@ -875,16 +1008,178 @@ También es interesante considerar la descomposición \eqref{eq:decomp-nueva}
   \label{eq:decomp-nueva}
 \end{equation}
 
-donde $a_t = m_t + Y_t$ es la componente estacionalmente ajustada. En este caso se puede usar el predictor de camino aleatorio y también una modificación de $ARMA$ que veremos más adelante que utiliza otro enfoque para obtener una serie estacionaria.
+donde $a_t = m_t + Y_t$ es la componente estacionalmente ajustada. En este caso se puede usar el predictor del camino aleatorio y también una modificación de $ARMA$ que veremos más adelante que utiliza otro enfoque para obtener una serie estacionaria.
 
 Veamos un ejemplo de descomposición STL que predice utilizando el método ingenuo estacional para la estacionalidad y el método de camino aleatorio para la componente estacionalmente ajustada, junto con los intervalos de confianza \autoref{fig:stl-predict} (\cite{hyndman2018forecasting}).
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.65\textwidth]{stl-prediccion}
+  \includegraphics[width=.5\textwidth]{stl-prediccion}
   \caption{Ejemplo de predicción con descomposición STL y método ingenuo estacional y camino aleatorio con intervalos de confianza.}
   \label{fig:stl-predict}
+\end{figure}
+
+\section{Diferenciación}
+
+Estudiamos el siguiente método para obtener un proceso estacionario de la serie observada, la \textbf{diferenciación}. Fundamentalmente consiste en aplicar diferencias entre observaciones contiguas de la serie para eliminar la tendencia y/o la estacionalidad, dejando un proceso estacionario.
+
+\subsection{Procesos sin estacionalidad}
+
+Primero veamos como aplicar el método de la diferenciación para procesos que no presentan una componente de estacionalidad, recordando el modelo definido en \autoref{def:solo-tendencia}.
+
+Intentamos eliminar la tendencia usando la diferenciación. Introduzcamos antes  el operador de diferenciación con desfase 1 como \autoref{def:operador-diff}.
+
+\begin{definicion}[Operador diferenciación $\nabla$]
+
+Sea un proceso $\{X_t\}_{t \in T}$, se define el operador de diferenciación con desfase 1, notado como $\nabla$, aplicado al proceso $\{X_t\}$ como la siguiente expresión:
+
+$$\nabla X_t = X_t - X_{t - 1} = (1 - B)X_t, \; \forall t \in T,$$
+
+donde $B$ es el operador de desplazamiento hacia atrás definido por
+
+$$BX_t = X_{t-1}, \; \forall t \in T.$$
+\label{def:operador-diff}
+\end{definicion}
+
+Las potencias de los operadores se definen como uno podría esperar \eqref{eq:potencias-op}
+
+\begin{gather}
+  B^i(X_t) = X_{t-i}, \; \forall i \geq 1, \\
+  \nabla^i(X_t) = \nabla(\nabla^{i-1}(X_t)), \; \forall i \geq 1, \\
+  \nabla^0(X_t) = X_t.
+\label{eq:potencias-op}
+\end{gather}
+
+Podemos manipular polinomios de $B$ y $\nabla$ de la misma manera que con polinomios de variables reales, por ejemplo \eqref{eq:diff-ej}
+
+\begin{equation}
+  \nabla^2X_t = \nabla(\nabla(X_t)) = (1-B)(1-B)X_t = (1 - 2B + B^2)X_t = X_t - 2X_{t-1} + X_{t-2}.
+  \label{eq:diff-ej}
+\end{equation}
+
+Sea un proceso $\{X_t\}$ dado por \autoref{def:solo-tendencia} y supongamos que la tendencia es lineal, $m_t = c_0 + c_1t$. Aplicando la diferenciación a $\{X_t\}$ obtenemos \eqref{eq:diff-tendencia}
+
+\begin{equation}
+  \nabla X_t = \nabla m_t + \nabla Y_t = c_0 + c_1 t - c_0 - c_1(t - 1) + \nabla Y_t = c_1 + \nabla Y_t, \; \forall t \in T,
+  \label{eq:diff-tendencia}
+\end{equation}
+
+queda una constante $c_1 \in \R$. Para ver que $\nabla X_t$ sea estacionario podemos ignorarla (la constante es la media), y ver si $\nabla Y_t$ es estacionario \eqref{eq:diff-estacionario}
+
+\begin{equation}
+  \begin{aligned}
+  Cov[\nabla Y_t, \nabla Y_s] & = Cov[Y_t, Y_s] - Cov[Y_{t-1}, Y_s] - Cov[Y_t, Y_{s-1}] + Cov[Y_{t-1}, Y_{s-1}] \\
+  & = \gamma_Y(t - s) - \gamma_Y(t - s - 1) - \gamma_Y(t - s + 1) + \gamma_Y(t - s) \\
+  & = 2\gamma_Y(t - s) - \gamma_Y(t - s + 1) - \gamma_Y(t - s - 1), \; \forall t,s \in T,
+  \end{aligned}
+  \label{eq:diff-estacionario}
+\end{equation}
+
+al ser $Y_t$ estacionario. Como la covarianza no depende de $t$ y la media es constante ($c_1$) $\nabla X_t$ es estacionario. Para un ajuste polinómico general, $m_t = \sum \limits^n_{i = 0} c_i t^i$, e $Y_t$ estacionario tenemos que \eqref{eq:diff-general}
+
+\begin{equation}
+  \nabla^i X_t = i!c_i + \nabla^i Y_t, \; \forall t \in T,
+  \label{eq:diff-general}
+\end{equation}
+
+un proceso estacionario con media $i!c_i$. Si la serie se puede ajustar relativamente bien con un polinomio de grado bajo, entonces al aplicar $\nabla$ unas cuantas veces obtendremos una serie estacionaria. En la práctica el orden de diferenciación necesario suele ser de 1 ó 2 nada más.
+
+Un ejemplo lo tenemos aplicando $\nabla^2$ a la serie \autoref{fig:strikes} (\cite{brockwell2002introduction}) que produce la serie \autoref{fig:strikes-diff} \cite{brockwell2002introduction}, sin tendencias aparentes.
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.35\textwidth]{strikes}
+  \caption{Huelgas en EE.UU, 1951-1980.}
+  \label{fig:strikes}
+\end{figure}
+
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.35\textwidth]{strikes-diff}
+  \caption{Segundas diferencias ($\nabla^2$) en la serie de huelgas.}
+  \label{fig:strikes-diff}
+\end{figure}
+
+\subsection{Procesos con estacionalidad}
+
+Cuando el modelo contiene una componente estacional \autoref{def:descomposicion-entera} con un patrón que se repite cada cierto periodo $S$. Para lidiar con esto podemos extender el operador $\nabla$ que habíamos definido de desfase 1 a un $d$ genérico \autoref{def:diff-estacional}
+
+\begin{definicion}[Operador diferenciación $\nabla_d$]
+  Sea un proceso $\{X_t\}_{t \in T}$, el operador de diferenciación con desfase $d$, notado como $\nabla_d$, aplicado al proceso $\{X_t\}$ se define como
+
+  $$\nabla_d X_t = X_t - X_{t - d} = (1 - B^d)X_t, \; \forall t \in T.$$
+\label{def:diff-estacional}
+\end{definicion}
+
+Considerando un proceso $\{X_t\}$ dado como \autoref{def:descomposicion-entera}, donde el proceso estacional $\{s_t\}$ tiene periodo $S$, entonces podemos aplicar $\nabla_S$ obteniendo \eqref{eq:diff-estacional}
+
+\begin{equation}
+  \nabla_S X_t = m_t - m_{t - S} + Y_t - Y_{t - S}, \; \forall t \in T,
+\label{eq:diff-estacional}
+\end{equation}
+
+mostrando que el proceso $\nabla_S X_t$ no tiene estacionalidad, por lo que se le pueden aplicar los métodos conocidos para los métodos no estacionales. En particular ahora se le puede aplicar una potencia del operador $\nabla$.
+
+Un ejemplo de modelo donde hemos aplicado $\nabla_12 \nabla$ lo tenemos en \autoref{fig:diff-season} (\cite{hyndman2018forecasting}) que se ha aplicado primero una transformación logarítmica, una transformación común para series que aumentan o decrecen con el tiempo (es equivalente a usar un modelo multiplicativo).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.4\textwidth]{diff-season}
+  \caption{Generación de electricidad mensual en EEUU, con transformación logarítmica, diferenciación estacional ($\nabla_{12}$) y una diferenciación ($\nabla$) (de arriba a abajo, respectivamente).}
+  \label{fig:diff-season}
+\end{figure}
+
+La transformación logarítmica estabiliza las variaciones de la serie, y la diferenciación estacional quita la componente estacional completamente. La diferenciación adicional deja la serie como un proceso estacionario.
+
+\subsection{Modelo ARIMA}
+
+Existe una modificación de los modelos ARMA para considerar directamente el modelado con series sin estacionalidad: el modelo \textbf{ARIMA} (modelos autorregresivos integrados de media móvil) \cite{box2011time}. Juntaremos el modelo ARMA con la idea de realizar una diferenciación $\nabla^d$ para modelar directamente cualquier serie sin estacionalidad \autoref{def:arima}.
+
+\begin{definicion}[Modelo ARIMA]
+  Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso $ARIMA(p, d, q)$ si el proceso definido por
+
+  $$ Y_t = (1 - B)^d X_t, \; \forall t \in T,$$
+
+  es un proceso $ARMA(p, q)$.
+\label{def:arima}
+\end{definicion}
+
+Mostramos ejemplos $ARIMA$ simulados con sus correlogramas: $ARIMA(1, 1, 1)$ dado por $(1 + \frac{1}{2}B)(1-B)X_t = (1+\frac{3}{10}B)Z_t$ y $ARIMA(1, 1, 2)$ dado por $(1 - \frac{3}{5}B)(1-B)X_t = (1-\frac{3}{10}B+\frac{1}{2}B^2)Z_t$ \autoref{fig:ej-arima} (\cite{chatfield2019analysis}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.7\textwidth]{ej-arima}
+  \caption{Modelos simulados $ARIMA(1, 1, 1)$ (arriba) y $ARIMA(1, 1, 2)$ (abajo).}
+  \label{fig:ej-arima}
+\end{figure}
+
+\subsection{Modelo SARIMA}
+
+Si incluimos la diferenciación estacional $\nabla_S$ al modelo ARIMA podremos extender los modelos ARMA para series que manifiestan una componente estacional, este es el modelo \textbf{SARIMA} (Seasonal ARIMA) \autoref{def:sarima} (\cite{box2011time}).
+
+\begin{definicion}[Modelo SARIMA]
+  Un proceso $\{X_t\}_{t \in T}$ se dice que es un modelo $SARIMA(p,d,q)\times(P,D,Q)_S$ con periodo $S$ si la serie diferenciada $Y_t = (1 - B)^d(1 - B^S)^D X_t$ es un proceso ARMA definido por
+
+  $$\phi(B)\Phi(B^S)Y_t = \theta(B)\Theta(B^S)Z_t, \; \forall \tau \in T,$$
+
+  donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, $\phi(z) = 1 - \phi_1 z - \cdots - \phi_p z^p$, $\Phi(z) = 1 - \Phi_1z - \cdots - \Phi_P z^P$, $\theta(z) = 1 + \theta_1 z + \cdots + \theta_qz^q$ y $\Theta(z) = 1 + \Theta_1z + \cdots + \Theta_Q z^Q$.
+\label{def:sarima}
+\end{definicion}
+
+Un ejemplo de modelo $SARIMA(3, 0, 1)(0, 1, 2)_12$ predictor en una serie lo tenemos en \autoref{fig:ej-sarima} (\cite{hyndman2018forecasting}) junto a los intervalos de confianza.
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.6\textwidth]{ej-sarima}
+  \caption{Predicciones del modelo $SARIMA(3, 0, 1)(0, 1, 2)_12$.}
+  \label{fig:ej-sarima}
 \end{figure}
 
 
