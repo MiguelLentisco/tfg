@@ -49,7 +49,7 @@ Juntando estos tres elementos obtenemos nuestro \textbf{espacio probabilístico}
   \label{def:espacio-probabilistico}
 \end{definicion}
 
-Como la probabilidad $P$ es realmente una medida normalizada, podemos aplicar aspectos de la teoría de la medida en un espacio probabilístico. En concreto consideraremos funciones medibles, que son aplicaciones medibles (\autoref{def:aplicacion-medible}) donde el espacio de llegada es un espacio \textbf{Borel} ($\sigma$-álgebra formada con las semirectas cerradas por la derecha $(-\infty, x]$).
+Como la probabilidad $P$ es realmente una medida normalizada, podemos aplicar aspectos de la teoría de la medida en un espacio probabilístico. En concreto consideraremos funciones medibles, que son aplicaciones medibles (\autoref{def:aplicacion-medible}) donde el espacio de llegada es un espacio \textbf{Borel} ($\sigma$-álgebra formada con las semirrectas cerradas por la derecha $(-\infty, x]$).
 
 \begin{definicion}[Aplicación medible]
   Sean dos espacios medibles $(\Omega_1, \mathcal{A}_1)$, $(\Omega_2, \mathcal{A}_2)$, una aplicación $f : \Omega_1 \to \Omega_2$ se dice medible, si y solamente si:
@@ -200,9 +200,9 @@ Como las dimensiones del coeficiente de autocovarianza depende de las unidades d
 
 Aunque pareciera que no existen muchos procesos que mantengan la misma distribución en todo el tiempo, si existen muchos procesos con una distribución \textbf{de equilibrio}. Estos procesos cumplen que la distribución de probabilidad de $X_t$ tiende a una distribución limite (de equilibrio) cuando $t \to \infty$ y no dependen de las condiciones iniciales. Por tanto si las condiciones iniciales se fijan para ser iguales que la distribución de equilibrio, el proceso es fuertemente estacionario.
 
-Sin embargo, podemos relajar las condiciones de la estacionalidad para hacerlas más prácticas en casos reales, poniendo únicamente condiciones a los momentos de primer y segundo orden. Definimos los procesos \textbf{débilmente estacionarios} o \textbf{estacionarios de segundo orden} como \autoref{def:debilmente-estacionario}
+Sin embargo, podemos relajar las condiciones de la estacionalidad para hacerlas más prácticas en casos reales, poniendo únicamente condiciones a los momentos de primer y segundo orden. Definimos los procesos \textbf{débilmente estacionarios} o \textbf{estacionarios de segundo orden} como \autoref{def:debilmente-estacionario}.
 
-\begin{definicion}[Proceso débilmente estacionario]
+\begin{definicion}[Proceso estacionario de segundo orden]
   Sea un proceso estocástico $\{X_t\}_{t \in T}$, se dice que el proceso es débilmente estacionario o estacionario de segundo orden si se cumple lo siguiente:
 
   \begin{enumerate}
@@ -236,14 +236,14 @@ Debido a la independencia de las variables tendremos que la función media del p
 
 que no depende del tiempo $t$ y junto a la independencia de las variables nos dice que el proceso es estrictamente estacionario.
 
-Uno puede relajar la condición de independencia e distribución idéntica para obtener un tipo de proceso débilmente estacionario, el llamado \textbf{ruido blanco} (\autoref{def:ruido-blanco}).
+Uno puede relajar la condición de independencia e distribución idéntica para obtener un tipo de proceso estacionario de segundo orden, el llamado \textbf{ruido blanco} (\autoref{def:ruido-blanco}).
 
 \begin{definicion}[Ruido blanco]
   Un proceso $\{X_t\}_{t \in T}$ estocástico se dice que es ruido blanco (\emph{white noise}) con media $\mu$ y varianza $\sigma^2$, denotado por $\{X_t\} \sim WN(\mu, \sigma^2)$, si todas las variables aleatorias $X_t$ son incorreladas con $E[X_t] = \mu, Var[X_t] = \sigma^2, \, \forall t \in T$.
 \label{def:ruido-blanco}
 \end{definicion}
 
-En este caso el ruido blanco obtiene la misma función media y autocovarianza que el ruido iid. \eqref{eq:autocov-ruido} haciendo que el proceso sea débilmente estacionario. Así, cualquier proceso $IID(\mu, \sigma^2)$ es $WN(\mu, \sigma^2)$ pero no al revés.
+En este caso el ruido blanco obtiene la misma función media y autocovarianza que el ruido iid. \eqref{eq:autocov-ruido} haciendo que el proceso sea estacionario de segundo orden. Así, cualquier proceso $IID(\mu, \sigma^2)$ es $WN(\mu, \sigma^2)$ pero no al revés.
 
 Para ambos procesos podemos calcular la función de autocorrelación \eqref{eq:ruido-autocorrelacion}
 
@@ -266,7 +266,7 @@ Mostramos un ejemplo de un proceso $\{X_n\}_{n = 1}^{500} \sim IID(0, 1)$ genera
   \label{fig:ruido-ej}
 \end{figure}
 
-Un proceso muy simple que no es estacionario es el \textbf{camino aleatorio} (\autoref{def:random-walk})
+Un proceso muy simple que no es estacionario es el \textbf{camino aleatorio} (\autoref{def:random-walk}).
 
 \begin{definicion}[Camino aleatorio]
   Se dice que un proceso $\{X_t\}_{t \in T}$ es un camino aleatorio si
@@ -290,6 +290,265 @@ Podemos generar caminos aleatorios fácilmente mediante un proceso $IDD(\mu, \si
   \caption{Ejemplo de camino aleatorio generado con ruido, junto con su correlograma.}
   \label{fig:ej-random-walk}
 \end{figure}
+
+\section{Modelos estacionarios}
+
+El objetivo del análisis de series es como encontrar en las series un proceso que sea estacionario para poder modelar correctamente simulaciones y predicciones de la serie.
+
+Los dos enfoques principales para conseguir esto se basan en:
+
+\begin{itemize}
+  \item La descomposición de las series en varias componentes donde una de ellas son residuos que se esperan que sean estacionarios.
+  \item La diferenciación de las series, restando los valores actuales con los valores anteriores hasta que la serie restante sea estacionaria.
+\end{itemize}
+
+En cualquier caso obtendremos un proceso estacionario que queremos modelar para poder predecir correctamente valores futuros. Para conseguir esto utilizaremos una clase de modelos lineales para las series temporales, como la clase de modelos de medias móviles autoregresivas (ARMA), que nos permitirá el estudio de los procesos estacionarios. De hecho veremos que cualquier proceso  estacionario de segundo orden o bien es un proceso lineal, o se puede transformar a uno mediante la eliminación de una componente determinista.
+
+\subsection{Procesos de medias móviles}
+
+Primero mostramos el proceso de\textbf{medias móviles} que construye el proceso tomando una combinación lineal de $q$ valores anteriores de un proceso de ruido (\autoref{def:media-movil}).
+
+\begin{definicion}[Proceso de media móvil]
+  Sea un proceso de ruido blanco $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$ y constantes reales $\{\theta_t\}_{t = 0}^q \subset \R$. Se define el proceso de media móvil de orden $q$, denotado como $\{X\}_{t \in T} \sim MA(q)$, con la siguiente expresión:
+
+  $$X_t = \theta_0 Z_t + \theta_1 Z_{t - 1} + \ldots + \theta_q Z_{t - q} = \sum \limits^q_{i = 0} \theta_i Z_{t - i}, \; \forall t \in T.$$
+  \label{def:media-movil}
+\end{definicion}
+
+Es posible que el ruido tenga media $\mu$ distinta de cero, pero consideramos que es nula para simplificar el proceso. Si analicemos estos procesos, por un lado obtenemos inmediatamente al ser $Z_t$ incorreladas que \eqref{eq:media-media-auto}
+
+\begin{gather}
+  E[X_t] = 0, \\
+  Var[X_t] = \sigma^2 \sum \limits^q_{i = 0} \theta_i^2.
+  \label{eq:media-media-auto}
+\end{gather}
+
+También calculamos el coeficiente de autocovarianza \eqref{eq:media-coef-auto}
+
+\begin{equation}
+  \begin{aligned}
+    \gamma(\tau) & = Cov(X_t, X_{t + \tau}) \\
+    & = Cov\left(\sum \limits^q_{i = 0} \theta_i Z_i, \sum \limits^q_{i = 0} \theta_i Z_{t + \tau - i}\right) \\
+    & = \begin{cases}
+      0, & \tau > q \\
+      \sigma^2 \sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}, & 0 \leq \tau \leq q
+    \end{cases}.
+  \end{aligned}
+\label{eq:media-coef-auto}
+\end{equation}
+
+Como $\gamma(\tau)$ no depende de $t$ y la media es constante, los procesos de media móvil son estacionarios de segundo orden para cualquier $q \in \N$ y $\{\theta_t\}_{t = 0}^q \subset \R$.
+
+Finalmente veamos la función de autocorrelación \eqref{eq:media-autocor}
+
+\begin{equation}
+  \rho(\tau) = \begin{cases}
+    1, & \tau = 0 \\
+    \dfrac{\sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}}{\sum \limits^q_{i = 0} \theta_i^2}, & 0 < \tau \leq q \\
+    0, & \tau > q
+  \end{cases}.
+  \label{eq:media-autocor}
+\end{equation}
+
+De la construcción de estos modelos vemos que cada $X_t$ es dependiente de otros $X_s$ cuando $|\tau| = |t-s| \leq q$, es decir son $q$-dependientes y cuando $\tau > q$ entonces las variables son independientes. Una idea análoga se encuentra para los momentos de segundo orden, donde hablamos de procesos $q$-correlados. (\autoref{def:q-correlacion}).
+
+\begin{definicion}[Proceso $q$-correlado]
+  Un proceso estacionario $\{X\}_{t \in T}$ se dice que es $q$-correlado si se cumple lo siguiente:
+
+  $$\gamma(\tau) = 0, \; \forall |\tau| > q$$.
+  \label{def:q-correlacion}
+\end{definicion}
+
+Por \eqref{eq:media-media-auto} tenemos que un modelo $MA(q)$ es $q$-correlado, y de hecho la otra implicación se da también (\autoref{prop:q-correlado}, demostración en \cite{brockwell1991time} Sección 3.2)
+
+\begin{proposicion}
+  Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con media 0 y $q$-correlado. Entonces el proceso puede representarse como un modelo $MA(q)$.
+\label{prop:q-correlado}
+\end{proposicion}
+
+Mediante ruido blanco $Z_t \sim N(0, 1)$ podemos construir modelos $MA$ fácilmente. Por ejemplo podemos construir un modelo $MA(1)$ definido por $X_t = Z_t - \frac{4}{5}Z_{t - 1}$ y otro $MA(2)$ dado por $X_t = Z_t + \frac{7}{10} Z_{t - 1} - \frac{1}{5}Z_{t - 2}$. Mostramos las series realizadas de estos procesos junto con sus correlogramas \autoref{fig:ej-media} (\cite{chatfield2019analysis}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.8\textwidth]{ej-media}
+  \caption{Ejemplos de $MA(1)$ (arriba) y $MA(2)$ (abajo) con sus correlogramas respectivos a la derecha.}
+  \label{fig:ej-media}
+\end{figure}
+
+Observamos como para $MA(1)$ el correlograma muestra valores significativos solo para $\tau = 0, 1$ y para $MA(2)$ para $\tau = 0, 1, 2$, correspondiéndose con nuestro estudio de la función de autocorrelación.
+
+\subsection{Procesos autorregresivos}
+
+Consideramos un modelo que se basa en la idea de las medias móviles de utilizar valores de tiempos pasados, pero en vez de considerarlas de un proceso basado en ruido usaremos el propio proceso (\autoref{def:proceso-autorregresivo}).
+
+\begin{definicion}[Proceso autorregresivo]
+  Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso autorregresivo de orden $p$, notado como $\{X_t\} \sim AR(p)$, si se puede expresar de la siguiente forma:
+
+  $$X_t = \phi_1 X_{t-1} + \ldots + \phi_p X_{t - p} + Z_t = \sum \limits^p_{i = 1} \left(\phi_i X_{t - i}\right) + Z_t, \; \forall t \in T,$$
+
+  donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, y coeficientes reales $\{\phi_i\}_{i = 1}^p \subset \R$.
+  \label{def:proceso-autorregresivo}
+\end{definicion}
+
+Se ha considerado que $\mu = 0$, aunque es posible trabajar con una media no nula. Así, estudiamos el caso más simple $p = 1$, $AR(1)$ expresado como \eqref{eq:ar-simple}
+
+\begin{equation}
+  X_t = \phi X_{t - 1} + Z_t, \, \forall t \in T.
+  \label{eq:ar-simple}
+\end{equation}
+
+Si sustituimos los $X_{t - i}$ mediante recursividad obtenemos \eqref{eq:ar-simple2}
+
+\begin{equation}
+  X_t = \phi\left(\phi X_{t-2} + Z_{t-1}\right) + Z_t = \phi^2\left(\phi X_{t-3} + Z_{t-2}\right) + \phi Z_{t-1} + Z_t, \, \forall t \in T.
+  \label{eq:ar-simple2}
+\end{equation}
+
+Si repetimos este proceso infinitamente entonces \eqref{eq:ar-simple3}
+
+\begin{equation}
+  X_t = Z_t + \phi Z_{t-1} + \phi^2 Z_{t-2} + \ldots = \sum \limits^{+\infty}_{i = 0} \phi^i Z_{t - i}, \; \forall t \in T,
+  \label{eq:ar-simple3}
+\end{equation}
+
+escogido $|\phi| < 1$ para que la suma converja, $AR(1)$ se comporta como un modelo $MA(\infty)$, indicando que hay una cierta dualidad entre los modelos $AR$ y $MA$.
+
+Estudiamos el primer y segundo orden del proceso considerando que las variables $Z_t$ son incorreladas, entonces $\forall t \in T$ se tiene \eqref{eq:ar-momentos}
+
+\begin{gather}
+  E[X_t] = 0, \\
+  Var[X_t] = \sigma^2 \sum \limits^{+\infty}_{i = 0} \left(\phi^{2i}\right).
+  \label{eq:ar-momentos}
+\end{gather}
+
+La varianza será finita si $|\phi|^2 < 1$, por lo que al tomar $|\phi| < 1$ se tiene \eqref{eq:ar-var}
+
+\begin{equation}
+  Var[X_t] = \dfrac{\sigma^2}{1 - \phi^2}, \; \forall t \in T.
+  \label{eq:ar-var}
+\end{equation}
+
+La función de autocovarianza viene dada por \eqref{eq:ar-autocovarianza}
+
+\begin{equation}
+  \begin{aligned}
+    \gamma(\tau) & = E[X_t X_{t + k}] = E\left[\left(\sum \limits^{+\infty}_{i = 0} \phi^i Z_{t - i}\right)\left(\sum \limits^{+\infty}_{i = 0} \phi^i Z_{t + \tau - i}\right)\right] \\
+    & = \sigma^2 \sum \limits^{+\infty}_{i = 0} \phi^i \phi^{\tau + i} = \phi^\tau \dfrac{\sigma^2}{1 - \phi^2}.
+  \end{aligned}
+  \label{eq:ar-autocovarianza}
+\end{equation}
+
+Por tanto como $\gamma(\tau)$ no depende de $t$, el proceso $AR(1)$ es un proceso estacionario de segundo orden (bajo la condición de que $|\phi| < 1$). La función de autocorrelación será \eqref{eq:ar-autocorrelacion}
+
+\begin{equation}
+  \rho(\tau) = \phi^\tau, \; \tau \in T.
+  \label{eq:ar-autocorrelacion}
+\end{equation}
+
+Simulemos unos cuantos procesos autorregresivos mediante ruido $Z_t \sim N(0, 1)$: $X_t = \frac{4}{5}X_{t-1} + Z_t$, $X_t = -\frac{4}{5}X_{t-1} + Z_t$ y $X_t = \frac{3}{10}X_{t-1} + Z_t$ cuyas series mostramos de arriba a bajo respectivamente, junto a sus correlogramas en \autoref{fig:ar-simulado} (\cite{chatfield2019analysis}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.85\textwidth]{ar-simulado}
+  \caption{Ejemplos de $AR(1)$ con varios valores junto con sus correlogramas.}
+  \label{fig:ar-simulado}
+\end{figure}
+
+Observamos como los correlogramas van convergiendo a 0, decreciendo absolutamente. Cuando $1 > \phi > 0$ (1er y 3er proceso) los valores son todos positivos mientras que cuando $-1 < \phi < 0$ (2o proceso) se van alternando entre positivos (desfase par) y negativos (desfase negativo).
+
+\subsection{Procesos lineales}
+
+Si generalizamos el funcionamiento de los modelos $AR$ y $MA$ llegamos a los procesos lineales (\autoref{def:proceso-lineal}).
+
+\begin{definicion}[Proceso lineal]
+  Un proceso $\{X\}_{t \in T}$ se dice que es un proceso lineal si se puede representar de la siguiente forma:
+
+  $$X_t = \sum \limits^{+\infty}_{i = -\infty} \psi_{j} Z_{t - i}, \; \forall t \in T,$$
+
+  con $\{Z\}_{t \in T} \sim WN(0, \sigma^2)$ y $\{\psi_i\}^{+\infty}_{i = -\infty} \subset \R$ constantes que cumplen que $\sum \limits^{+\infty}_{i = -\infty} |\psi_j| < \infty$.
+  \label{def:proceso-lineal}
+\end{definicion}
+
+Según los coeficientes $\psi$ se puede obtener cualquier modelo $AR$ o $MA$. Por ejemplo si se toman $\psi = 0, \, \forall i < 0$ entonces el proceso sería $MA(\infty)$.
+
+Veamos entonces que si cualquier proceso lineal es estacionario de segundo orden si lo es el proceso $\{Z_t\}_{t \in T}$, de manera que cualquier proceso $AR$ o $MA$ será estacionario de segundo orden (\autoref{prop:proceso-estacionario}).
+
+\begin{proposicion}
+  Sea $\{Y_t\}_{t \in T}$ un proceso estacionario de segundo orden con media 0 y función de autocovarianza $\gamma_Y$. Si $\sum_{i = -\infty}^{+\infty} |\psi_i| < \infty$, entonces el proceso definido por:
+
+  $$X_t = \sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t - i},$$
+
+  es estacionario de segundo orden con media 0 y función de autocovarianza
+
+  $$\gamma_X(\tau)= \sum \limits^{+\infty}_{i=-\infty}\sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j \gamma_Y(\tau + j - i), \, \tau \in T.$$
+
+  De hecho si $\{X_t\}_{t \in T}$ es un proceso lineal, se tiene que
+
+  $$\gamma_X(\tau) = \sum \limits^{+\infty}_{i = -\infty} \psi_{i} \psi_{i + \tau}\sigma^2, \, \tau \in T.$$
+  \label{prop:proceso-estacionario}
+\end{proposicion}
+
+\begin{proof}
+  Debido a que la suma absoluta de los coeficientes es finita podemos asegurar que la suma $X_t$ es convergente, $\forall t \in T$ se cumple que
+
+  $$E[|X_t|] \leq \sum \limits^{+\infty}_{i = -\infty} |\psi_j| E[|Y_{t-i}|] \leq \sum \limits^{+\infty}_{i = -\infty} \left(|\psi_j|\right) \sqrt{\gamma_Y(0)} < \infty$$
+
+  Como $E[Y_t] = 0, \, \forall t \in T$ Entonces
+
+  $$E[X_t] = E\left[\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t - i}\right] = \sum \limits^{+\infty}_{i = -\infty} \psi_i E[Y_{t-i}] = 0$$
+
+  y además para $\tau \in T$
+
+  $$\begin{aligned}
+    E[X_{t+\tau}X_t] & = E\left[\left(\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t + \tau - i}\right)\left(\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t -i}\right)\right] \\
+    & = \sum \limits^{+\infty}_{i = -\infty} \sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j E[Y_{t+\tau-i}Y_{t-j}] \\
+    & = \sum \limits^{+\infty}_{i = -\infty}  \sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j \gamma_Y(\tau + j - i),
+  \end{aligned}$$
+
+  que no depende de $t$ y por tanto $\{X_t\}$ es estacionario de segundo orden. Finalmente si $\{Y_t\}$ es ruido blanco entonces $\gamma_Y(\tau + i - j) = \sigma^2$ si $j = i - \tau$ y 0 en caso contrario, obteniendo el último resultado.
+\end{proof}
+
+\subsection{Descomposición de Wold}
+
+Recordemos que estamos con procesos estocásticos, en los que esperamos que haya una cierta componente probabilística. No vamos a definir exactamente cuando un proceso es \textbf{determinista} o \textbf{no determinista} ya que se necesitan conceptos muy complejos. En líneas generales nos vienen a indicar si existe cierta aleatoriedad en el proceso, o bien ya sabemos con seguridad absoluta el resultado que se va a obtener.
+
+En todos los modelos que consideramos siembre buscamos que sean procesos no deterministas y no nos interesan los que sean deterministas. Mediante la descomposición de Wold veremos que cualquier serie estacionaria no determinista se puede expresar de manera única como un proceso que puede convertirse en un proceso lineal (\autoref{th:wold}, \cite{wold1938decomposition})
+
+\begin{teorema}[Descomposición de Wold]
+  Sea $\{X_t\}_{t \in T}$ un proceso no determinista estacionario de segundo orden, entonces el proceso se puede descomponer de manera única con los procesos $\{Z_t\}_{t \in T}$, $\{V_t\}_{t \in T}$ y coeficientes $\{\psi_i\}_{i = 0}^{\infty}$ de la siguiente forma
+
+  $$ X_t = \sum \limits^{+\infty}_{i = 0} \psi_i Z_{t - i} + V_t, \, \forall t \in T,$$
+
+  y además se cumple lo siguiente
+
+  \begin{enumerate}
+    \item $\psi_0 = 1$ y $\sum^{+\infty}_{i = 0} \psi^2_i < \infty$.
+    \item $\{Z_t\}_{t \in T} \sum WN(0, \sigma^2)$.
+    \item $Cov(Z_s, V_t) = 0$, $\forall t,s \in T$.
+    \item $\{V_t\}$ es un proceso determinista.
+  \end{enumerate}
+  \label{th:wold}
+\end{teorema}
+
+El teorema incluye más condiciones que se cumplen pero se ha simplificado para su mejor entendimiento. Lo que nos expresa el teorema, es que cualquier proceso no determinista se puede representar como un proceso lineal que tiene añadido una parte determinista.
+
+De hecho, esta parte determinista está asociada a la media del proceso por lo que para muchos procesos que ya tienen media 0 entonces nos quedará únicamente un proceso lineal \textbf{puramente determinista}.
+
+\subsection{Procesos ARMA}
+
+Finalmente introducimos uno de los procesos más importantes en el modelado de series temporales: los procesos ARMA. La gran importancia de estos modelos reside en que para una clase grande de funciones de autocovarianza $\gamma$ es posible encontrar un proceso ARMA cuya función de autocovarianza $\gamma_X$ está aproximada.
+
+Este modelo está formado combinando los dos modelos que hemos considerado, $MA$ y $AR$ (\autoref{def:arma}).
+
+\begin{definicion}[Proceso ARMA]
+  Sea un proceso $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, se define un proceso ARMA de orden $(p, q)$ como
+
+  $$X_t = \psi X_{t-1} + \ldots + \psi_p X_{t-p} + Z_t + \theta_1 Z_{t-1} + \ldots + \theta_q Z_{t - q}, \; \forall t \in T.$$
+\label{def:arma}
+\end{definicion}
+
 
 \section{Descomposición}
 
@@ -340,13 +599,11 @@ Esta descomposición se dice que es \textbf{aditiva} pues suma sus componentes y
   \label{eq:decomposition-mult}
 \end{equation}
 
-El enfoque general consiste en extraer de las series estas componentes $m_t$, $s_t$ y esperar que el ruido $Y_t$ sea estacionario. Usando la teoría que hemos visto, creamos un modelo para el proceso en el que podemos simular valores junto con $m_t$ y $s_t$.
-
-Existe otra técnica que consiste en aplicar operadores para diferenciar la serie hasta que las observaciones se parezcan a una serie estacionaria, volviendo a usar la teoría para modelar los procesos.
+El enfoque de realizar la descomposición consiste en extraer de las series estas componentes $m_t$, $s_t$ y esperar que el ruido $Y_t$ sea estacionario. Crearemos así un modelo para el proceso estacionario en el que podemos simular valores junto con $m_t$ y $s_t$.
 
 \subsection{Descomposición sin estacionalidad}
 
-Si tenemos un proceso que no presenta la componente estacional entonces obtenemos el siguiente modelo (\autoref{def:solo-tendencia})
+Si tenemos un proceso que no presenta la componente estacional entonces obtenemos el siguiente modelo (\autoref{def:solo-tendencia}).
 
 \begin{definicion}[Descomposición con solo tendencia]
   Sea $\{X_t\}$ un proceso entonces una descomposición con solo tendencia está definida por:
@@ -384,7 +641,7 @@ Para poder estimar la tendencia $m_t$ podemos utilizar varias técnicas. La prim
 
 \subsubsection{Suavizado con media móvil}
 
-La siguiente técnica consiste en estimar la tendencia mediante el \textbf{suavizado con media móvil} (\autoref{def:suavizacion-media})
+La siguiente técnica consiste en estimar la tendencia mediante el \textbf{suavizado con media móvil} que está basado en el modelo de media móvil (\autoref{def:suavizacion-media}).
 
 \begin{definicion}[Suavizado con media móvil]
   Sea un proceso $\{X_t\}_{t = 1}^n$, y un natural $q \in N$. Se define el proceso suavizado con media móvil simétrica de orden $q$ de $\{X_t\}$ como:
@@ -421,7 +678,7 @@ Un ejemplo de $\hat{m}_t$ aplicando un suavizado de media móvil con $q = 2$ (5 
 
 \subsubsection{Suavizado exponencial}
 
-Finalmente consideramos una técnica que realiza el suavizado como una combinación entre el punto $t$-ésimo actual y el punto estimador anterior (\autoref{def:suavizado-exponencial})
+Finalmente consideramos una técnica que realiza el suavizado como una combinación entre el punto $t$-ésimo actual y el punto estimador anterior (\autoref{def:suavizado-exponencial}).
 
 \begin{definicion}[Suavizado exponencial]
   Sea $\{X_t\}_{t = 1}^n$ un proceso y $\alpha \in [0, 1]$, el suavizado exponencial se define como la estimación de la tendencia del proceso de la siguiente forma:
@@ -533,5 +790,102 @@ Una de las descomposiciones más famosas y la que usaremos en el proyecto será 
   \caption{Ejemplo de descomposición STL de una serie.}
   \label{fig:stl-decomposition}
 \end{figure}
+
+\subsection{Predicción}
+
+Una vez realizada la de composición de un proceso, nos planteamos como poder predecir valores futuros de la serie observada. Mostremos primero alguno de los predictores más simples.
+
+\subsubsection{Predictores simples}
+
+Empecemos primero por el \textbf{método medio} (\emph{average method}), que considera la media de la serie (\autoref{def:metodo-medio}).
+
+\begin{definicion}[Método medio]
+  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
+
+  $$\hat{x}_{n + \tau | n} = \hat{x} = \dfrac{1}{n}\sum \limits^n_{i = 1} x_i, $$
+
+  donde $\hat{x}_{n + \tau | n}$ indica la estimación de $x_{n + \tau}$ en base a los datos $x_1, \ldots, x_n$.
+  \label{def:metodo-medio}
+\end{definicion}
+
+El \textbf{método del camino aleatorio} (\emph{random walk method}) predice mediante el último valor de la observación (\autoref{def:metodo-ingenuo}).
+
+\begin{definicion}[Método del camino aleatorio]
+  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método del camino aleatorio como el predictor dado por
+
+  $$\hat{x}_{n + \tau | n} = x_n$$
+  \label{def:metodo-ingenuo}
+\end{definicion}
+
+Para series con una alta estacionalidad funciona muy bien el \textbf{método de la ingenuidad estacional} (\emph{seasonal naîve method}) en el que se predice tomando la última observación que se corresponde con el periodo de la estacionalidad (\autoref{def:seasonal-naive}).
+
+\begin{definicion}[Método de la ingenuidad estacional]
+  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
+
+  $$\hat{x}_{n + \tau | n} = x_{n + \tau - T(k + 1)},$$
+
+  donde $T$ es el periodo de la componente estacional y $k$ la parte integral de $(\tau - 1)/T$.
+  \label{def:seasonal-naive}
+\end{definicion}
+
+Finalmente el \textbf{método de deriva} (\emph{drift method}) que modifica el método del camino aleatorio añadiendo una tendencia derivada de la recta extrapolada entre el primer y último dato de la serie (\autoref{def:metodo-deriva}).
+
+\begin{definicion}[Método de deriva]
+  Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
+
+  $$\hat{x}_{n + \tau | n} = x_n + \tau \left(\dfrac{x_n - x_1}{n - 1}\right).$$
+  \label{def:metodo-deriva}
+\end{definicion}
+
+Mostramos un ejemplo de funcionamiento de predicción de los métodos medio (\emph{mean}, en rojo), camino aleatorio (\emph{naïve}, en verde) e ingenuo estacional (\emph{seasonal naïve}, en azul) en \autoref{fig:ej-metodos1} (\cite{hyndman2018forecasting}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.65\textwidth]{ej-metodos1}
+  \caption{Ejemplo de predictores medio, camino aleatorio e ingenuo estacional.}
+  \label{fig:ej-metodos1}
+\end{figure}
+
+Y otro con el método de deriva (\emph{drift}, en rojo), medio (\emph{mean}, en verde) y camino aleatorio (\emph{naïve}, en azul) en \autoref{fig:ej-metodos2} (\cite{hyndman2018forecasting}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.65\textwidth]{ej-metodos2}
+  \caption{Ejemplo de predictores deriva, medio y  camino aleatorio.}
+  \label{fig:ej-metodos2}
+\end{figure}
+
+\subsubsection{Predictores con descomposición}
+
+Cuando nos encontramos con un proceso general $\{X_t\}$ que parece presentar componentes estacionales y tendencia, realizamos una descomposición \eqref{eq:pred-decomp}
+
+\begin{equation}
+  X_t = m_t + s_t + Y_t, \; \forall t \in T,
+  \label{eq:pred-decomp}
+\end{equation}
+
+de manera que hacemos las predicciones por separado para cada componente. Para la estacionalidad $s_t$, debido a su carácter periódico se puede utilizar el predictor ingenuo estacional, para la tendencia $m_t$ podemos predecir con el método de deriva o el método usado para el modelado de la tendencia (ajuste polinómico, suavizado) y finalmente para los residuos $Y_t$ que son estacionarios se puede modelar por ejemplo con un $ARMA$.
+
+También es interesante considerar la descomposición \eqref{eq:decomp-nueva}
+
+\begin{equation}
+  X_t = s_t + a_t, \; \forall t \in T,
+  \label{eq:decomp-nueva}
+\end{equation}
+
+donde $a_t = m_t + Y_t$ es la componente estacionalmente ajustada. En este caso se puede usar el predictor de camino aleatorio y también una modificación de $ARMA$ que veremos más adelante que utiliza otro enfoque para obtener una serie estacionaria.
+
+Veamos un ejemplo de descomposición STL que predice utilizando el método ingenuo estacional para la estacionalidad y el método de camino aleatorio para la componente estacionalmente ajustada, junto con los intervalos de confianza \autoref{fig:stl-predict} (\cite{hyndman2018forecasting}).
+
+\begin{figure}[htpb]
+  \centering
+  %\hspace*{-2.5cm}
+  \includegraphics[width=.65\textwidth]{stl-prediccion}
+  \caption{Ejemplo de predicción con descomposición STL y método ingenuo estacional y camino aleatorio con intervalos de confianza.}
+  \label{fig:stl-predict}
+\end{figure}
+
 
 \endinput
