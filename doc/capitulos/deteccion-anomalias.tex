@@ -67,7 +67,7 @@ Si consideramos que a veces las anomalías como tales están consideradas así b
 
 \begin{enumerate}
   \item \textbf{\emph{Pico}}: se dice que hay un \emph{pico} en la serie cuando en un periodo muy pequeño de tiempo toma un valor muy alto o muy bajo de lo usual en comparación en un entorno local.
-  \item \textbf{Cambio estacional}: cuando en una serie donde se ve un patrón estacional (cada cierto periodo se repite una estructura) en uno de los periodos la intensidad de la señal cambia, aumentando o decrementándose.
+  \item \textbf{Cambio estacional}: cuando en una serie donde se ve un patrón estacional (cada cierto periodo se repite una estructura) en uno de los periodos la intensidad de la señal cambia, aumentando o decreciendo.
   \item \textbf{Fluctuación}: cuando en la señal tiene un cambio de forma (fluctúa) en un periodo corto de tiempo, aunque no tiene por qué variar mucho en cuanto a la intensidad.
 \end{enumerate}
 
@@ -94,9 +94,21 @@ La posible aleatoriedad que introducimos está hecha para poder generar \textbf{
 
 \section{Ruido gaussiano}
 
-La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para intentar simular un \emph{pico} ya que su forma de camapana se asemeja mucho a un cambio de intensidad muy alto y es además de forma continua; sin más que muestrear la función de densidad en el intervalo $[-3 \sigma, 3 \sigma]$ podemos obtener el 99.74\% de la distribución.
+La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para intentar simular un \emph{pico} ya que su forma de campana se asemeja mucho a un cambio de intensidad muy alto y es además de forma continua. Recreamos esto mediante un muestreo de la función de densidad en el intervalo $[-3 \sigma, 3 \sigma]$, obteniendo el 99.74\% de la distribución (\autoref{def:ruido-gauss}.
 
-Para hacer que el muestro sea significativo, esto es, que la mayoría de puntos tomados tengan un valor no nulo, tomamos $\sigma = longitud / 6$. Finalmente se multiplica todo otra vez por un parámetro $\sigma$ que se le pasa al algoritmo para controlar el grado de \textbf{intensidad} de la alteración.
+\begin{definicion}[Ruido gaussiano]
+  Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, se define la perturbación de ruido gaussiano de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
+
+  $$x_t' = \begin{cases}
+    x_t + \sigma r_{t - c + 1}, & c \leq t \leq n \\
+    x_t, & \text{en caso contrario.}
+  \end{cases},$$
+
+  donde $\{r_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función de densidad de la distribución gaussiana $N(0, \frac{\ell}{6})$ con $\ell$ puntos equidistantes en el intervalo $[-\frac{\ell}{2}, \frac{\ell}{2}]$.
+  \label{def:ruido-gauss}
+\end{definicion}
+
+Para hacer que el muestro sea significativo, esto es, que la mayoría de puntos tomados tengan un valor no nulo, tomamos $\sigma = \ell / 6$ y se toma el in. Finalmente se multiplica todo otra vez por un parámetro $\sigma$ que se le pasa al algoritmo para controlar el grado de \textbf{intensidad} de la alteración.
 
 Si queremos picos muy \textbf{pronunciados} solo tendremos que tomar una longitud de alteración pequeña y un $\sigma$ alto. Para otros \emph{picos} más suaves aumentamos un poco la longitud y disminuimos el $\sigma$. En cualquier caso, independientemente de la longitud total de la serie, la longitud de la perturbación no debería ser muy grande puesto que estaríamos afectando a un porcentaje mayor de la serie (ya no sería una anomalía puntual) y la perturbación se aplana ya que la desviación de la gaussiana se vuelve mayor.
 
@@ -105,12 +117,12 @@ Podemos ver distintos muestreos con varios tamaños y $\sigma$ en \autoref{fig:a
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=1.\textwidth]{ej_gaussian_noise}
+  \includegraphics[width=.9\textwidth]{ej_gaussian_noise}
   \caption{Muestreos de la distribución gaussiana con distintos tamaños y $\sigma$.}
   \label{fig:ad-ruido-gaussiano}
 \end{figure}
 
-Finalmente, la serie alterada que se devuelve es la original $X$ sumando al tramo seleccionado anteriormente el muestreo que hemos obtenido. Se ha incluido también una opción para que aleatoriamente se reste en vez de sumar, para crear un pico invertido.
+Finalmente, la serie alterada que se devuelve es la original $x$ sumando al tramo seleccionado anteriormente el muestreo que hemos obtenido. Se ha incluido también una opción para que aleatoriamente se reste en vez de sumar, para crear un pico invertido.
 
 Tomando el \emph{dataset} \emph{Beef} de \cite{bagnall2020ts}, representamos varios ejemplos de las series con las perturbaciones aplicadas, escogiendo longitudes aleatorias en $[3, 40]$ y $\sigma$ en $[0.7, 3]$ en \autoref{fig:ad-ej-ruido}. Vemos como tenemos un amplio rango de distintas perturbaciones, con picos muy empinados o más pequeños y otras más suaves.
 
@@ -124,16 +136,28 @@ Tomando el \emph{dataset} \emph{Beef} de \cite{bagnall2020ts}, representamos var
 
 \section{Pulso gaussiano-sinusoidal}
 
-Introducimos la alteración de \textbf{pulso gaussiano-sinusoidal} como alteración de la forma de la señal, imitando una \textbf{fluctuación} en el tramo de la señal. Este pulso no es nada más que un pulso electromagnético con forma sinusoidal que es amortiguado con una gaussiana, es decir, una señal sinusoidal con amplitud creciente desde los extremos hasta el centro de la señal.
+Introducimos la alteración de \textbf{pulso gaussiano-sinusoidal} como alteración de la forma de la señal, imitando una \textbf{fluctuación} en el tramo de la señal. Este pulso no es nada más que un pulso electromagnético con forma sinusoidal que es amortiguado con una gaussiana, es decir, una señal sinusoidal que se multiplica por la función de densidad de una gaussiana (\autoref{def:pulso-gaussiano-sinusoidal}).
 
-Igual que hacíamos antes, se toma el muestreo y se multiplica por el $\sigma$ aplicado, sumando esta alteración al tramo elegido aleatoriamente.
+\begin{definicion}[Pulso gaussiano-sinusoidal]
+  Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, se define la perturbación de pulso gaussiano-sinusoidal de parámetro $\sigma \in \R$, con frecuencia $f \in \R^{+}$, centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
+
+  $$x_t' = \begin{cases}
+    x_t + \sigma p_{t - c + 1} r_{t - c + 1}, & c \leq t \leq n \\
+    x_t, & \text{en caso contrario.}
+  \end{cases},$$
+
+  donde $\{r_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función de densidad de la distribución gaussiana $N(0, \frac{\ell}{6})$ con $\ell$ puntos equidistantes en el intervalo $[-\frac{\ell}{2}, \frac{\ell}{2}]$ y $\{p_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función $\cos$ con $\ell$ puntos equidistantes en el intervalo $[-2\pi f, 2\pi f]$.
+  \label{def:pulso-gaussiano-sinusoidal}
+\end{definicion}
+
+Igual que hacíamos antes, se toma el muestreo y se multiplica por el $\sigma$ aplicado, sumando esta alteración al tramo elegido aleatoriamente. La frecuencia $f$ debe ser tomada respecto a la longitud de la perturbación $\ell$ para que el muestreo sea correcto.
 
 Unos cuantos ejemplos de pulsos gaussianos-sinusoidal los tenemos en \autoref{fig:ad-pulso-gaussiano}, que indican que por lo menos necesitamos un tamaño considerable para que el muestreo sea significativo (que se muestre el carácter sinusoidal) y en cualquier caso podemos modificar la intensidad con $\sigma$.
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=1.\textwidth]{ej_gaussian_pulse}
+  \includegraphics[width=.9\textwidth]{ej_gaussian_pulse}
   \caption{Ejemplos de pulsos gaussianos-sinusoidales con distintos tamaños y $\sigma$.}
   \label{fig:ad-pulso-gaussiano}
 \end{figure}
@@ -161,14 +185,28 @@ Visualizamos unas 50 muestras \autoref{fig:ad-cosenos} y comprobamos que efectiv
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.8\textwidth]{cosenos}
+  \includegraphics[width=.7\textwidth]{cosenos}
   \caption{\emph{Dataset} de cosenos.}
   \label{fig:ad-cosenos}
 \end{figure}
 
 \subsection{Estacionalidad}
 
-Esta modificación consiste simplemente en obtener la parte de estacionalidad de la descomposición STL de la serie y en amplificarla o disminuirla multiplicando por el parámetro $\sigma$, haciendo un cambio en la serie pero \textbf{sin cambiar su forma}.
+Esta modificación consiste simplemente en obtener la parte de estacionalidad de la descomposición STL de la serie y en amplificarla o disminuirla multiplicando por el parámetro $\sigma$, haciendo un cambio en la serie pero \textbf{sin cambiar su forma} (\autoref{def:stl-estacionalidad})
+
+\begin{definicion}[Pulso gaussiano-sinusoidal]
+  Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, consideramos la descomposición STL con periodo $S$ de la serie como
+
+  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n,$$
+
+  Se define la perturbación de estacionalidad de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
+
+  $$x_t' = \begin{cases}
+    m_t + \sigma s_{t} + Y_t, & c \leq t \leq n \\
+    m_t + s_t + Y_t, & \text{en caso contrario.}
+  \end{cases}.$$
+  \label{def:stl-estacionalidad}
+\end{definicion}
 
 Ejemplificamos lo que estamos haciendo en \autoref{fig:ad-seasonal2}, probando con distintos periodos y $\sigma$. Notamos como si se toma un valor de periodo incorrecto se pueden obtener resultados no deseados, en este caso el periodo que parece que mejor encuentra la descomposición es 13. Por otro lado vemos como conseguimos lo que queremos, teniendo en cuenta que la serie original está con $\sigma = 1$ amplificamos cuando $\sigma > 1$ y amortiguamos con $\sigma < 1$.
 
@@ -194,7 +232,21 @@ En este caso vemos que son muy variadas las perturbaciones pero que generalmente
 
 \subsection{Tendencia}
 
-Procedemos igual que la estacionalidad, pero en este caso cambiamos la tendencia. Hacemos la descomposición STL de la serie y aumentamos o amortiguamos multiplicando por un parámetro $\sigma$ que cambia la serie sin modificar su forma.
+Procedemos igual que la estacionalidad, pero en este caso cambiamos la tendencia. Hacemos la descomposición STL de la serie y aumentamos o amortiguamos multiplicando por un parámetro $\sigma$ que cambia la serie sin modificar su forma (\autoref{def:stl-tendencia}).
+
+\begin{definicion}[Pulso gaussiano-sinusoidal]
+  Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, consideramos la descomposición STL con periodo $S$ de la serie como
+
+  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n,$$
+
+  Se define la perturbación de tendencia de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
+
+  $$x_t' = \begin{cases}
+    \sigma m_t + s_{t} + Y_t, & c \leq t \leq n \\
+    m_t + s_t + Y_t, & \text{en caso contrario.}
+  \end{cases}.$$
+  \label{def:stl-tendencia}
+\end{definicion}
 
 Algunos ejemplos los tenemos en \autoref{fig:ad-trend} que volvemos a probar con varios periodos y $\sigma$. Se confirma que el periodo 13 es el que mejor se ajusta a la descomposición, y que la tendencia aumenta o disminuye según $\sigma$ considerando que el caso original es $\sigma = 1$.
 

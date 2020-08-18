@@ -16,7 +16,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from KNN import KNN
-#from LSTM import LSTM
+from LSTM import LSTM
 
 # Seed
 SEED = 123
