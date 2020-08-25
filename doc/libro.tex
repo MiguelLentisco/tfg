@@ -200,7 +200,7 @@ estadísticos basados en Deep Learning\xspace}
 \include{preliminares/summary}
 %\include{preliminares/dedicatoria}                % Opcional
 \include{preliminares/tablacontenidos}
-% \include{preliminares/agradecimientos}            % Opcional
+            % Opcional
 
 % \pagestyle{scrheadings} % A partir de ahora sí imprime cabeceras
 
@@ -241,6 +241,12 @@ estadísticos basados en Deep Learning\xspace}
 \include{capitulos/deteccion-anomalias}
 
 
+\setpartpreamble[c][0.75\linewidth]{
+	\bigskip % Deja un espacio vertical en la parte superior
+  Realizamos una pequeña investigación en la \textbf{predicción de series discretas}, área en la cual se han realizado muy pocos progresos. Para ello utilizaremos distintas \textbf{técnicas de discretización} para transformar los \emph{datasets} de series continuas que tenemos en discretas, estudiando su funcionamiento y uso. Después desarrollamos dos predictores basados en redes: uno normal básico y otro LSTM, de esta manera los compararemos y veremos el rendimiento entre ambos modelos.
+
+  Primero en \autoref{ch:sd-introduccion} realizamos una breve introducción al problema proporcionando un poco de contexto. Después en \autoref{ch:discretizacion} exponemos y explicamos el uso de distintas técnicas de discretización más conocidas para transformar series continuas en discretas. Finalmente en \autoref{ch:sd-experimentacion} realizamos una pequeña experimentación para ver el rendimiento de dos modelos neuronales, base y LSTM, en cuatro series discretas obtenidas usando una par de las técnicas ya comentadas.
+}
 \cleardoublepage\part{Predicción de Series Temporales Discretas}\label{part:sd}
 \include{capitulos/series-discretas}
 
@@ -262,6 +268,7 @@ estadísticos basados en Deep Learning\xspace}
 % --------------------------------------------------------------------
 
 %\include{glosario}
+
 
 % -------------------------------------------------------------------
 % BACKMATTER
@@ -287,5 +294,5 @@ estadísticos basados en Deep Learning\xspace}
 \begin{footnotesize} % Normalmente el índice se imprime en un tamaño de letra más pequeño.
 \printindex
 \end{footnotesize}
-
+\include{preliminares/agradecimientos}
 \end{document}

@@ -4,7 +4,7 @@
 \chapter{Introducción}\label{ch:sd-introduccion}
 
 
-\chapter{Discretización}
+\chapter{Discretización}\label{ch:discretizacion}
 
 Los métodos de \textbf{discretización} de series temporales consisten en la transformación de una serie cualquiera que toma valores continuos (en $\R$ generalmente) en otra donde los valores son discretos (por ejemplo un subconjunto de $\N$) (\autoref{def:discretizacion}).
 
@@ -178,3 +178,5 @@ Utilizando la función inversa de distribución acumulada podemos obtener fácil
 Se ha implementado la clase \emph{SAX} en \emph{Python} que ejecuta el método SAX y PAA en una versión basada para usar con la biblioteca \emph{sklearn}.
 
 Cabe mencionar que aunque SAX transforme la serie en una palabra, podemos codificar cada letra como un número entero y poder trabajar con valores numéricos. Para ello se ha implementado también la clase \emph{DiscretizationEncoder} que usado junto con la clase \emph{SAX} nos permite hacer la codificación de las letras a numeros enteros.
+
+\chapter{Experimentación}\label{ch:sd-experimentacion}
