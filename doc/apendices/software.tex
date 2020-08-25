@@ -5,10 +5,10 @@
 
 \section{Archivos del proyecto}
 
-Encontramos el \href{https://github.com/MiguelLentisco/tfg}{proyecto} en la plataforma \emph{Github} , con la siguiente estructura:
+Encontramos el \href{https://github.com/MiguelLentisco/tfg}{proyecto} en la plataforma \emph{Github}, con la siguiente estructura:
 
 \begin{itemize}
-  \item $PV$: Parte selección de modelos
+  \item $PV$: Parte selección de modelos.
     \begin{itemize}
       \item $resultados$: contiene los resultados del experimento en .csv y .png para TS Y CMFTS.
       \item $src$: archivos fuente.
@@ -22,7 +22,7 @@ Encontramos el \href{https://github.com/MiguelLentisco/tfg}{proyecto} en la plat
         \item $experimento\_hiper.py$: experimento para los hiperparámetros.
       \end{itemize}
     \end{itemize}
-  \item $AD$: Parte detección de anomalías
+  \item $AD$: Parte detección de anomalías.
     \begin{itemize}
       \item $models$: contiene los pesos de los modelos obtenidos.
       \item $src$: archivos fuente.
@@ -33,6 +33,15 @@ Encontramos el \href{https://github.com/MiguelLentisco/tfg}{proyecto} en la plat
           \item $experimento\_AD.py$: experimento anomalías.
         \end{itemize}
     \end{itemize}
+  \item $SD$: Parte predicción series discretas.
+    {\begin{itemize}
+      \item $src$: archivos fuente.
+      \begin{itemize}
+        \item $discretization.py$: contiene la clase SAX y StringEncoder.
+        \item $predictors.py$: contiene los predictores basados en modelos neuronales.
+        \item $experimento\_SD.py$: experimento predicción series discretas.
+      \end{itemize}
+    \end{itemize}}
   \item $doc$: archivos referentes a la memoria del proyecto.
   \item $Datasets$: \emph{datsets} con las versiones TS y CMFTS.
 
