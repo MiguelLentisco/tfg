@@ -19,3 +19,4 @@ doc/capitulos/capitulo001.tex
 *.tgz
 PV/resultados/res_pv.py
 doc/README.md
+SD/
