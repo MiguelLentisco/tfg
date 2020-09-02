@@ -5,7 +5,9 @@ from sklearn.preprocessing import KBinsDiscretizer, LabelEncoder, \
                                   StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split
-from predictors import PredictorLSTM
+from predictors import PredictorLSTM, PredictorDense
+from discretization import SAX, StringEncoder
+from sklearn.metrics import mean_squared_error
 
 SEED = 42
 np.random.seed(SEED)
@@ -62,43 +64,25 @@ def main():
     # Juntamos particiones
     X, _ = load_dataset(DATASET + "_TRAIN.csv")
     #X_test, _ = load_dataset(DATASET + "_TEST.csv")
-    X_train, X_test = train_test_split(X[0], test_size = 0.3, shuffle = False)
-    X_train.shape = (-1, X_train.size)
-    X_test.shape = (-1, X_test.size)
+    X_train, X_test = train_test_split(X[0], test_size = 0.25, shuffle = False)
+    X_train.shape = (1, -1)
+    X_test.shape = (1, -1)
     
-   
-    
-    fig, ax = plt.subplots(1, figsize=(9, 6))
-    ax.plot(X[0], label = "original")
-    w = 157
-    paa_x = []
-    paa_y = []
-    for i in range(X[0].size // w):
-        ax.plot(i*w + w // 2, np.mean(X[0, (i*w):((i+1)*w)]), "ro")
-        ax.hlines(np.mean(X[0, (i*w):((i+1)*w)]), i*w, (i+1)*w)
-        ax.vlines([i*w, (i+1)*w], np.min(X[0]), np.max(X[0]), linestyles = "dotted")
-        paa_y.append(np.mean(X[0, (i*w):((i+1)*w)]))
-        paa_x.append(i*w + w // 2)
-    ax.set_title("PAA w = 157")
-    ax.plot(paa_x, paa_y, "--", label = "paa")
-    ax.legend()
-    plt.plot()
-    
-    """
-    plt.plot(X_train, color = "red")
-    plt.plot(np.concatenate((X_train, X_test)))
-    plt.show()
-    """
-    
-    """
     plt.plot(X_train[0])
     plt.show()
+    print(X_train[0].size, X_test[0].size)
     pipe = Pipeline([("scaler", StandardScaler()), 
                      ("disc", KBinsDiscretizer(n_bins = 4, encode = "ordinal", 
                                                strategy = "kmeans")),
                      ("scaler2", StandardScaler())])
-    X_train_d = pipe.fit_transform(X_train.T).T
-    X_test_d = pipe.transform(X_test.T).T
+    pipe = Pipeline([("disc", KBinsDiscretizer(n_bins = 4, encode = "ordinal", 
+                                               strategy = "kmeans"))])
+    print(X_train[0].size)
+    pipe = Pipeline([("dis", SAX(tam_window = 3, alphabet_tam = 4)),
+                     ("encoder", StringEncoder())])
+                      
+    X_train_d = pipe.fit_transform(X_train)
+    X_test_d = pipe.transform(X_test)
     plt.plot(standarize(X_train[0]), label = "Continua")
     plt.plot(X_train_d[0], label = "Discreta")
     plt.title("TRAIN continua y discreta")
@@ -112,27 +96,60 @@ def main():
     plt.legend()
     plt.show()
     
+    lookback = 3
+    inputs, target = create_window(X_train_d[0], lookback)
+    LSTM_model = PredictorLSTM(n_neurs_lstm = 18, epochs = 350, verbose = 1,
+                               n_neurs_dense = 100, n_neurs_conv = 18)
+    Dense_model = PredictorDense(n_neurs_dense = 100, epochs = 350, 
+                                 verbose = 1)
     
-    inputs, target = create_window(X_train_d[0], 5)
-    LSTM_model = PredictorLSTM(n_neurs = 10, epochs = 200, verbose = 1)
+    Dense_model.fit(inputs, target)
+    Dense_model.print_history()
     LSTM_model.fit(inputs, target)
     LSTM_model.print_history()
     
-    fig, axs = plt.subplots(1, 2, figsize=(18, 6))
+    
+    fig, axs = plt.subplots(2, 2, figsize=(18, 12))
     axs = axs.flat
     
-    predicts = LSTM_model.predict(inputs)
-    axs[0].plot(predicts, "-o", label = "Modelo")
-    axs[0].plot(target, "-o", label = "Original")
+    predicts_lstm = LSTM_model.predict(inputs).flat
+    predicts_dense = Dense_model.predict(inputs).flat
+    mse_train_lstm = mean_squared_error(target, predicts_lstm)
+    mse_train_dense = mean_squared_error(target, predicts_dense)
+    axs[0].plot(predicts_lstm, "--", label = "LSTM")
+    axs[0].plot(predicts_dense, "--", label = "Dense")
+    axs[0].plot(target, "-", label = "Serie")
     axs[0].legend()
-    axs[0].set_title("Resultados TRAIN")
+    axs[0].set_title("Predicciones TRAIN")
     
-    inputs, target = create_window(X_test_d[0], 5)
-    predicts = LSTM_model.predict(inputs)
-    axs[1].plot(predicts, "-o", label = "Modelo")
-    axs[1].plot(target, "-o", label = "Original")
+    axs[2].plot(np.abs(predicts_lstm - target), "--", label = "LSTM")
+    axs[2].plot(np.abs(predicts_dense - target), "--", label = "Dense")
+    axs[2].set_title("Diferencias original con predicción TRAIN")
+    axs[2].legend()
+    
+    
+    inputs, target = create_window(X_test_d[0], lookback)
+    predicts_lstm = LSTM_model.predict(inputs).flat
+    predicts_dense = Dense_model.predict(inputs).flat
+    mse_test_lstm = mean_squared_error(target, predicts_lstm)
+    mse_test_dense = mean_squared_error(target, predicts_dense)
+    axs[1].plot(predicts_lstm, "--", label = "LSTM")
+    axs[1].plot(predicts_dense, "--", label = "Dense")
+    axs[1].plot(target, "-", label = "Serie")
     axs[1].legend()
     axs[1].set_title("Resultados TEST")
+    
+    axs[3].plot(np.abs(predicts_lstm - target), "--", label = "LSTM")
+    axs[3].plot(np.abs(predicts_dense - target), "--", label = "Dense")
+    axs[3].set_title("Diferencias original con predicción TEST")
+    axs[3].legend()
+    
     plt.show()
-    """
+    
+    print("MSE TRAIN: LSTM {:.3f} / Dense {:.3f}".format(mse_train_lstm, 
+                                                         mse_train_dense))
+    print("MSE TEST: LSTM {:.3f} / Dense {:.3f}".format(mse_test_lstm, 
+                                                        mse_test_dense))
+    
+    
 main()

@@ -33,7 +33,7 @@ El sistema que diseñamos intenta aprender la distribución de estas señales no
 
 El \emph{autoencoder LSTM} se encarga de aprender mediante aprendizaje \textbf{no supervisado} cómo devolver la misma señal que se proporciona como entrada, forzando al sistema a que aprenda el patrón subyacente de los datos.
 
-Para la arquitectura de este modelo usaremos una estructura \emph{autoencoder}, sin la subdimensión codificada ya que no necesitamos esta representación, que está formada por dos partes: el \textbf{codificador} (\emph{encoder}) y el \textbf{descodificador} (\emph{decoder}). El \emph{encoder} obtiene de la serie características mediante capas LSTM, cuyo tamaño va decreciendo hasta llegar al subespacio de codificación de la series, que saltaremos hasta pasar directamente al \emph{decoder} que se encarga de usar capas LSTM con tamaño creciente hasta llegar al tamaño original de las series mediante una capa completamente conectada (\emph{Dense}) que se encargará de reproducir los valores de la serie. Además todas las capas LSTM tienen como función no lineal de activación \emph{ReLU}.
+Para la arquitectura de este modelo usaremos una estructura \emph{autoencoder} (\autoref{sec:autoencoder}), sin la subdimensión codificada ya que no necesitamos esta representación, que está formada por dos partes: el \textbf{codificador} (\emph{encoder}) y el \textbf{descodificador} (\emph{decoder}). El \emph{encoder} obtiene de la serie características mediante capas LSTM, cuyo tamaño va decreciendo hasta llegar al subespacio de codificación de la series, que saltaremos hasta pasar directamente al \emph{decoder} que se encarga de usar capas LSTM con tamaño creciente hasta llegar al tamaño original de las series mediante una capa completamente conectada (\emph{Dense}) que se encargará de reproducir los valores de la serie. Además todas las capas LSTM tienen como función no lineal de activación \emph{ReLU}.
 
 Por ejemplo para un \emph{dataset} cuyas series tienen longitud 82 y solo se tiene una característica esta sería la arquitectura \autoref{fig:ad-lstm-model}. Si tuviese otra longitud o número de características lo único que cambiaría sería la dimensión de la entrada y la salida, ajustándose a la del \emph{dataset} concreto.
 
@@ -61,7 +61,7 @@ Finalmente, si observamos que los errores suelen ser mucho más grandes que los 
 
 \chapter{Alteraciones}\label{ch:ad-alteraciones}
 
-Proporcionaremos cuatro tipos distintos de alteraciones para series temporales: dos basados en \textbf{ruido gaussiano} y los otros dos en la \textbf{descomposición STD}. Estas alteraciones intentan ser lo más \textbf{genéricas} posibles para poder ser aplicadas en un \textbf{alto rango} de dominios de problemas y lo más \textbf{naturales} posibles, intentando imitar las anomalías reales que se dan.
+Proporcionaremos cuatro tipos distintos de alteraciones para series temporales: dos basados en \textbf{ruido gaussiano} y los otros dos en la \textbf{descomposición STL}. Estas alteraciones intentan ser lo más \textbf{genéricas} posibles para poder ser aplicadas en un \textbf{alto rango} de dominios de problemas y lo más \textbf{naturales} posibles, intentando imitar las anomalías reales que se dan.
 
 Si consideramos que a veces las anomalías como tales están consideradas así bajo un \textbf{criterio concreto} de un dominio específico del problema es muy difícil intentar tomarlas todas en cuenta; sin embargo sí hay generalmente unas pocas anomalías típicas que se suele querer detectar:
 
@@ -94,7 +94,7 @@ La posible aleatoriedad que introducimos está hecha para poder generar \textbf{
 
 \section{Ruido gaussiano}
 
-La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para intentar simular un \emph{pico} ya que su forma de campana se asemeja mucho a un cambio de intensidad muy alto y es además de forma continua. Recreamos esto mediante un muestreo de la función de densidad en el intervalo $[-3 \sigma, 3 \sigma]$, obteniendo el 99.74\% de la distribución (\autoref{def:ruido-gauss}.
+La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para intentar simular un \emph{pico} ya que su forma de campana se asemeja mucho a un cambio de intensidad muy alto y es además de forma continua. Recreamos esto mediante un muestreo de la función de densidad en el intervalo $[-3 \sigma, 3 \sigma]$, obteniendo el 99.74\% de la distribución (\autoref{def:ruido-gauss}).
 
 \begin{definicion}[Ruido gaussiano]
   Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, se define la perturbación de ruido gaussiano de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
@@ -699,6 +699,19 @@ Ahora pasamos a validar calculando la métrica $PR$ con la configuración anteri
 Como era de esperar debido a que la tendencia se anula por el centro de las series, la mayoría de estas perturbaciones son casi imperceptibles y se nota debido a las caídas abruptas de las curvas, provocando así un comportamiento en general peor que el resto de alteraciones. Aun así, excepto $0.001$, para el resto de $\sigma$ el modelo es capaz de captar notablemente las alteraciones cuando el ratio de proporciones se estabiliza.
 
 Destaca el peor rendimiento de $\sigma = 0.001$ aunque no es ninguna sorpresa, ya que las modificaciones muchas veces son casi imperceptibles debido a que puede mezclarse con ruido perfectamente o casi no hay efecto al estar cerca del centro. A pesar de ser el peor caso, el detector sigue realizando un mejor trabajo que el detector aleatorio.
+
+\section{Resumen de resultados}
+
+Resumimos todos los resultados del detector de anomalías y de los métodos de alteración aplicados: en general vemos que el detector se comporta muy bien a pesar de aplicar alteraciones que en ocasiones son indistinguibles del propio ruido blanco que pudiera aparecer en las series, obteniendo unos resultados excelentes cuando estas alteraciones empiezan a ser significativas.
+
+Además se puede constatar la eficacia de los métodos para crear series anómalas, que variando la intensidad y la longitud según se desee para las series temporales concretas con las que se esté utilizando, se puede obtener resultados muy buenos para poder ser usados para múltiples propósitos como la propia validación de detectores.
+
+También es cierto que las alteraciones que usan la descomposición STL son significativas cuando existe al menos una componente no nula de estacionalidad en las series, por lo que puede ser un poco restrictivo, y también puede que no sea muy efectivo cuando una de las componentes es relativamente pequeña respecto al resto (como pasa con la tendencia).
+
+En cualquier caso, hemos comprobado visualmente con diversos ejemplos de estas series alteradas el funcionamiento correcto de estos métodos y el buen rendimiento del detector LSTM a la hora de detectar distintos tipos, con múltiples intensidades y tamaños, contrastado con el uso de la validación por partición en entrenamiento/test.
+
+
+
 
 \endinput
 %------------------------------------------------------------------------------------

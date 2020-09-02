@@ -11,20 +11,18 @@
 
 The main goal of this project is to study and research problems where there have been little research on, focusing on the domain of time series and resolving these problems using models based on LSTM neural networks architectures.
 
-\paragraph{CHAPTER 1} We present a brief background of the proyect with an introduction to its basis, the motivation that led to its realization, objectives to accomplish and the estructure of this document.
+First, we present a brief background of the proyect with an introduction to its basis, the motivation that led to its realization, objectives to accomplish and the estructure of this document. Then, the first part formed by the basic concepts used in the development of this proyect: Deep Learning, time series and metrics.
 
-\paragraph{CHAPTER 2} First of all, we need to introduce to the reader the basic concepts that we are going to use in the development of the main parts. We start in the DeepLearning area with a short tour in the neural netowrks' history to learn about its origins that lead to the most basic but functional neural network: the feed-forward neural network. We explain in detail how this model works allowing us to understand the majority of neural networks models used nowadays, as these networks share the fundamentals to a large degree of similarity. Finally we list a few most well-known neural network architectures, focusing in detail at the LSTM cells.
+The basics in Deep Learning starts with a short tour in the neural netowrks' history to learn about its origins that lead to the most basic but functional neural network: the feed-forward neural network. We explain in detail how this model works allowing us to understand the majority of neural networks models used nowadays, as these networks share the fundamentals to a large degree of similarity. Finally we list a few most well-known neural network architectures, focusing in detail at the LSTM cells.
 
-\paragraph{CHAPTER 3} We present the main results of the actual research on the time series analysis with the mathematics foundation. First, we start with the probabilistic theory that includes the stochastic and stacionary processes. Then the lineal models like ARMA that we can use with several techniques like the time series decomposition or the time series differencing, fusing both approaches into the ARIMA and SARIMA models.
+Regarding the time series, we present the main results of the actual research on the time series analysis with the mathematics foundation. First, we start with the probabilistic theory that includes the stochastic and stacionary processes. Then the lineal models like ARMA that we can use with several techniques like the time series decomposition or the time series differencing, fusing both approaches into the ARIMA and SARIMA models. We also introduce and explain a few techniques for time series discretization with some examples.
 
-\paragraph{CHAPTER 4} Finally, we make a quick review of the metrics that we are going to use to validate the models developed in the project: for classification problems the accuracy, F-score and the precision-recall curves; for regression the usual error metrics like mean squared error or mean absolute error.
+Finally in this part, we make a quick review of the metrics that we are going to use to validate the models developed in the project: for classification problems the accuracy, F-score and the precision-recall curves; for regression the usual error metrics like mean squared error or mean absolute error.
 
-\paragraph{PART II} The first part of this project is about model selection in classification problems that is classically done with the cross-validation and the hold-out-test validation. We study a new heuristic called Perturbated Validation that does not use a train/test partition but introduces tiny perturbations and measures how the model behaves to them. We experiment with several machine learning models, including a LSTM neural network in a big dataset of time series, both with model selection and hyperparameters selection, and we analyze the results to validate the effectiveness of this heuristic.
+The first part of this project is about model selection in classification problems that is classically done with the cross-validation and the hold-out-test validation. We study a new heuristic called Perturbated Validation that does not use a train/test partition but introduces tiny perturbations and measures how the model behaves to them. We experiment with several machine learning models, including a LSTM neural network in a big dataset of time series, both with model selection and hyperparameters selection, and we analyze the results to validate the effectiveness of this heuristic.
 
-\paragraph{PART III} In this part we address the anomaly detection problem: detecting atypical behavior in time series.
+In the second and last part we address the anomaly detection problem: detecting atypical behavior in time series.
 We comment about the big obstacles in this type of problems: the lack of datasets with labeled data, for its use in the training of models based on supervised learning; and the models developped are too specific for the problem they are solving thus they can not be deployed in other areas. We provide a simple yet useful model based in LSTM architecture that can detect several types of anomalies, provided a well known pattern in the data, and several methods to modify the normal series in order to create artificially samples of anomalies that we use to validate our model. We evaluate the detector and the methods using them with both a real and syntetic dataset, analyzing the adjust of the detector and the quality of the perturbations.
-
-\paragraph{PART IV} Finally we consider an area that has not been very worked on: prediction of discrete time series. First of all, we study a few methods to transform continous to discrete series, analyzing its results. Then we try to predict this series using LSTM neural networks and study its performance.
 
 \paragraph{KEYWORDS:}
 \begin{itemize*}[label=,itemsep=1em,itemjoin=\hspace{1em}]
@@ -37,9 +35,6 @@ We comment about the big obstacles in this type of problems: the lack of dataset
   \item anomaly detection
   \item detector
   \item perturbation
-  \item discrete time series
-  \item prediction
-  \item discretization
 \end{itemize*}
 
 % Al finalizar el resumen en inglés, volvemos a seleccionar el idioma español para el documento

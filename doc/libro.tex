@@ -226,9 +226,9 @@ estadísticos basados en Deep Learning\xspace}
   Estudiamos una nueva heurística alternativa a la selección clásica de modelos: \emph{Perturbation Validation} ($PV$).
   Este método intenta medir si la función aprendida por un modelo se ajusta correctamente a la función que se está intentando aprender, intentando ser un \textbf{método complementario} a la selección en base a la validación clásica de usar particiones entrenamiento/test junto a la validación cruzada. Este método nuevo es bastante útil para la \textbf{búsqueda de hiperparámetros} del modelo, donde la validación clásica a veces no es capaz de discernir entre varios modelos con un rendimiento parecido, pero que alguno puede estar sobreajustando mucho más los datos.
 
-  En \autoref{ch:pv-introduccion} se introduce el contexto bajo el que surge el $PV$ y que se va a intentar obtener, definiéndolo formalmente y describiendo su implementación en \autoref{ch:pv}. Finalmente, realizamos los experimentos para comprobar su utilidad, junto con los resultados y análisis de estos en \autoref{ch:pv-experimentacion}.
+  En \autoref{ch:pv-introduccion} se introduce el contexto bajo el que surge el $PV$ y que se va a intentar obtener, definiéndolo formalmente y describiendo su implementación en \autoref{ch:pv-seleccion}. Finalmente, realizamos los experimentos para comprobar su utilidad, junto con los resultados y análisis de estos en \autoref{ch:pv-experimentacion}.
 }
-\part{Selección de modelos}\label{part:pv}
+\part{Selección de modelos para clasificación de series temporales}\label{part:pv}
 \include{capitulos/seleccion-modelos}
 
 \setpartpreamble[c][0.75\linewidth]{
@@ -237,18 +237,8 @@ estadísticos basados en Deep Learning\xspace}
 
   En \autoref{ch:ad-introduccion} introducimos los problemas actuales en el dominio de detección de anomalías, donde aportamos un sistema de detección de anomalías LSTM fácil de usar y extender a muchos dominios en \autoref{ch:ad-detector} y también los métodos de alteración de series para transformarlas en anómalas en \autoref{ch:ad-alteraciones}. Probamos experimentalmente ambos resultados mediante dos experimentos: uno en un \emph{dataset} real y otro artificial, comentando los resultados y analizándolos en \autoref{ch:ad-experimentacion}.
 }
-\cleardoublepage\part{Detección de Anomalías}\label{part:ad}
+\cleardoublepage\part{Detección de anomalías en series temporales}\label{part:ad}
 \include{capitulos/deteccion-anomalias}
-
-
-\setpartpreamble[c][0.75\linewidth]{
-	\bigskip % Deja un espacio vertical en la parte superior
-  Realizamos una pequeña investigación en la \textbf{predicción de series discretas}, área en la cual se han realizado muy pocos progresos. Para ello utilizaremos distintas \textbf{técnicas de discretización} para transformar los \emph{datasets} de series continuas que tenemos en discretas, estudiando su funcionamiento y uso. Después desarrollamos dos predictores basados en redes: uno normal básico y otro LSTM, de esta manera los compararemos y veremos el rendimiento entre ambos modelos.
-
-  Primero en \autoref{ch:sd-introduccion} realizamos una breve introducción al problema proporcionando un poco de contexto. Después en \autoref{ch:discretizacion} exponemos y explicamos el uso de distintas técnicas de discretización más conocidas para transformar series continuas en discretas. Finalmente en \autoref{ch:sd-experimentacion} realizamos una pequeña experimentación para ver el rendimiento de dos modelos neuronales, base y LSTM, en cuatro series discretas obtenidas usando una par de las técnicas ya comentadas.
-}
-\cleardoublepage\part{Predicción de Series Temporales Discretas}\label{part:sd}
-\include{capitulos/series-discretas}
 
 \include{capitulos/conclusiones-trabajo}
 

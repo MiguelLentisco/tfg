@@ -7,7 +7,7 @@ import numpy as np
 
 import keras
 from keras.layers import Dense, Activation, BatchNormalization, Dropout, \
-                         Conv1D, MaxPooling1D, LSTM
+                         Conv1D, MaxPooling1D, LSTM, Flatten
 from keras.models import Sequential
 from sklearn.base import BaseEstimator
 from sklearn.preprocessing import OneHotEncoder
@@ -33,9 +33,11 @@ class BasePredictor(BaseEstimator):
             Información sobre el entrenamiento
         encoder : OneHotEncoder
             Codificador one-hot
+        n_neurs_dense : int
+            Número de neuronas de la capa densa
     """
     
-    def __init__(self, epochs = 100, n_neurs = 32, verbose = 0):
+    def __init__(self, epochs = 100, n_neurs_dense = 32, verbose = 0):
         """
             Constructor.
 
@@ -43,17 +45,18 @@ class BasePredictor(BaseEstimator):
             ----------
             epochs : int
                 Número de épocas para entrenamiento
-            n_neurs : int
-                Número de neuronas
+            n_neurs_dense : int
+                Número de neuronas de la capa densa
             verbose : int
                 Información sobre el entrenamiento
         """
         
         self.model = None
         self.history = None
-        self.n_neurs = n_neurs
+        self.n_neurs_dense = n_neurs_dense
         self.epochs = epochs
         self.encoder = OneHotEncoder()
+        self.verbose = verbose
         
     def create_model(self, n_vals, X):
         """
@@ -127,7 +130,7 @@ class BasePredictor(BaseEstimator):
         """
 
         # Imágenes para acc/val_acc
-        fig, axs = plt.subplots(1, 2, figsize = (18, 8))
+        fig, axs = plt.subplots(1, 2, figsize = (18, 6))
         axs = axs.flat
         axs[0].plot(self.history.history['mse'])
         axs[0].plot(self.history.history['val_mse'])
@@ -150,6 +153,13 @@ class PredictorLSTM(BasePredictor):
     """
         Predictor con modelo LSTM.
     """
+    
+    def __init__(self, epochs = 100, n_neurs_dense = 100, verbose = 0, 
+                 n_neurs_lstm = 32, n_neurs_conv = 8):
+        self.n_neurs_lstm = n_neurs_lstm
+        self.n_neurs_conv = n_neurs_conv
+        super().__init__(epochs = epochs, n_neurs_dense = n_neurs_dense,
+                         verbose = verbose)
 
     def create_model(self, n_vals, X):
         """
@@ -164,19 +174,45 @@ class PredictorLSTM(BasePredictor):
         """
         
         self.model = Sequential()
-        self.model.add(Conv1D(filters = 8, kernel_size = 2, strides = 1,
+        self.model.add(Conv1D(filters = self.n_neurs_conv, kernel_size = 2, 
+                              strides = 1,
                               activation = "relu", 
                               input_shape = (X.shape[1], X.shape[2])))
         self.model.add(MaxPooling1D(pool_size = 2))
-        self.model.add(LSTM(self.n_neurs, 
+        self.model.add(LSTM(self.n_neurs_lstm, 
                             return_sequences = False))
         # Dense 100 + BN + ReLU + Dropout
-        self.model.add(Dense(100, use_bias = False))
+        self.model.add(Dense(self.n_neurs_dense, use_bias = False))
         self.model.add(BatchNormalization())
         self.model.add(Activation("relu"))
         self.model.add(Dropout(0.5))
         # Dense activaciones
         self.model.add(Dense(n_vals, activation = "softmax"))
+        
+class PredictorDense(BasePredictor):
+    
+    def create_model(self, n_vals, X):
+        """
+            Crea la estructural del modelo neuronal.
+            
+            Parameters
+            ----------
+            n_vals: int
+                Nº de valores discretos
+            X : numpy.array
+                Datos de entrenamiento
+        """
+        print(X.shape)
+        self.model = Sequential()
+        self.model.add(Flatten())
+        # Dense 100 + BN + ReLU + Dropout
+        self.model.add(Dense(self.n_neurs_dense, use_bias = False))
+        self.model.add(BatchNormalization())
+        self.model.add(Activation("relu"))
+        self.model.add(Dropout(0.5))
+        # Dense activaciones
+        self.model.add(Dense(n_vals, activation = "softmax"))
+    
    
 
 

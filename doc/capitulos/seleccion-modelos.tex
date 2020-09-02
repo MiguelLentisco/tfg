@@ -27,7 +27,7 @@ Por estas razones se presenta un nuevo método para valorar modelos basado en un
 
 Nuestro objetivo será ver el funcionamiento de esta heurística, su comportamiento en casos reales, mediante una experimentación utilizando muchos modelos y conjuntos de datos para observar y analizar si nos resulta de utilidad y puede aportar algo nuevo en el paradigma actual de selección de modelos.
 
-\chapter{Selección de modelos}\label{ch:pv}
+\chapter{Selección de modelos}\label{ch:pv-seleccion}
 
 Planteamos el problema de la selección de modelos para problemas de clasificación multiclase en dominios de series temporales: sea $M \in \N$ la longitud de cada serie temporal, $N$ el número de series temporales, $n$ el número de clases y $k$ el número de modelos a ajustar, consideramos el espacio $\mathcal{X} \times Y \subseteq R^m \times \{0, 1, \ldots, n - 1\} $ del que se obtiene una muestra $(X, \textbf{y}) \in \mathcal{X}^N \times Y^N$ (datos $X$ y etiquetas $\textbf{y}$) que sigue una distribución de probabilidad $\mathcal{P}$ desconocida. Sean también el espacio de hipótesis de los modelos considerados $\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_k\}$ de los que se ha obtenido una función cada uno $h_i \in \mathcal{H}_i, \, i = 1, \ldots, k$ que intentan aproximar a la función de etiquetado $f$ definida por:
 
@@ -103,7 +103,9 @@ Veamos esto con un ejemplo de \cite{zhang2019perturbation} \autoref{fig:pv-decis
 
 Observando los valores PV vemos cómo son mucho más altos cuando la función aprendida del modelo se corresponde con la \emph{forma} original de la función y esto se corresponde con valores casi perfectos de CV y TA. Por otro lado, se asignan valores bajos de PV para los modelos con funciones con una forma más complicada (Random Forest por ejemplo) o cuando no es capaz de captar bien la relación de los datos (Linear SVM), aunque en el primer caso se sigue teniendo valores casi perfectos de CV y TA reflejando lo que habíamos comentado previamente.
 
-Desde luego entre varios modelos con valores CV en torno a 1 podríamos hacer otra selección con quien tenga un mayor valor de PV ya que preferimos quedarnos con un modelo que lo hace igual de bien que el resto pero la función que ha aprendido se adapta mucho más a la \textbf{distribución real de los datos}.
+Por tanto, $PV$ aporta a la selección de modelos tradicional una información adicional que nos permite realizar otro cribado entre los modelos que obtienen las mejores tasas de acierto por validación cruzada, escogiendo el modelo que haya aprendido realmente la \textbf{distribución real de los datos}.
+
+De esta manera, a la hora de realizar la selección de modelos en un problema cualquiera procederemos a calcular el $PV$ y el $CV$. Nos quedamos con los modelos que mayores tasas de $CV$ obtengan y después seleccionamos el modelo que mejor $PV$ se haya obtenido de entre estos.
 
 \subsection{Definición}
 
@@ -351,6 +353,8 @@ Por tanto lo que esperamos en este experimento es:
 
   \item Si $PV \approx 0$ el modelo \textbf{sobreajustará}: si el $PV \approx 0$ entendemos que la complejidad del modelo es superior a la necesaria o bien no ha conseguido entender nada de la función de etiquetado. En cualquier caso esperamos que en otra muestra distinta el modelo lo haga mucho peor, notando una tasa de $acc_{test}$ peor y probablemente con una gran diferencia con $acc_{train}$ si el modelo se ha pasado con la complejidad.
 \end{enumerate}
+
+De esta manera, a la hora de seleccionar los modelos, $PV$ nos permite por un lado identificar los modelos que sobreajustan mucho los datos ($PV \approx 0$) y que obtendrán peores resultados en otras muestras de datos, pudiendo descartar estos modelos; y por otro escoger los modelos con mayor tasa de acierto y $PV$ ya que presentan una mejor adaptación de la distribución subyacente de los datos y tengan mejores rendimientos en otras muestras.
 
 \subsubsection{Datasets}
 
@@ -735,6 +739,8 @@ En SVM, las curvas obtenidas aquí son más \emph{suaves} y vemos como $PV$ capt
 Para Random Forest pasa algo muy parecido a SVM: en este caso las métricas clásicas van unidas pero no se da ningún valor al hecho de que estamos aumentando innecesariamente la profundidad y por tanto, la complejidad del modelo. $PV$ es capaz él solo de determinar cual es el hiperparámetro óptimo que nos da el mejor rendimiento sin pasarse de complejidad.
 
 En $k$-NN tenemos unas curvas de $PV$ más \emph{espinosas} pero se repiten los mismos hechos que hemos observado.
+
+De esta manera, consideramos la mejor configuración de hiperparámetros como la que devuelve el $PV$ más alto entre los mejores valores de $CV$, consiguiendo que el modelo obtenga el mejor rendimiento esperado respecto el acierto y además con la complejidad necesaria sin sobrepasarse, evitando el sobreajuste y una mejor generalización.
 
 Recapitulando, vemos que $PV$ es capaz de \textbf{discriminar} mejor que $acc_{CV}$ permitiendo considerar no solo el buen ajuste del modelo sino también la complejidad del modelo donde $acc_{CV}$ puede mantener valores iguales. Además los valores máximos de $PV$ se parecen corresponder con los máximos de $acc_{test}$ más o menos y que pudiera reemplazarse directamente por $acc_{CV}$, pero también se pueden usar \textbf{conjuntamente} para tener una mayor seguridad si se quiere obtener el mejor ajuste posible. Finalmente confirmamos la relación del anterior experimento de a mayor $PV$, mayor $acc_{test}$.
 

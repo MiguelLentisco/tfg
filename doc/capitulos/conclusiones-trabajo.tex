@@ -9,19 +9,17 @@ Recapitulamos todo el trabajo realizado en el proyecto presentamos las conclusio
 
 \subsection{Selección de modelos}
 
-Habiendo estudiado $PV$ experimentalmente en una gran cantidad de modelos y \emph{datasets} hemos comprobado que $PV$ puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado el que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
+Habiendo estudiado experimentalmente la heurística \emph{Perturbated Validation} en una gran cantidad de modelos, incluyendo el modelo basado en LSTM, y un conjunto extenso de \emph{datasets} hemos comprobado que puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado el que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
 
-También resalta su eficacia en la búsqueda de hiperparámetros, que capta donde se realizan los cambios importantes en la métrica y permite ser discernir los hiperparámetros al considerar también la complejidad del espacio, efecto que no tiene en cuenta la métrica clásica.
+También resalta su eficacia en la búsqueda de hiperparámetros, que capta donde se realizan los cambios importantes en la métrica y permite ser discernir los hiperparámetros al considerar también la complejidad del espacio, efecto que no tiene en cuenta la métrica clásica. En el modelo LSTM hemos visto que se obtiene una mayor discriminación del $PV$ en la variación del número de neuronas que el $CV$, que se mantenía casi igual y por tanto no tiene en cuenta las implicaciones de aumentar la complejidad del modelo.
 
-Sin embargo, hay que tener cuidado con modelos que presentan una alta varianza a la hora de aprender las soluciones, como es el caso de las redes neuronales que puede haber problemas de aprendizaje o convergencia. Para modelos como este hay que comprobar que el modelo realizado y el cálculo del $PV$ se está realizando correctamente.
+Sin embargo, hay que tener cuidado con modelos que presentan una alta varianza a la hora de aprender las soluciones como es el caso del modelo LSTM, que puede haber problemas de aprendizaje o convergencia. En estos casos habría que comprobar que el modelo realizado y el cálculo del $PV$ se está realizando correctamente.
 
 \subsection{Detección de anomalías}
 
 Mediante una arquitectura muy simple de red neuronal, capaz de ser desplegada en distintos dominios, hemos conseguido construir un detector capaz de detectar bastante bien distintas anomalías en cuanto a forma y amplitud, habiendo variado las intensidades en distintas escalas. Ha sido capaz de captar notablemente bien hasta las alteraciones más sutiles, que a veces era muy difícil distinguirlas del ruido aleatorio que puede darse en casos reales.
 
 También hemos podido comprobar la eficacia de los métodos de alteraciones que son maneras muy simples que modifican las series de distintas formas. Esta variedad nos permite valorar los detectores cuando no tenemos ningún tipo de ejemplo anómalo y que son perfectamente modificables por varios parámetros para adaptarlos al los datos concretos que se tengan.
-
-\subsection{Predicción de series temporales discretas}
 
 \section{Trabajo futuro}
 
@@ -36,7 +34,5 @@ También seria interesante un estudio sobre los propios hiperparámetros del $PV
 En problemas donde las señales normales toman varios patrones diferentes podría realizarse una extensión del detector con una arquitectura que incorporase varios decodificadores, uno para cada patrón. También poder desplegar el sistema en un problema real e ir añadiendo la información de las anomalías al sistema, mejorando la probabilidad estimada del modelo.
 
 En cuanto las alteraciones sería muy beneficioso seguir añadiendo formas nuevas de modificar las series a la lista que hemos aportado. Tener un conjunto amplio de herramientas para poder crear \emph{datasets} con ejemplos anómalos muy diversos permitiría la investigación de más modelos en este ámbito y también abriría la puerta a otros modelos basados en clasificación directa.
-
-\subsection{Predicción de series temporales discretas}
 
 \endinput

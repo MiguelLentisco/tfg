@@ -264,10 +264,10 @@ class StringEncoder:
                 
             Returns
             -------
-            res : list
-                Lista de las palabras transformadas en etiquetas.
+            res : np.array
+                Etiquetas transformadas.
         """
-        return [enc.transform(x) for x, enc in zip(X, self.encoders)]
+        return np.array([enc.transform(x) for x, enc in zip(X, self.encoders)])
     
     def fit_transform(self, X, y = None):
         """
@@ -282,20 +282,20 @@ class StringEncoder:
                 
             Returns
             -------
-            res : list
-                Lista de etiquetas.
+            res : np.array
+                Etiquetas transformadas.
         """
         self.fit(X, y)
         return self.transform(X, y)
     
     def inverse_transform(self, X):
         """
-            Transforma de vuelta las etiquetas en palabras.
+            Deshace la codificación de las palabras en etiquetas.
             
             Parameters
             ----------
-            X : list
-                Lista de etiquetas.
+            X : np.array
+                Etiquetas codificadas.
             
             Returns
             -------

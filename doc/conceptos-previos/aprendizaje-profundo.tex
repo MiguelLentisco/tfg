@@ -9,7 +9,7 @@
 
 El \textbf{aprendizaje profundo} o \emph{deep learning} es un subárea del aprendizaje automático que trata de solucionar problemas complejos mediante las llamadas \textbf{redes neuronales}. El uso de estas redes se ha hecho extremadamente popular en la última década gracias a su facilidad de diseño, gran diversidad de arquitecturas y buenos rendimientos que son aplicables en diferentes dominios de problemas.
 
-Introduciremos primero el origen de estas redes, explicando el funcionamiento completo de la red más básica y visitando el zoológico de las arquitecturas generales más usadas en los problemas actuales.
+Introduciremos primero el origen de estas redes, explicando el funcionamiento completo de la red más básica y visitando el \emph{zoológico} de las arquitecturas generales más usadas en los problemas actuales.
 
 \section{Origen}
 
@@ -293,7 +293,7 @@ Formalizamos este proceso mediante el algoritmo \autoref{alg:fp} \cite{abu2012le
  \label{alg:fp}
 \end{algorithm}
 
-\subsection{Gradiente Descendente}
+\subsection{Descenso en gradiente}
 
 Lo último que nos falta para poder empezar a usar estos modelos es un mecanismo de aprendizaje, el algoritmo para que la red pueda aprender la función $f$ mediante la muestra de datos que tenemos, es decir buscar una $h \in \mathcal{H}_{nn}$ tal que $h \approx f$, o lo que es lo mismo $h(\textbf{x}) \approx f(\textbf{x}), \; \forall \textbf{x} \in \mathcal{X}$.
 
@@ -303,20 +303,20 @@ Este tipo de funciones generalmente son de la forma $E_{\mathcal{D}} : \mathcal{
 
 Es importante entender que se puede imponer una función de error para minimizar en un modelo pero que luego el problema original que se quiere resolver sea distinto, de manera que la \textbf{valoración} del modelo se realizará de otra manera; concretamente usaremos las \textbf{métrica} para valorar la bondad de los modelos, que veremos con detalle más adelante en \autoref{ch:metricas}.
 
-Nuestro problema de aprendizaje se ha convertido en un problema de minimización donde para resolverlo podemos recurrir a los métodos numéricos existentes como el \textbf{Gradiente Descendente} (\emph{Gradient descent}, GD). \cite{curry1944method}.
+Nuestro problema de aprendizaje se ha convertido en un problema de minimización donde para resolverlo podemos recurrir a los métodos numéricos existentes como el \textbf{Descenso en Gradiente} (\emph{Gradient descent}, GD). \cite{curry1944method}.
 
-El gradiente descendente (\autoref{def:gd}) es un método de minimización cuya idea principal se basa en ir moviéndose hacia el mínimo \emph{bajando} poco a poco tomando la dirección contraria (negativa) del gradiente (\autoref{fig:gd}, \cite{molala2019sd}). Como la dirección del gradiente indica donde aumenta la función localmente, al tomar la dirección contraria después de suficientes iteraciones, esperamos idealmente llegar al menos a un mínimo local (pudiera acabar en puntos de silla) aunque lo deseable será llegar al global si lo hubiera. Bajo ciertas condiciones podemos asegurar la convergencia de este método, por ejemplo si la función es convexa y el gradiente es lipschiziano \cite{shalev2014understanding}.
+El descenso en gradiente (\autoref{def:gd}) es un método de minimización cuya idea principal se basa en ir moviéndose hacia el mínimo \emph{bajando} poco a poco tomando la dirección contraria (negativa) del gradiente (\autoref{fig:gd}, \cite{molala2019sd}). Como la dirección del gradiente indica donde aumenta la función localmente, al tomar la dirección contraria después de suficientes iteraciones, esperamos idealmente llegar al menos a un mínimo local (pudiera acabar en puntos de silla) aunque lo deseable será llegar al global si lo hubiera. Bajo ciertas condiciones podemos asegurar la convergencia de este método, por ejemplo si la función es convexa y el gradiente es lipschiziano \cite{shalev2014understanding}.
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
   \includegraphics[width=.5\textwidth]{gd}
-  \caption{Ejemplo de Gradiente Descendente en una parábola.}
+  \caption{Ejemplo del Descenso en Gradiente en una parábola.}
   \label{fig:gd}
 \end{figure}
 
-\begin{definicion}[Gradiente descendente]
-  Sea $E : \R^m \to \R$ una función diferenciable, un punto inicial $\textbf{w}_{(0)}$ y la tasa de aprendizaje $\mu \in \R^+$. El gradiente descendente es un método iterativo de primer orden para encontrar mínimos que sigue la siguiente regla de actualización:
+\begin{definicion}[Descenso en grandiente]
+  Sea $E : \R^m \to \R$ una función diferenciable, un punto inicial $\textbf{w}_{(0)}$ y la tasa de aprendizaje $\mu \in \R^+$. El descenso en gradiente es un método iterativo de primer orden para encontrar mínimos que sigue la siguiente regla de actualización:
 
   $$\textbf{w}_{(t)} = \textbf{w}_{(t-1)} - \mu \nabla E(\textbf{w}_{(t-1)}), \; \forall t \in \N.$$
   \label{def:gd}
@@ -334,9 +334,9 @@ El establecer un valor para la \textbf{tasa de aprendizaje} (\emph{learning rate
 
 En principio ya tendríamos un método para poder intentar que nuestra red pueda aprender pero tenemos un problema general a la hora de calcular $\nabla E_\mathcal{D}$: si nuestra muestra de datos $\mathcal{D}$ es muy grande esto puede provocar que el cálculo sea muy costoso en tiempo e incluso supere los tamaños de memoria del \emph{hardware} y esto solo para un paso, por lo que para realizar las múltiples iteraciones necesarias para la convergencia resulte completamente inviable \cite{ruder2016overview}.
 
-La solución a esto la aporta el \textbf{Gradiente Descendente Estocástico} (\emph{Stochastic Gradient Descent}, SGD) \cite{robbins1951stochastic} que es igual que el Gradiente Descendente, solo que en vez de tomar todo el conjunto de datos de golpe $\mathcal{D}$ se hace una partición en subconjuntos de tamaño $n$ llamados \textbf{lotes} o \emph{batches} y se actualizan los pesos para cada \emph{batch}. La aleatoriedad que se introduce al escoger los \emph{batches} es interesante ya que nos puede ayudar en la búsqueda de mínimos, aportándonos un poco de exploración para encontrar mejores mínimos en la función.
+La solución a esto la aporta el \textbf{Descenso en Gradiente Estocástico} (\emph{Stochastic Gradient Descent}, SGD) \cite{robbins1951stochastic} que es igual que el Descenso en Gradiente, solo que en vez de tomar todo el conjunto de datos de golpe $\mathcal{D}$ se hace una partición en subconjuntos de tamaño $n$ llamados \textbf{lotes} o \emph{batches} y se actualizan los pesos para cada \emph{batch}. La aleatoriedad que se introduce al escoger los \emph{batches} es interesante ya que nos puede ayudar en la búsqueda de mínimos, aportándonos un poco de exploración para encontrar mejores mínimos en la función.
 
-Técnicamente se llama SGD cuando $n=1$, es decir, cuando actualizamos la red dato a dato, cuando $1 < n < N$ se suele llamar al método \textbf{Gradiente Descente con Mini-lotes} (\emph{Mini-batch Gradient Descent}) aunque también se usa SGD indistintivamente.
+Técnicamente se llama SGD cuando $n=1$, es decir, cuando actualizamos la red dato a dato, cuando $1 < n < N$ se suele llamar al método \textbf{Descenso en Gradiente con Mini-lotes} (\emph{Mini-batch Gradient Descent}) aunque también se usa SGD indistintivamente.
 
 Respecto al tamaño del \emph{batch} $n$, el rango de valores típico de suele estar en $[32, 256]$ aunque dependerá del modelo y problema concretos que se esté considerando, se suele probar con los valores típicos y se van adaptando para obtener un buen funcionamiento.
 
@@ -667,7 +667,7 @@ Un ejemplo de esta estructura para clasificar imágenes de dígitos lo tenemos e
   \label{fig:ejemplo-cnn}
 \end{figure}
 
-\subsection{Autocodificador}
+\subsection{Autocodificador}\label{sec:autoencoder}
 
 Los \textbf{autocodificadores} (\emph{autoencoder, AE}) \cite{mcclelland1986parallel} son redes neuronales modeladas tipicamente para problemas de aprendizaje no supervisado que intentan replicar la entrada en la salida, intentando que en el proceso la red aprenda las características fundamentales de los datos consiguiendo así una \textbf{representación} comprimida de los datos (están codificados).
 
