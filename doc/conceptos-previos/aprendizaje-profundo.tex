@@ -23,10 +23,8 @@ Formalizamos la definición en \autoref{def:neuron-mp} y representamos visualmen
 
 \begin{definicion}[Neurona de McCulloch-Pitts]
   Sea un vector de entrada $\textbf{x} \in \{0, 1\}^M$ con $M \in \N$, y $\theta \in \R$ el umbral de activación, la neurona calcula la función $h$ dada por la siguiente expresión:
-
   $$ h(\textbf{x}) = \sigma\left(\sum \limits^M_{i = 1} x_i - \theta\right),$$
-
-  donde $\sigma$ es la función de activación dada por $$\sigma(t) = \begin{cases} 1, \text{ si } t \geq 0 \\ 0, \text{ si } t < 0 \end{cases}.$$
+  donde $\sigma$ es la función de activación dada por $$\sigma(t) = \begin{cases} 1, \text{ si } t \geq 0, \\ 0, \text{ si } t < 0. \end{cases}$$
   \label{def:neuron-mp}
 \end{definicion}
 
@@ -48,11 +46,9 @@ Definimos el perceptrón en \autoref{def:perceptron} y representamos visualmente
 
 \begin{definicion}[Perceptrón]
   Sea un vector de entrada $\textbf{x} \in \R^M$ con $M \in \N$, un vector de pesos $\textbf{w} \in \R^n$ y $\theta \in \R$ el umbral de activación, el perceptrón calcula la función $h$ dada por la siguiente expresión:
-
   $$h(\textbf{x}) = \sigma\left(\sum \limits^M_{i = 1}w_i x_i - \theta\right),$$
-
-   donde $\sigma$ es la función de activación dada por $$\sigma(t) = \begin{cases} 1, \text{ si } t \geq 0 \\ 0, \text{ si } t < 0 \end{cases}.$$
-   \label{def:perceptron}
+  donde $\sigma$ es la función de activación dada por $$\sigma(t) = \begin{cases} 1, \text{ si } t \geq 0, \\ 0, \text{ si } t < 0. \end{cases}$$
+  \label{def:perceptron}
 \end{definicion}
 
 \begin{figure}[htpb]
@@ -70,12 +66,10 @@ Sabemos que un hiperplano divide $\R^{M}$ en dos regiones conexas, de manera que
 Estos problemas consisten fundamentalmente en inferir la relación que existe entre los datos de unas variables o \textbf{características} y las \textbf{etiquetas} asociadas a cada dato, que se identifican con una de las dos clases $+1$ o $-1$. Esta relación es la \textbf{función de etiquetado} desconocida $f$ que deseamos aprender, donde sabemos cómo se comporta en una \textbf{muestra} dada y que usaremos para que los modelos puedan aprender una función aproximada $h$. El objetivo entonces se convierte en conseguir que $h \approx f$ (ya veremos adelante como medimos esto).
 
 Como nota adicional si consideramos la muestra extraída $(X, \textbf{y})$, podemos notar que $X \in \mathcal{M}_{N \times M}(\R)$ e $\textbf{y} \in \mathcal{M}_{N \times 1}(\N)$ y que
-
 $$ X = \begin{bmatrix} \textbf{x}_1^T \\ \textbf{x}_2^T \\ \vdots \\ \textbf{x}_N^T \end{bmatrix}, \textbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_{N} \end{bmatrix}.$$
 
 \begin{definicion}[Problema de clasificación binario]
   Sea $M \in \N$ el número de características, y $N \in N$ el número de observaciones, consideramos el espacio $\mathcal{X} \times Y \subseteq R^M \times \{-1, +1\}$ del que obtenemos una muestra $(X, \textbf{y}) \in \mathcal{X}^N \times Y^N$ que sigue una distribución de probabilidad $\mathcal{P}$ desconocida y el espacio de funciones del modelo dado $\mathcal{H}$. El problema consiste en encontrar un $h \in \mathcal{H}$ de tal manera que $h \approx f$, siendo $f$ la función de etiquetado:
-
   \begin{align*}
     f : \mathcal{X} & \to Y \\
     \textbf{x} & \mapsto f(\textbf{x}) \in \{-1, +1\}.
@@ -97,16 +91,15 @@ Podemos ver que el problema de clasificación binaria es equivalente a encontrar
 
 Gracias al Teorema de Convergencia del Perceptrón \cite{novikoff1963convergence} tenemos un resultado fuerte sobre la clase de funciones que puede aprender el perceptrón: se prueba que el modelo es capaz de aprender siempre una función $h$ que separa perfectamente dos conjuntos de datos que sean linealmente separables. Es decir, el perceptrón encuentra una solución muy buena $h \approx f$ ya que coinciden completamente, al menos en la muestra obtenida.
 
-Mediante el \textbf{proceso de aprendizaje} se consigue que el modelo aprenda la función $h$ que buscamos. Este proceso es un método que tiene cada modelo de usar la información de la muestra recogida para poder aprender la función de etiquetado, que en el caso del perceptrón será una simple regla que actualiza los pesos por cada dato de la muestra \eqref{eq:percep-rule}.
-
-\begin{equation}
+Mediante el \textbf{proceso de aprendizaje} se consigue que el modelo aprenda la función $h$ que buscamos. Este proceso es un método que tiene cada modelo de usar la información de la muestra recogida para poder aprender la función de etiquetado, que en el caso del perceptrón será una simple regla que actualiza los pesos por cada dato de la muestra, dada por
+\begin{equation*}
   \textbf{w}_{(t + 1)} =
   \begin{cases}
-    \textbf{w}_{(t)}, & \text{si } \sign(\textbf{w}^T_{(t-1)} \textbf{x}_t) \neq y_t \\
-    \textbf{w}_{(t)} + y_t \textbf{x}_t, & \text{en caso contrario}
-  \end{cases}.
+    \textbf{w}_{(t)}, & \text{si } \sign(\textbf{w}^T_{(t-1)} \textbf{x}_t) \neq y_t, \\
+    \textbf{w}_{(t)} + y_t \textbf{x}_t, & \text{en caso contrario.}
+  \end{cases}
   \label{eq:percep-rule}
-\end{equation}
+\end{equation*}
 
 A pesar de todo, en cuanto los datos dejan de ser linealmente separables el perceptrón no tiene por qué converger siquiera a una solución. Si bien se puede arreglar quedándose con la mejor solución hasta el momento, las soluciones encontradas no suelen ser muy buenas. Por esta razón se necesitaba encontrar una manera de mejorar este modelo.
 
@@ -134,13 +127,12 @@ Usemos dos perceptrones que aprendan cada uno de los hiperplanos separadores (\a
   \label{fig:dos-percep}
 \end{figure}
 
-Como estamos usando funciones $OR (+)$ y $AND (\cdot)$ para obtener $f$, el siguiente paso lógico es intentar expresar estas funciones como perceptrones. Es fácil ver que podemos obtenerlas de la siguiente manera \eqref{eq:and-or}.
-
-\begin{align}
+Como estamos usando funciones $OR (+)$ y $AND (\cdot)$ para obtener $f$, el siguiente paso lógico es intentar expresar estas funciones como perceptrones. Es fácil ver que podemos obtenerlas de la siguiente manera
+\begin{align*}
   AND(h1, h2) = \sign(h1 + h2 + 1.5), \\
   OR(h1, h2) = \sign(h1 + h2 - 1.5). \\
   \label{eq:and-or}
-\end{align}
+\end{align*}
 
 Representamos estas funciones en forma de perceptrones, considerando la forma compacta ($\textbf{x} = (x_1, \ldots, x_M, 1)$, $\textbf{w} = (w_1, \ldots, x_M, -\theta)$ que ya habíamos comentado con la Neurona de McCulloch-Pitts (\autoref{fig:and-or}, \cite{abu2012learning}).
 
@@ -210,12 +202,11 @@ Cada capa tiene una dimensión concreta, que denotaremos por $d^{(\ell)}$ y que 
 
 Observando este diagrama en profundidad notamos que cada neurona de una capa estará conectada por un peso (las conexiones) a todas las neuronas de la siguiente capa, formándose una red \textbf{densa}, nombre por la que también se suele conocer este tipo de capa. Esta estructura de conexiones de entrada a salida, capa por capa, es lo que le da nombre a este tipo de red puesto que los resultados se van pasando \emph{hacia adelante} siempre.
 
-Adicionalmente, tengamos que en cuenta que si cada neurona está asociada con unos pesos, toda la capa $\ell$ que está formada por $d^{(\ell)}$ (sin contar la de sesgo) estará determinada por todos los pesos de cada neurona, que podemos representar como una matriz \eqref{eq:pesos}.
-
-\begin{equation}
+Adicionalmente, tengamos que en cuenta que si cada neurona está asociada con unos pesos, toda la capa $\ell$ que está formada por $d^{(\ell)}$ (sin contar la de sesgo) estará determinada por todos los pesos de cada neurona, que podemos representar como una matriz de la siguiente manera
+\begin{equation*}
   W^{(\ell)} = \begin{bmatrix} \textbf{w}^{(\ell)}_{1} \ldots \textbf{w}^{(\ell)}_{d^{(\ell)}} \end{bmatrix} \in \mathcal{M}_{(d^{(\ell - 1)} + 1) \times d^{(\ell)}}(\R).
   \label{eq:pesos}
-\end{equation}
+\end{equation*}
 
 \subsubsection{Función de activación}
 
@@ -251,22 +242,18 @@ En cualquier caso, el modelo $\mathcal{H}_{nn}$ queda determinado por la \textbf
 
 \subsection{Propagación hacia adelante}
 
-Antes de explicar el algoritmo de cálculo de $h(\textbf{x})$, indiquemos una breve notación: sea $\ell \in \{1, 2, \ldots, L\}$, consideramos la capa $\ell$ que recibe el el resultado $\textbf{s}^{(\ell)} \in \mathcal{M}_{d^{(\ell)} \times 1}(\R)$ de la multiplicación de la capa anterior \eqref{eq:fp1} de los datos de entrada $\textbf{x}^{(\ell-1)} \in \mathcal{M}_{(d^{(\ell-1)} + 1) \times 1}(\R)$ con los pesos $W^{(\ell)} \in \mathcal{M}_{(d^{(\ell-1)} + 1) \times d^{(\ell)}}(\R)$
-
-\begin{equation}
+Antes de explicar el algoritmo de cálculo de $h(\textbf{x})$, indiquemos una breve notación: sea $\ell \in \{1, 2, \ldots, L\}$, consideramos la capa $\ell$ que recibe el el resultado $\textbf{s}^{(\ell)} \in \mathcal{M}_{d^{(\ell)} \times 1}(\R)$ de la multiplicación de la capa anterior mediante la expresión
+\begin{equation*}
   \textbf{s}^{(\ell)} = (W^{(\ell)})^T \textbf{x}^{(\ell-1)},
   \label{eq:fp1}
-\end{equation}
-
-a los que le aplica la función de activación $\sigma$ obteniendo la salida $\textbf{x} \in \mathcal{M}_{d^{(\ell) \times 1}}(\R)$ \eqref{eq:fp2}
-
-\begin{equation}
+\end{equation*}
+usando los datos de entrada $\textbf{x}^{(\ell-1)} \in \mathcal{M}_{(d^{(\ell-1)} + 1) \times 1}(\R)$ con la matriz de pesos $W^{(\ell)} \in \mathcal{M}_{(d^{(\ell-1)} + 1) \times d^{(\ell)}}(\R)$ a los que le aplica la función de activación $\sigma$ obteniendo la salida $\textbf{x} \in \mathcal{M}_{d^{(\ell) \times 1}}(\R)$ dada por
+\begin{equation*}
   \textbf{x}^{(\ell)} = \begin{bmatrix} 1 \\ \sigma(\textbf{s}^{(\ell)})\end{bmatrix}.
   \label{eq:fp2}
-\end{equation}
+\end{equation*}
 
-La \textbf{propagación hacia adelante} (\emph{forward propagation}) es el algoritmo para poder calcular el resultado de la red $h(\textbf{x})$. A partir de los datos de entrada $\textbf{x}^{(0)}$ se calcula la siguiente salida de la capa que se \textbf{propaga} a la siguiente capa y así hasta llegar al final siguiendo la siguiente cadena \eqref{eq:cadena-fp}
-
+La \textbf{propagación hacia adelante} (\emph{forward propagation}) es el algoritmo para poder calcular el resultado de la red $h(\textbf{x})$. A partir de los datos de entrada $\textbf{x}^{(0)}$ se calcula la siguiente salida de la capa que se \textbf{propaga} a la siguiente capa y así hasta llegar al final siguiendo la siguiente cadena
 \begin{equation}
   \textbf{x} = \textbf{x}^{(0)} \xrightarrow[]{W^{(1)}} \textbf{s}^{(1)} \xrightarrow[]{\sigma} \textbf{x}^{(1)} \xrightarrow{W^{(2)}} \ldots \xrightarrow{\sigma} \textbf{x}^{(L)} = h(\textbf{x}).
   \label{eq:cadena-fp}
@@ -317,7 +304,6 @@ El descenso en gradiente (\autoref{def:gd}) es un método de minimización cuya 
 
 \begin{definicion}[Descenso en grandiente]
   Sea $E : \R^m \to \R$ una función diferenciable, un punto inicial $\textbf{w}_{(0)}$ y la tasa de aprendizaje $\mu \in \R^+$. El descenso en gradiente es un método iterativo de primer orden para encontrar mínimos que sigue la siguiente regla de actualización:
-
   $$\textbf{w}_{(t)} = \textbf{w}_{(t-1)} - \mu \nabla E(\textbf{w}_{(t-1)}), \; \forall t \in \N.$$
   \label{def:gd}
 \end{definicion}
@@ -346,19 +332,17 @@ En principio ya estaríamos listos para que nuestra red aprendiera, pero merece 
 
 \subsubsection{Sensibilidades}
 
-Vamos a aplicar SGD para que nuestro modelo aprenda, para ello necesitamos $\nabla E_{\mathcal{D}} (\textbf{w})$ pero aquí $\textbf{w} = \{W^{(1)}, \ldots, W^{(L)}\}$ por lo que hay que calcular las derivadas parciales respecto \textbf{todas las matrices}. Considerando que el error en la muestra no es más que la media de los errores de cada dato podemos reescribir como \eqref{eq:esample}
-
-\begin{equation}
+Vamos a aplicar SGD para que nuestro modelo aprenda, para ello necesitamos $\nabla E_{\mathcal{D}} (\textbf{w})$ pero aquí $\textbf{w} = \{W^{(1)}, \ldots, W^{(L)}\}$ por lo que hay que calcular las derivadas parciales respecto \textbf{todas las matrices}. Considerando que el error en la muestra no es más que la media de los errores de cada dato podemos reescribir como
+\begin{equation*}
   E_{\mathcal{D}}(\textbf{w}) = \dfrac{1}{N} \sum \limits_{d \in \mathcal{D}} E_d(\textbf{w}) = \dfrac{1}{N} \sum \limits^N_{i = 1} e_i.
   \label{eq:esample}
-\end{equation}
+\end{equation*}
 
-Y por tanto las derivadas parciales del error respecto cada matriz de $\textbf{w}$ serán como \eqref{eq:ederiv}
-
-\begin{equation}
+Por tanto las derivadas parciales del error respecto cada matriz de $\textbf{w}$ serán como
+\begin{equation*}
   \dfrac{\partial E_{\mathcal{D}}}{\partial W^{(\ell)}} = \dfrac{1}{N} \sum \limits^N_{i = 1} \dfrac{\partial e_i}{\partial W^{(\ell)}}.
   \label{eq:ederiv}
-\end{equation}
+\end{equation*}
 
 Es posible usar métodos numéricos para obtener cada $\dfrac{\partial e}{\partial W^{(\ell)}}$ pero la complejidad del algoritmo para la derivada respecto cada peso sería de $O(Q^2)$ siendo $Q$ el número de pesos, que se hace computacionalmente inviable. Surge así el algoritmo de la \textbf{propagación hacia atrás} (\emph{backpropagation}) que nos permite calcular estas derivadas eficientemente con una complejidad de $O(Q)$.
 
@@ -366,40 +350,35 @@ Este algoritmo se basa en la \textbf{regla de la cadena} para expresar las deriv
 
 \begin{definicion}[Vector de sensibilidad]
   Sea $\ell \in \N$, el vector de sensibilidad de la capa $\ell$ notado por $\pmb{\delta}^{(\ell)}$, es el gradiente del error $e$ respecto la señal de entrada en la capa $\textbf{x}^{(\ell)}$, es decir:
-
   $$\pmb{\delta}^{(\ell)} = \dfrac{\partial e}{\partial \textbf{s}^{(\ell)}}.$$
   \label{def:sensibilidad}
 \end{definicion}
 
-Usando la regla de la cadena, y recordando que $\textbf{s}^{(\ell)} = (W^{(\ell)})^T \textbf{x}^{(\ell-1)}$ expresamos las derivadas parciales con la sensibilidad \eqref{eq:senpar} \cite{abu2012learning}
-
-\begin{equation}
+Usando la regla de la cadena, y recordando que $\textbf{s}^{(\ell)} = (W^{(\ell)})^T \textbf{x}^{(\ell-1)}$ expresamos las derivadas parciales con la sensibilidad de la siguiente forma \cite{abu2012learning}
+\begin{equation*}
   \dfrac{\partial e}{\partial W^{(\ell)}} = \dfrac{\partial e}{\partial \textbf{s}^{(\ell)}} \cdot \dfrac{\partial \textbf{s}^{(\ell)}}{\partial W^{(\ell)}} = \textbf{x}^{(\ell - 1)}(\pmb{\delta}^{(\ell)})^T.
   \label{eq:senpar}
-\end{equation}
+\end{equation*}
 
-Además, considerando que $\textbf{x}^{(\ell)} = \sigma(\textbf{s}^{(\ell)})$ y volviendo a aplicar la regla de la cadena podemos obtener la sensibilidad de la capa $(\ell)$ en función de la de $(\ell + 1)$ para cada coordenada \eqref{eq:senpar2}, que extendemos al vector entero \eqref{eq:senpar3} \cite{abu2012learning}
-
-\begin{equation}
+Además, considerando que $\textbf{x}^{(\ell)} = \sigma(\textbf{s}^{(\ell)})$ y volviendo a aplicar la regla de la cadena podemos obtener la sensibilidad de la capa $(\ell)$ en función de la de $(\ell + 1)$ para cada coordenada
+\begin{equation*}
   \delta_i^{(l)} = \dfrac{\partial e}{\partial s_i^{(l)}} =  \sum \limits^{d^{(\ell)}}_{j = 1} \left(\dfrac{\partial e}{\partial s_j^{(\ell + 1)}} \cdot \dfrac{\partial s_j^{(\ell + 1)}}{\partial x_i^{(\ell)}} \right) \cdot \dfrac{\partial x_i^{(\ell)}}{\partial s_i^{(\ell)}} = \sum \limits^{d^{(\ell)}}_{j = 1} \left(\delta^{(\ell)}_i w_{ij}^{(\ell)}\right) \sigma'(s_i^{(\ell)}),
   \label{eq:senpar2}
-\end{equation}
-
-\begin{equation}
-  \pmb{\delta}^{(\ell)} = \sigma'(\textbf{s}^{(\ell)}) \otimes \left[W^{(\ell + 1)} \pmb{\delta}^{(\ell + 1)}\right]^{d^{(\ell)}}_1.
+\end{equation*}
+que extendemos al vector entero \cite{abu2012learning}
+\begin{equation*}
+  \pmb{\delta}^{(\ell)} = \sigma'(\textbf{s}^{(\ell)}) \otimes \left[W^{(\ell + 1)} \pmb{\delta}^{(\ell + 1)}\right]^{d^{(\ell)}}_1,
   \label{eq:senpar3}
-\end{equation}
-
-$\otimes$ denota la multiplicación componente a componente y $\left[\empty\textbf{v}\right]^{d^{(\ell)}}_{1}$ indica que se toman las componentes $1, \ldots, d^{(\ell)}$ del vector $\textbf{v}$ que simplemente indica que no contamos la componente del nodo de sesgo (el nodo 1).
+\end{equation*}
+donde $\otimes$ denota la multiplicación componente a componente y $\left[\empty\textbf{v}\right]^{d^{(\ell)}}_{1}$ indica que se toman las componentes $1, \ldots, d^{(\ell)}$ del vector $\textbf{v}$ que simplemente indica que no contamos la componente del nodo de sesgo (el nodo 1).
 
 Recapitulando: las salidas $\textbf{x}^{(\ell)}$ se pueden obtener simplemente calculando el resultado de la red (propagación hacia adelante), lo que resta por calcular son las sensibilidades $\pmb{\delta}^{(\ell)}$. Replicamos el algoritmo de la propagación hacia adelante con modificaciones: en vez de ir obteniendo y propagando las salidas hacia adelante (se usa $\textbf{x}^{(\ell)}$ para $\textbf{x}^{(\ell + 1)}$), lo haremos con las sensibilidades propagándolas \emph{hacia atrás} (se usa $\pmb{\delta}^{(l+1)}$ para $\pmb{\delta}^{(\ell)}$).
 
-Empezaremos calculando $\pmb{\delta}^{(L)}$ directamente con la definición y después iremos propagando hacia atrás las sensibilidades. Por ejemplo, si consideramos el error cuadrático medio con un modelo cuya salida sea un único valor tendríamos $e(\textbf{x}; h) = (h(\textbf{x}) - y)^2$ y podemos calcular la sensibilidad fácilmente \eqref{eq:delta-ele}
-
-\begin{equation}
+Empezaremos calculando $\pmb{\delta}^{(L)}$ directamente con la definición y después iremos propagando hacia atrás las sensibilidades. Por ejemplo, si consideramos el error cuadrático medio con un modelo cuya salida sea un único valor tendríamos $e(\textbf{x}; h) = (h(\textbf{x}) - y)^2$ y podemos calcular la sensibilidad fácilmente como
+\begin{equation*}
   \pmb{\delta}^{(L)} = \dfrac{\partial e}{\partial \textbf{s}^{(L)}} = \dfrac{\partial}{\partial \textbf{s}^{(L)}} (\textbf{x}^{(L)} - y)^2 = 2(\textbf{x}^{(L)} - y) \dfrac{\partial \textbf{x}^{(L)}}{\partial \textbf{s}^{(L)}} = 2(\textbf{x}^{(L)} - y)\sigma'(\textbf{s}^{(L)}).
   \label{eq:delta-ele}
-\end{equation}
+\end{equation*}
 
 Después habrá que calcular la derivada de la función de activación elegida, por ejemplo para $\sigma(s) = \tanh(s)$ tenemos que $\sigma'(\textbf{s}^{(L)}) = 1 - \sigma(\textbf{s}^{(L)})^2$; para la lineal (la identidad) $\sigma(\textbf{s}^{(L)}) = \textbf{s}^{(L)}$ se tendrá simplemente que $\sigma'(\textbf{s}^{(L)}) = 1$.
 
@@ -489,17 +468,16 @@ la \textbf{Dimensión de Vapnik-Chervonenkis} (dimensión VC) $d_{VC}$ \cite{vap
 
 Para evitar esto utilizamos técnicas de \textbf{regularización} que se encargan de imponer condiciones sobre el modelo reduciendo así el conjunto de hipótesis $\mathcal{H}$ considerado y disminuyendo su complejidad, que se traduce a un decremento de la varianza a costa de un pequeño aumento del sesgo.
 
-Dentro de este campo hay muchas técnicas que podemos aplicar a las redes neuronales: reducción de la dimensión en profundidad y/o anchura, parada temprana (\emph{early stopping}) que trata de parar el entrenamiento bajo ciertas condiciones, \emph{dropout} \cite{hertz2018introduction, hinton2012improving} que desactiva aleatoriamente algunas neuronas de las capas mientras la red se entrena, o añadir términos de penalización al error (\emph{weight decay}) siendo los más conocidos la regularización L1 (Lasso) \eqref{eq:l1} y L2 \eqref{eq:l2} \cite{krogh1992simple}.
-
-\begin{equation}
-  E_{reg} = E_{in} + \dfrac{\lambda}{N} \sum \limits^{L}_{\ell = 1} ||W^{(\ell)}||_1, \; \lambda \in \R.
+Dentro de este campo hay muchas técnicas que podemos aplicar a las redes neuronales: reducción de la dimensión en profundidad y/o anchura, parada temprana (\emph{early stopping}) que trata de parar el entrenamiento bajo ciertas condiciones, \emph{dropout} \cite{hertz2018introduction, hinton2012improving} que desactiva aleatoriamente algunas neuronas de las capas mientras la red se entrena, o añadir términos de penalización al error (\emph{weight decay}) siendo los más conocidos la regularización L1 (Lasso)
+\begin{equation*}
+  E_{reg} = E_{in} + \dfrac{\lambda}{N} \sum \limits^{L}_{\ell = 1} ||W^{(\ell)}||_1, \; \lambda \in \R,
   \label{eq:l1}
-\end{equation}
-
-\begin{equation}
+\end{equation*}
+y L2 \cite{krogh1992simple}
+\begin{equation*}
   E_{reg} = E_{in} + \dfrac{\lambda}{N} \sum \limits^{L}_{\ell = 1} ||W^{(\ell)}||_2^2, \; \lambda \in \R.
   \label{eq:l2}
-\end{equation}
+\end{equation*}
 
 Para acabar, en las redes neuronales generalmente se deja una muestra de datos que no se usa para entrenar para obtener una estimación del error fuera de la muestra $E_{out}$ que se llama conjunto de \textbf{validación} $E_{val}$ o de \textbf{test} $E_{test}$ y que podemos usar para comprobar si tenemos sobreajuste o no. Si vamos dibujando $E_{in}$ y $E_{val}$ conforme vamos entrenando la red (cada época) podemos observar cuando hay sobreajuste y parar en ese momento (\autoref{fig:overfitting-nn} \cite{julien2018overfitting}).
 
@@ -511,7 +489,6 @@ Para acabar, en las redes neuronales generalmente se deja una muestra de datos q
   \label{fig:overfitting-nn}
 \end{figure}
 
-
 \subsection{Teorema de aproximación universal}
 
 Finalmente veamos un resultado matemático que nos permite afirmar con seguridad la fuerte capacidad de las redes neuronales para aprender funciones: el \textbf{teorema de aproximación universal}.
@@ -522,13 +499,9 @@ El caso de anchura arbitraria (\autoref{th:aproxuni-anchura}) nos dice que \text
 
 \begin{teorema}[Teorema de aproximación universal (anchura indeterminada)]
   Sea $\sigma : \R \to \R$ una función no constante, acotada y continua a la que llamamos función de activación, $I_n$ el hipercubo unidad $n-$dimensional $[0, 1]^n$. Dado un $\epsilon > 0$ y cualquier función $f \in C(I_n)$ entonces $\exists N \in \N$ entero, $\exists \alpha_i, \theta_i \in \R$ constantes reales y $\exists \textbf{w}_i \in \R^n$ vectores reales para $i = 1, \ldots, N$ tal que la función definida como:
-
-  $$F(\textbf{x}) = \sum \limits^N_{i = 1} \alpha_i \sigma \left(\textbf{w}^T_i \textbf{x} + \theta_i \right)$$
-
+  $$F(\textbf{x}) = \sum \limits^N_{i = 1} \alpha_i \sigma \left(\textbf{w}^T_i \textbf{x} + \theta_i \right),$$
   es una realización aproximada de la función $f$, es decir:
-
   $$|F(\textbf{x}) - f(\textbf{x})| < \epsilon, \; \forall \textbf{x} \in I_n.$$
-
   En otras palabras, las funciones de la forma $F(\textbf{x})$ son densas en $C(I_n)$. Este resultado también se cumple sustituyendo $I_n$ con cualquier subconjunto compacto de $\R^n$.
   \label{th:aproxuni-anchura}
 \end{teorema}
@@ -547,13 +520,9 @@ Ahora probamos el Teorema 1 de \cite{cybenko1989approximation} que es igual que 
 
 \begin{teorema}
   Sea $\sigma : \R \to \R$ una función discriminatoria no constante. Dado cualquier $\epsilon > 0$, $f \in C(I_n)$ entonces $\exists N \in \N$ entero, $\exists \alpha_i, \theta_i \in \R$ constantes reales y $\exists \textbf{w}_i \in \R^n$ vectores reales para $i = 1, \ldots, N$ tal que la función definida como:
-
-  $$F(\textbf{x}) = \sum \limits^N_{i = 1} \alpha_i \sigma \left(\textbf{w}^T_i \textbf{x} + \theta_i \right)$$
-
+  $$F(\textbf{x}) = \sum \limits^N_{i = 1} \alpha_i \sigma \left(\textbf{w}^T_i \textbf{x} + \theta_i \right),$$
   es una realización aproximada de la función $f$, es decir:
-
   $$|F(\textbf{x}) - f(\textbf{x})| < \epsilon, \; \forall \textbf{x} \in I_n.$$
-
   En otras palabras, las funciones de la forma $F(\textbf{x})$ son densas en $C(I_n)$.
   \label{th:uni1}
 \end{teorema}
@@ -564,11 +533,9 @@ Ahora probamos el Teorema 1 de \cite{cybenko1989approximation} que es igual que 
   Probemos esto por contradicción: supongamos que $R := \overline{S} \neq C(I_n)$ entonces R es un subespacio cerrado propio de $C(I_n)$. Por consecuencia del Teorema de Hahn-Banach (Proposición 3.5 \cite{rudin1973functional}), existe un funcional lineal acotado $L$ en $C(I_n)$ tal que $L \neq 0$ pero $L(R) = L(S) = 0$.
 
   Por el Teorema de Representación de Riesz \cite{rudin2006real}, este funcional lineal acotado es de la forma
-
   $$L(h) = \int_{I_n} h(\textbf{x}) d\mu(\textbf{x}), \; \forall h \in C(I_n), \, \mu \in M(I_n).$$
 
   En particular, como $\sigma(\textbf{w}^T \textbf{x} + \theta)$ está en $R$, $\forall \textbf{w} \in \R^n$, $\forall \theta \in \R$ se debe cumplir que
-
   $$\int_{I_n} \sigma(\textbf{w}^T \textbf{x} + \theta) d\mu(\textbf{x}) = 0, \; \forall \textbf{w} \in \R^n, \, \forall \theta \in \R.$$
 
   Sin embargo $\sigma$ era discriminatoria, así que tendríamos que $\mu = 0$  y por tanto $L = 0$ llegando a contradicción. Por tanto, el espacio $S$ debe ser denso en $C(I_n)$.
@@ -616,12 +583,11 @@ Veamos aquí distintas arquitecturas con capas más complejas y variadas que han
 
 Las \textbf{Redes Neuronales Convolucionales} (\emph{Convolutional Neural Networks}, CNN) \cite{lecun1995convolutional} es un tipo de arquitectura orientada al \textbf{tratamiento de imágenes} por lo que se suele usar bastante en problemas cuyos datos sean imágenes de cualquier tipo, en particular prolifera su uso en problemas supervisados de clasificación de imágenes.
 
-Esta arquitectura se basa fundamentalmente en el uso de las \textbf{convoluciones discretas} \eqref{def:convolucion} con las imágenes y un \textbf{tensor} (que puede ser 2D o 3D) denominado \textbf{núcleo} (\emph{kernel}).
+Esta arquitectura se basa fundamentalmente en el uso de las \textbf{convoluciones discretas} \autoref{def:convolucion} con las imágenes y un \textbf{tensor} (que puede ser 2D o 3D) denominado \textbf{núcleo} (\emph{kernel}).
 
 \begin{definicion}[Convolución $N$-D discreta]
   Sean dos funciones discretas $f, g : \Z^N \to \R$ definimos la convolución $N$-D discreta de $f$ con $g$ en el punto $\textbf{n} = (n_1, \ldots, n_N)$ como
-
-  $$(f * g)(\textbf{n}) = (f * g)(n_1, \ldots, n_N) = \sum \limits^{+\infty}_{m_1 = -\infty} \ldots \sum^{+\infty}_{m_N = -\infty} f(m_1, \ldots, m_N)g(n_1 - m_1, \ldots, n_M - m_N)$$
+  $$(f * g)(\textbf{n}) = (f * g)(n_1, \ldots, n_N) = \sum \limits^{+\infty}_{m_1 = -\infty} \ldots \sum^{+\infty}_{m_N = -\infty} f(m_1, \ldots, m_N)g(n_1 - m_1, \ldots, n_M - m_N).$$
   \label{def:convolucion}
 \end{definicion}
 
@@ -699,12 +665,11 @@ se busca obtener una representación con \textbf{distribuciones de probabilidad 
   \label{fig:ej-vae}
 \end{figure}
 
-Para que el entrenamiento se haga correctamente se debe introducir un término nuevo a la función de pérdida que teníamos para la reconstrucción de la entrada: la \textbf{Divergencia de Kullback-Leiber} \cite{kullback1951information} que \emph{a grosso modo} mide la diferencia entre dos distribuciones de probabilidad. Para poder efectuar la diferencia necesitamos saber cual es la distribución latente, pero esta es desconocida así que imponemos la hipótesis de que sea una distribución normal $\mathcal{N}(\textbf{0}, \textbf{1})$ y ya podemos obtener la divergencia como \eqref{eq:divergencia}.
-
-\begin{equation}
+Para que el entrenamiento se haga correctamente se debe introducir un término nuevo a la función de pérdida que teníamos para la reconstrucción de la entrada: la \textbf{Divergencia de Kullback-Leiber} \cite{kullback1951information} que \emph{a grosso modo} mide la diferencia entre dos distribuciones de probabilidad. Para poder efectuar la diferencia necesitamos saber cual es la distribución latente, pero esta es desconocida así que imponemos la hipótesis de que sea una distribución normal $\mathcal{N}(\textbf{0}, \textbf{1})$ y ya podemos obtener la divergencia como
+\begin{equation*}
   D_{KL}(\mathcal{N}(\pmb{\mu}, diag(\pmb{\sigma}^2)) || \mathcal{N}(\textbf{0}, \textbf{1})) = \dfrac{1}{2} \sum^{n}_{i = 1} \left(\sigma^2_i + \mu^2_i - 1 - \log(\sigma^2_i) \right).
   \label{eq:divergencia}
-\end{equation}
+\end{equation*}
 
 Gracias a este diseño, estos modelos son muy útiles para cuando se quieren generar nuevos datos sintéticos que sigan los mismos patrones de los datos donde fueron entrenados, haciendo que parezcan datos auténticos. Por ejemplo podríamos crear un generador de caras en \autoref{fig:caras} \cite{sancho2020ae}.
 
@@ -754,12 +719,11 @@ Esta estructura nos viene a decir que para una cierta entrada $x_t$ el modelo $A
   \label{fig:rnn-unrolled}
 \end{figure}
 
-Queda claro así cómo según bajo ciertas entradas anteriores, que es lo que proporciona el \textbf{contexto}, la salida de una entrada posterior puede variar enormemente. Así, en las RNN se diseña una neurona especial para enviar la información de manera relativamente sencilla: se une la entrada $x_t$ con la salida de la entrada anterior $h_{t-1}$, que llamaremos \textbf{estado oculto}, a una neurona normal como las conocemos (pesos más una función de activación). La fórmula de cada neurona quedará terminada por los pesos $W$ y la fórmula \eqref{eq:rnn} (\autoref{fig:rnn-cells}, \cite{christopher2015lstm}) tomando como función de activación $\tanh$.
-
-\begin{equation}
+Queda claro así cómo según bajo ciertas entradas anteriores, que es lo que proporciona el \textbf{contexto}, la salida de una entrada posterior puede variar enormemente. Así, en las RNN se diseña una neurona especial para enviar la información de manera relativamente sencilla: se une la entrada $x_t$ con la salida de la entrada anterior $h_{t-1}$, que llamaremos \textbf{estado oculto}, a una neurona normal como las conocemos (\autoref{fig:rnn-cells}, \cite{christopher2015lstm}). Tomando como función de activación $\tanh$, La fórmula de cada neurona quedará terminada por los pesos $W$, dada por
+\begin{equation*}
   h_t = \tanh \left(W^T \begin{bmatrix} h_{t-1} & x_t & 1 \end{bmatrix}^T\right).
   \label{eq:rnn}
-\end{equation}
+\end{equation*}
 
 \begin{figure}[htpb]
   \centering
@@ -809,12 +773,11 @@ Fijémonos ahora en la estructura general de una neurona o célula LSTM (\autore
   \label{fig:lstm-cells}
 \end{figure}
 
-Primero nos encontramos con la \textbf{puerta del olvido} (\emph{forget gate}), la puerta que se encarga de decidir si la información del estado celular anterior $c_{t-1}$ debería olvidarse o no en base a el estado oculto anterior $h_{t-1}$ y la entrada actual $x_t$; de esta manera controlamos qué información de las variables anteriores recordamos. El valor de la puerta $f_t$ queda determinado por los pesos $W_f$ y en base a \eqref{eq:forget} (\autoref{fig:forget} \cite{christopher2015lstm}).
-
-\begin{equation}
+Primero nos encontramos con la \textbf{puerta del olvido} (\emph{forget gate}), la puerta que se encarga de decidir si la información del estado celular anterior $c_{t-1}$ debería olvidarse o no en base a el estado oculto anterior $h_{t-1}$ y la entrada actual $x_t$; de esta manera controlamos qué información de las variables anteriores recordamos (\autoref{fig:forget} \cite{christopher2015lstm}). El valor de la puerta $f_t$ queda determinado por los pesos $W_f$, en base a
+\begin{equation*}
   f_t = \sigma\left(W_f^T \begin{bmatrix} h_{t-1} & x_t & 1 \end{bmatrix}^T \right).
   \label{eq:forget}
-\end{equation}
+\end{equation*}
 
 \begin{figure}[htpb]
   \centering
@@ -824,17 +787,16 @@ Primero nos encontramos con la \textbf{puerta del olvido} (\emph{forget gate}), 
   \label{fig:forget}
 \end{figure}
 
-A continuación tenemos la \textbf{puerta de entrada} (\emph{input gate}) que es la que determina si la nueva información en base a la entrada actual $x_t$ y el estado oculto anterior $h_{t-1}$, se debe incluir o no en el estado celular; indicándonos si esta entrada es relevante o no. Tenemos por un lado el valor de la puerta $i_t$ y el valor de la neurona que tiene la información $\widetilde{C}_t$ donde ambas quedan determinadas por sus pesos $W_i$, $W_{\widetilde{C}}$ y con las fórmulas \eqref{eq:input1}, \eqref{eq:input2} respectivamente (\autoref{fig:input} \cite{christopher2015lstm}).
-
-\begin{equation}
+A continuación tenemos la \textbf{puerta de entrada} (\emph{input gate}) que es la que determina si la nueva información en base a la entrada actual $x_t$ y el estado oculto anterior $h_{t-1}$, se debe incluir o no en el estado celular; indicándonos si esta entrada es relevante o no (\autoref{fig:input} \cite{christopher2015lstm}). Tenemos por un lado el valor de la puerta $i_t$ y el valor de la neurona que tiene la información $\widetilde{C}_t$ donde ambas quedan determinadas por sus pesos $W_i$, $W_{\widetilde{C}}$ con las respectivas fórmulas dadas por
+\begin{equation*}
   i_t = \sigma\left(W_i^T \begin{bmatrix} h_{t-1} & x_t & 1 \end{bmatrix}^T\right),
   \label{eq:input1}
-\end{equation}
-
-\begin{equation}
+\end{equation*}
+y
+\begin{equation*}
   \widetilde{C}_t = \tanh\left(W_{\widetilde{C}}^T \begin{bmatrix} h_{t-1} & x_t & 1 \end{bmatrix}^T\right).
   \label{eq:input2}
-\end{equation}
+\end{equation*}
 
 \begin{figure}[htpb]
   \centering
@@ -844,12 +806,11 @@ A continuación tenemos la \textbf{puerta de entrada} (\emph{input gate}) que es
   \label{fig:input}
 \end{figure}
 
-Llegamos al \textbf{estado celular} que es el valor que lleva la información importante a lo largo de la secuencia y que queda determinada por su entrada anterior $C_{t-1}$ junto a la puerta del olvido $f_t$ y la información actual $\widetilde{C}_t$ junto a la puerta de entrada $i_t$. Su valor $C_t$ queda determinada por los valores anteriores en base a la fórmula \eqref{eq:celular} (\autoref{fig:celular} \cite{christopher2015lstm}).
-
-\begin{equation}
+Llegamos al \textbf{estado celular} que es el valor que lleva la información importante a lo largo de la secuencia y que queda determinada por su entrada anterior $C_{t-1}$ junto a la puerta del olvido $f_t$ y la información actual $\widetilde{C}_t$ junto a la puerta de entrada $i_t$ (\autoref{fig:celular} \cite{christopher2015lstm}). Su valor $C_t$ queda determinada por los valores anteriores en base a la expresión siguiente
+\begin{equation*}
   C_t = f_t C_{t-1} + i_t \widetilde{C}_t.
   \label{eq:celular}
-\end{equation}
+\end{equation*}
 
 \begin{figure}[htpb]
   \centering
@@ -859,17 +820,16 @@ Llegamos al \textbf{estado celular} que es el valor que lleva la información im
   \label{fig:celular}
 \end{figure}
 
-Finalmente acabamos con la \textbf{puerta de salida} (\emph{output gate}) que regula la información del estado celular $C_t$ que devuelve como salida la célula, es decir, el estado oculto $h_t$. Tenemos el valor de la puerta $o_t$, determinado por la última matriz de pesos $W_o$, y el estado celular $h_t$ calculados con las fórmulas \eqref{eq:output1} \eqref{eq:output2} respectivamente (\autoref{fig:output} \cite{christopher2015lstm}).
-
-\begin{equation}
+Finalmente acabamos con la \textbf{puerta de salida} (\emph{output gate}) que regula la información del estado celular $C_t$ que devuelve como salida la célula, es decir, el estado oculto $h_t$ (\autoref{fig:output} \cite{christopher2015lstm}). Tenemos el valor de la puerta $o_t$, determinado por la última matriz de pesos $W_o$, y el estado celular $h_t$ calculados con las respectivas expresiones
+\begin{equation*}
   o_t = \sigma\left(W_o^T \begin{bmatrix} h_{t-1} & x_t & 1 \end{bmatrix}^T\right),
   \label{eq:output1}
-\end{equation}
-
-\begin{equation}
+\end{equation*}
+y
+\begin{equation*}
   h_t = o_t \tanh\left(C_t\right).
   \label{eq:output2}
-\end{equation}
+\end{equation*}
 
 \begin{figure}[htpb]
   \centering
@@ -883,14 +843,14 @@ Observamos que cada célula LSTM tiene 4 neuronas normales con sus pesos respect
 
 \subsection{Variantes}
 
-De esta célula se han creado muchas variantes que generalmente suelen ser modificaciones pequeñas que son ciertamente interesantes. Por ejemplo, \cite{gers2000recurrent} añade conexiones del estado celular anterior $C_{t-1}$ hacia las puertas de manera que los valores quedan actualizados así \eqref{eq:variante1} (\autoref{fig:variante1} \cite{christopher2015lstm}).
-
-\begin{gather}
+De esta célula se han creado muchas variantes que generalmente suelen ser modificaciones pequeñas que son ciertamente interesantes. Por ejemplo, \cite{gers2000recurrent} añade conexiones del estado celular anterior $C_{t-1}$ hacia las puertas de manera que los valores quedan actualizados así
+\begin{gather*}
   f_t = \sigma\left(W_f^T \begin{bmatrix} C_{t-1} & h_{t-1} & x_t & 1 \end{bmatrix}^T \right), \\
   i_t = \sigma\left(W_i^T \begin{bmatrix} C_{t-1} & h_{t-1} & x_t & 1 \end{bmatrix}^T\right), \\
   o_t = \sigma\left(W_o^T \begin{bmatrix} C_{t-1} & h_{t-1} & x_t & 1 \end{bmatrix}^T\right).
   \label{eq:variante1}
-\end{gather}
+\end{gather*}
+obteniendo esta estructura (\autoref{fig:variante1} \cite{christopher2015lstm}).
 
 \begin{figure}[htpb]
   \centering
@@ -900,13 +860,12 @@ De esta célula se han creado muchas variantes que generalmente suelen ser modif
   \label{fig:variante1}
 \end{figure}
 
-Otra modificación de \cite{gers2000recurrent} considera unificar las puertas de olvido $f_t$ y entrada $i_t$ de manera que si una puerta considera olvidar la información la otra puerta recuerda; de esta manera solo recordamos algo nuevo si olvidamos lo pasado, y solo recordamos lo pasado si olvidamos lo nuevo. Las fórmulas de $C_t$ y $i_t$ actualizadas se quedan así \eqref{eq:variante2} (\autoref{fig:variante2} \cite{christopher2015lstm}).
-
-\begin{gather}
+Otra modificación de \cite{gers2000recurrent} considera unificar las puertas de olvido $f_t$ y entrada $i_t$ de manera que si una puerta considera olvidar la información la otra puerta recuerda; de esta manera solo recordamos algo nuevo si olvidamos lo pasado, y solo recordamos lo pasado si olvidamos lo nuevo (\autoref{fig:variante2} \cite{christopher2015lstm}). Las fórmulas de $C_t$ y $i_t$ actualizadas quedan como
+\begin{gather*}
   i_t = 1 - f_t, \\
   C_t = f_t C_{t-1} + (1 - f_t) \widetilde{C}_t.
   \label{eq:variante2}
-\end{gather}
+\end{gather*}
 
 \begin{figure}[htpb]
   \centering
@@ -916,15 +875,15 @@ Otra modificación de \cite{gers2000recurrent} considera unificar las puertas de
   \label{fig:variante2}
 \end{figure}
 
-Finalmente nombramos una de las variantes más conocidas, la \textbf{Unidad Recurrente con Puertas} (\emph{Gated Recurrent Unit}, GRU) \cite{cho2014learning} que intenta simplificar la célula LSTM para reducir los cálculos y conseguir un entrenamiento mucho más rápido mediante la fusión el estado celular con el oculto, así como también las puertas del olvido y de entrada (formando la puerta de actualización $z_t$), quitando la puerta de salida y añadiendo una nueva llamada de reinicio $r_t$. Ahora la célula solo devuelve el estado oculto $h_t$ en función de la siguientes fórmulas \eqref{eq:gru} junto a la nueva estructura (\autoref{fig:gru}, \cite{christopher2015lstm}).
-
-\begin{gather}
+Finalmente nombramos una de las variantes más conocidas, la \textbf{Unidad Recurrente con Puertas} (\emph{Gated Recurrent Unit}, GRU) \cite{cho2014learning} que intenta simplificar la célula LSTM para reducir los cálculos y conseguir un entrenamiento mucho más rápido mediante la fusión el estado celular con el oculto, así como también las puertas del olvido y de entrada (formando la puerta de actualización $z_t$), quitando la puerta de salida y añadiendo una nueva llamada de reinicio $r_t$. Ahora la célula solo devuelve el estado oculto $h_t$ en función de la siguientes fórmulas
+\begin{gather*}
   z_t = \sigma\left(W_z^T \begin{bmatrix} h_{t-1} & x_t \end{bmatrix}^T\right), \\
   r_t = \sigma\left(W_r^T \begin{bmatrix} h_{t-1} & x_t \end{bmatrix}^T \right), \\
   \widetilde{h}_t = \tanh\left(W_{\widetilde{h}}^T \begin{bmatrix} r_t h_{t-1} & x_t \end{bmatrix}^T\right), \\
   h_t = (1 - z_t)h_{t-1} + z_t \widetilde{h}_t.
   \label{eq:gru}
-\end{gather}
+\end{gather*}
+junto a la nueva estructura (\autoref{fig:gru}, \cite{christopher2015lstm}).
 
 \begin{figure}[htpb]
   \centering
@@ -940,11 +899,11 @@ Sin embargo, en \cite{greff2016lstm} se hace una comparación de rendimiento ent
 
 A pesar de que la arquitectura LSTM evita enormemente el problema del desvanecimiento del gradiente, es posible encontrar en algún caso de entrenamiento que el gradiente explote (la norma del gradiente diverge). Si ocurre esto una técnica muy interesante de utilizar es el método del \textbf{recorte de gradiente} (\emph{clipping gradient}) \cite{pascanu2013difficulty}, que se encarga de ponerle un \emph{tope} a la norma del gradiente cuando supera cierto valor.
 
-Cada vez que se obtiene el gradiente $\textbf{g}$ se aplica la siguiente regla \eqref{eq:clipping} antes de actualizar los pesos, evitando así que la red use valores enormes del gradiente para actualizar los pesos, haciendo que la red se inestabilice y ya no sirva \cite{Goodfellow-et-al-2016}.
-
-\begin{equation}
-  \textbf{g}' = \begin{cases} \textbf{g} & \text{si } ||\textbf{g}|| \leq v \\ v\dfrac{\textbf{g}}{||\textbf{g}||} & \text{en caso contrario} \end{cases}.
+Cada vez que se obtiene el gradiente $\textbf{g}$ se aplica la siguiente regla
+\begin{equation*}
+  \textbf{g}' = \begin{cases} \textbf{g} & \text{si } ||\textbf{g}|| \leq v, \\ v\dfrac{\textbf{g}}{||\textbf{g}||} & \text{en caso contrario,} \end{cases}
   \label{eq:clipping}
-\end{equation}
+\end{equation*}
+antes de actualizar los pesos, evitando así que la red use valores enormes del gradiente para actualizar los pesos, haciendo que la red se inestabilice y ya no sirva \cite{Goodfellow-et-al-2016}.
 
 \endinput

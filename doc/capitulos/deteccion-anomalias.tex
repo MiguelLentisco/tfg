@@ -98,12 +98,10 @@ La distribución \textbf{normal} o \textbf{gaussiana} nos es muy útil para inte
 
 \begin{definicion}[Ruido gaussiano]
   Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, se define la perturbación de ruido gaussiano de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
-
   $$x_t' = \begin{cases}
-    x_t + \sigma r_{t - c + 1}, & c \leq t \leq n \\
-    x_t, & \text{en caso contrario.}
-  \end{cases},$$
-
+    x_t + \sigma r_{t - c + 1}, & c \leq t \leq n, \\
+    x_t, & \text{en caso contrario,}
+  \end{cases}$$
   donde $\{r_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función de densidad de la distribución gaussiana $N(0, \frac{\ell}{6})$ con $\ell$ puntos equidistantes en el intervalo $[-\frac{\ell}{2}, \frac{\ell}{2}]$.
   \label{def:ruido-gauss}
 \end{definicion}
@@ -140,12 +138,10 @@ Introducimos la alteración de \textbf{pulso gaussiano-sinusoidal} como alteraci
 
 \begin{definicion}[Pulso gaussiano-sinusoidal]
   Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, se define la perturbación de pulso gaussiano-sinusoidal de parámetro $\sigma \in \R$, con frecuencia $f \in \R^{+}$, centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
-
   $$x_t' = \begin{cases}
-    x_t + \sigma p_{t - c + 1} r_{t - c + 1}, & c \leq t \leq n \\
-    x_t, & \text{en caso contrario.}
-  \end{cases},$$
-
+    x_t + \sigma p_{t - c + 1} r_{t - c + 1}, & c \leq t \leq n, \\
+    x_t, & \text{en caso contrario,}
+  \end{cases}$$
   donde $\{r_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función de densidad de la distribución gaussiana $N(0, \frac{\ell}{6})$ con $\ell$ puntos equidistantes en el intervalo $[-\frac{\ell}{2}, \frac{\ell}{2}]$ y $\{p_t\}_{t = 1}^\ell \subset \R$ es un muestreo de la función $\cos$ con $\ell$ puntos equidistantes en el intervalo $[-2\pi f, 2\pi f]$.
   \label{def:pulso-gaussiano-sinusoidal}
 \end{definicion}
@@ -196,15 +192,13 @@ Esta modificación consiste simplemente en obtener la parte de estacionalidad de
 
 \begin{definicion}[Pulso gaussiano-sinusoidal]
   Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, consideramos la descomposición STL con periodo $S$ de la serie como
-
-  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n,$$
+  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n.$$
 
   Se define la perturbación de estacionalidad de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
-
   $$x_t' = \begin{cases}
-    m_t + \sigma s_{t} + Y_t, & c \leq t \leq n \\
+    m_t + \sigma s_{t} + Y_t, & c \leq t \leq n, \\
     m_t + s_t + Y_t, & \text{en caso contrario.}
-  \end{cases}.$$
+  \end{cases}$$
   \label{def:stl-estacionalidad}
 \end{definicion}
 
@@ -236,15 +230,13 @@ Procedemos igual que la estacionalidad, pero en este caso cambiamos la tendencia
 
 \begin{definicion}[Pulso gaussiano-sinusoidal]
   Sea $\{X_t\}_{t = 1}^n$ un proceso del que se extrae una serie temporal $\{x_t\}_{t = 1}^n$, consideramos la descomposición STL con periodo $S$ de la serie como
-
-  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n,$$
+  $$x_t = m_t + s_t + Y_t, \; \forall t = 0, \ldots, n.$$
 
   Se define la perturbación de tendencia de parámetro $\sigma \in \R$, con centro $c \in N$ y longitud $\ell \in N$ tal que $c + \ell \leq n$ aplicada a la serie $\{x_t\}$ como la serie alterada $\{x_t'\}_{t = 1}^n$ dada por
-
   $$x_t' = \begin{cases}
-    \sigma m_t + s_{t} + Y_t, & c \leq t \leq n \\
+    \sigma m_t + s_{t} + Y_t, & c \leq t \leq n, \\
     m_t + s_t + Y_t, & \text{en caso contrario.}
-  \end{cases}.$$
+  \end{cases}$$
   \label{def:stl-tendencia}
 \end{definicion}
 
@@ -263,7 +255,7 @@ Finalmente vemos los efectos al alterar la tendencia en \autoref{fig:ad-ej-trend
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.95\textwidth]{ej_trend2}
+  \includegraphics[width=1.2\textwidth]{ej_trend2}
   \caption{Modificación de tendencia con distintas longitudes y $\sigma$.}
   \label{fig:ad-ej-trend2}
 \end{figure}
@@ -709,9 +701,6 @@ Además se puede constatar la eficacia de los métodos para crear series anómal
 También es cierto que las alteraciones que usan la descomposición STL son significativas cuando existe al menos una componente no nula de estacionalidad en las series, por lo que puede ser un poco restrictivo, y también puede que no sea muy efectivo cuando una de las componentes es relativamente pequeña respecto al resto (como pasa con la tendencia).
 
 En cualquier caso, hemos comprobado visualmente con diversos ejemplos de estas series alteradas el funcionamiento correcto de estos métodos y el buen rendimiento del detector LSTM a la hora de detectar distintos tipos, con múltiples intensidades y tamaños, contrastado con el uso de la validación por partición en entrenamiento/test.
-
-
-
 
 \endinput
 %------------------------------------------------------------------------------------

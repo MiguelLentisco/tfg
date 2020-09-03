@@ -30,7 +30,6 @@ Nuestro objetivo será ver el funcionamiento de esta heurística, su comportamie
 \chapter{Selección de modelos}\label{ch:pv-seleccion}
 
 Planteamos el problema de la selección de modelos para problemas de clasificación multiclase en dominios de series temporales: sea $M \in \N$ la longitud de cada serie temporal, $N$ el número de series temporales, $n$ el número de clases y $k$ el número de modelos a ajustar, consideramos el espacio $\mathcal{X} \times Y \subseteq R^m \times \{0, 1, \ldots, n - 1\} $ del que se obtiene una muestra $(X, \textbf{y}) \in \mathcal{X}^N \times Y^N$ (datos $X$ y etiquetas $\textbf{y}$) que sigue una distribución de probabilidad $\mathcal{P}$ desconocida. Sean también el espacio de hipótesis de los modelos considerados $\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_k\}$ de los que se ha obtenido una función cada uno $h_i \in \mathcal{H}_i, \, i = 1, \ldots, k$ que intentan aproximar a la función de etiquetado $f$ definida por:
-
 \begin{align*}
   f : \mathcal{X} & \to Y \\
   \textbf{x} & \mapsto f(\textbf{x}) \in \{0, 1, \ldots, n-1\}.
@@ -49,7 +48,6 @@ Consideramos la selección de modelos clásica: primero tomamos la muestra o \em
   \caption{Funcionamiento de la validación cruzada.}
   \label{fig:cv}
 \end{figure}
-
 
 La validación en este caso consiste en entrenar el modelo en el subconjunto de entrenamiento y obtener el valor de la métrica en el subconjunto test; una vez se obtienen los $k$ valores de la métrica se toma el valor final como la media de los valores aunque también se suele devolver la desviación típica o la varianza para tener una idea de cómo puede variar este valor (en qué intervalo de confianza se mueve la métrica).
 
@@ -109,18 +107,16 @@ De esta manera, a la hora de realizar la selección de modelos en un problema cu
 
 \subsection{Definición}
 
-Sea $r \in [0, 1]$ el ratio de etiquetas perturbadas para cada clase (para mantener las distribución), consideramos una sucesión creciente de ratios $\{r_i\}_{1 \leq i \leq n}$ e $\textbf{y}_{r_i}$ el conjunto de etiquetas con un $r_i$ porcentaje de etiquetas perturbadas por clase. Finalmente notamos $acc(S)$ como el máximo valor de la métrica obtenido con $\mathcal{H}$ en $S = (X, \textbf{y}_{r_i})$, es decir \eqref{eq:acc_rel} \cite{zhang2019perturbation}.
-
-\begin{equation}
+Sea $r \in [0, 1]$ el ratio de etiquetas perturbadas para cada clase (para mantener las distribución), consideramos una sucesión creciente de ratios $\{r_i\}_{1 \leq i \leq n}$ e $\textbf{y}_{r_i}$ el conjunto de etiquetas con un $r_i$ porcentaje de etiquetas perturbadas por clase. Finalmente notamos $acc(S)$ como el máximo valor de la métrica obtenido con $\mathcal{H}$ en $S = (X, \textbf{y}_{r_i})$, es decir \cite{zhang2019perturbation}.
+\begin{equation*}
   acc(S) = \max_{h \in \mathcal{H}} acc(h) \text{, con } S = (X, \textbf{y}_{r_i}).
   \label{eq:acc_rel}
-\end{equation}
+\end{equation*}
 
 Con todos estos elementos ya podemos definir formalmente la heurística $PV$ (\autoref{def:pv}, \cite{zhang2019perturbation}).
 
 \begin{definicion}[Perturbated Validation]\label{def:pv}
   $PV$ es el valor absoluto del coeficiente de la regresión lineal (la pendiente) entre la variable independiente, ratio de etiquetas perturbadas $r_i$, frente la variable dependiente, acierto en el \emph{dataset} perturbado $acc(S_{r_i})$, es decir,
-
   $$PV = \Bigg|\dfrac{\sum \limits^n_{i = 0} (r_i - \overline{r})(acc(S_{r_{i}}) - \overline{acc(S_r)})}{\sum \limits^n_{i = 0}(r_i - \overline{r})^2}\Bigg|.$$
 \end{definicion}
 
@@ -187,7 +183,7 @@ Enumeramos y explicamos brevemente los distintos modelos utilizados en la experi
 
 \subsection{LSTM}
 
-Como tenemos que crear una arquitectura para clasificación en muchísimos \emph{datasets} para comprobar la selección tampoco nos preocuparemos demasiado por sacar el mayor rendimiento posible, así que realizamos un diseño simple pero funcional. Hemos implementado la clase en \emph{Python}.
+Hemos realizado un diseño simple pero suficientemente funcional para la gran cantidad de \emph{datasets}, no siendo la configuración óptima que pudiera hacerse ya que nuestro objetivo no es obtener el mejor clasificador sino comprobar el comportamiento de selección de modelos con $PV$. Hemos implementado la clase en \emph{Python}.
 
 Utilizando la misma idea que en las redes convolucionales, extraemos características usando una convolución $1$-D de 64 filtros (de salida) y tamaño de núcleo 8 y función de activación ReLU junto a una capa MaxPooling1D con tamaño de núcleo 4 para reducir la dimensión. Después aplicamos una capa LSTM de 80 células quedándonos con el ultimo estado devuelto, junto a una capa Densa de 300 neuronas con activación ReLU que incluye \emph{BatchNormalization} y \emph{Dropout} (técnicas de regularización) donde llegamos finalmente a la última capa de clasificación con $n$ neuronas y activación softmax, siendo $n \in \N$ el número de clases del problema (\autoref{fig:model-select}).
 
@@ -203,7 +199,6 @@ Minimizamos mediante \textbf{ADAM} (modificación de SGD) la función de pérdid
 
 \begin{definicion}[Entropía cruzada categórica]
   Sea $n$ el número de clases e $\textbf{y}$ el vector de probabilidades real, dado $\hat{\textbf{y}}$ el vector de probabilidades obtenido por un modelo, la entropía cruzada categórica es una función $E : [0, 1]^n \to \R$ definida por:
-
   $$ L(\hat{\textbf{y}} ; \textbf{y}) = \sum \limits^n_{i = 1} y_i \log(\hat{y}_i).$$
   \label{def:crossentropy}
 \end{definicion}
@@ -321,12 +316,12 @@ Antes de hacer un trabajo de experimentación extenso se hicieron varias pruebas
 
   \item Valores \textbf{válidos} de $n$ (número de \emph{datasets} perturbados): \cite{zhang2019perturbation} indica usar solamente 3, aunque es posible tomar cualquier valor mayor que este. Cuantos más puntos más robusto será el valor $PV$ aunque computacionalmente será más costoso, por lo que un valor de 5 es más que razonable para obtener resultados buenos.
 
-  \item \textbf{Rango} de valores del $PV$: como reflejan en \cite{zhang2019perturbation} la mayoría de valores del $PV$ obtenidos se encuentran en el intervalo $[0, 1]$ si bien se obtienen a veces valores por encima. Para los valores en $[1, 2]$, en \cite{zhang2019perturbation} se propone corregirlos al $[0, 1]$ penalizándolos con la   transformación \eqref{eq:pv-penalizacion}. En nuestro caso dejaremos los datos originales sin transformar, para notar explícitamente que se han obtenido estos valores por encima de los usuales.
-
+  \item \textbf{Rango} de valores del $PV$: como reflejan en \cite{zhang2019perturbation} la mayoría de valores del $PV$ obtenidos se encuentran en el intervalo $[0, 1]$ si bien se obtienen a veces valores por encima. Para los valores en $[1, 2]$, en \cite{zhang2019perturbation} se propone corregirlos al $[0, 1]$ penalizándolos con la siguiente transformación
   \begin{equation}
     PV_{corregido} = 1 - |PV - 1|.
     \label{eq:pv-penalizacion}
   \end{equation}
+  En nuestro caso dejaremos los datos originales sin transformar, para notar explícitamente que se han obtenido estos valores por encima de los usuales.
 
   \item \textbf{Interpretabilidad} del $PV$: el $PV$ nos indica en líneas generales si el modelo ha entendido correctamente el patrón subyacente en los datos. Observamos que conforme \textbf{aumenta} $PV$, el valor de las métricas $acc_{train}$ y $acc_{test}$ también lo hace y la tendencia del sobreajuste disminuye.
 
@@ -341,6 +336,8 @@ Como los resultados de \cite{zhang2019perturbation} parecían corresponder con e
 \section{Elección del mejor modelo}
 
 \subsection{Descripción}
+
+Describimos el experimento en base a sus objetivos, \emph{datasets} y clasificadores usados, y las métricas obtenidas.
 
 \subsubsection{Objetivos}
 
@@ -370,8 +367,8 @@ Además de considerar los \emph{datasets} originales en medida temporal (TS), ta
 
 \begin{table}[htbp]
 \centering
-\hspace*{-1cm}
-%\hspace*{-2.2cm}
+%\hspace*{-1cm}
+\hspace*{-2.2cm}
 \begin{tabular}{||l c c c c c||}
  \hline
  Nombre & Tamaño Train & Tamaño Test & Nº clases & Longitud TS & Longitud CMFTS \\ [0.5ex]
@@ -432,8 +429,8 @@ Además de considerar los \emph{datasets} originales en medida temporal (TS), ta
 
 \begin{table}[htbp]
 \centering
-\hspace*{-2cm}
-%\hspace*{-0.9cm}
+%\hspace*{-2cm}
+\hspace*{-0.9cm}
 \begin{tabular}{||l c c c c c||}
  \hline
  Nombre & Tamaño Train & Tamaño Test & Nº clases & Longitud TS & Longitud CMFTS \\ [0.5ex]
@@ -536,7 +533,7 @@ Hemos guardado dos tipos de resultados, disponibles en el \href{https://github.c
 \begin{table}[htbp]
 \centering
 %\hspace*{-2cm}
-\hspace*{-0.9cm}
+%\hspace*{-0.9cm}
 \begin{tabular}{||l | c c c c c c c c c||}
  \hline
  Classifier & $PV$ & $acc_{train}$ & $acc_{CV}$ & $acc_{test}$ & $acc_1$ & $acc_2$ & $acc_3$ & $acc_4$ & $acc_5$ \\ [0.5ex]
@@ -560,7 +557,7 @@ Hemos guardado dos tipos de resultados, disponibles en el \href{https://github.c
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  %\hspace*{-1cm}
   \includegraphics[width=0.8\textwidth]{res-imagen}
   \caption{Resultados $acc$ y recta de regresión al calcular $PV$ en FreezerRegularTrain versión TS.}
   \label{fig:res-imagen}
@@ -570,7 +567,7 @@ Unimos todos los datos obtenidos para poder visualizar la relación entre la heu
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  \hspace*{-1.2cm}
   \includegraphics[width=1.2\textwidth]{res_pv}
   \caption{Relaciones entre $PV$ y otras métricas.}
   \label{fig:res-pv}
@@ -589,7 +586,7 @@ Finalmente hemos recogido en una tabla ciertos valores interesantes de cada mode
 \begin{table}[htbp]
 \centering
 %\hspace*{-2cm}
-\hspace*{-0.9cm}
+%\hspace*{-0.9cm}
 \begin{tabular}{||l | c c c c c c c c c||}
  \hline
  Classifier & $\min PV$ & $\max PV$ & $\overline{PV}$ & $\sigma_{PV}$ & $|PV > 1|$ & $\overline{acc_{train}}$ & $\overline{acc_{test}}$ & $\overline{MSE}$ & $\sigma_{MSE}$ \\ [0.5ex]
@@ -631,7 +628,7 @@ Finalmente para analizar la cuestión de estos modelos inestables vamos a separa
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  \hspace*{-1.5cm}
   \includegraphics[width=1.2\textwidth]{grupo1}
   \caption{Resultados del grupo 1.}
   \label{fig:pv-grupo1}
@@ -639,7 +636,7 @@ Finalmente para analizar la cuestión de estos modelos inestables vamos a separa
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  %\hspace*{-1cm}
   \includegraphics[width=1.2\textwidth]{grupo2}
   \caption{Resultados del grupo 2 (la escala ha cambiado).}
   \label{fig:pv-grupo2}
@@ -660,6 +657,8 @@ Para acabar, resumamos lo obtenido: nuestras hipótesis sobre el $PV$ se cumplen
 \section{Hiperparametrización}
 
 \subsection{Descripción}
+
+Describimos el experimento en base a sus objetivos, \emph{datasets} y clasificadores usados, y las métricas obtenidas.
 
 \subsubsection{Objetivos}
 
@@ -685,7 +684,6 @@ Hemos seleccionado cuatro clasificadores de los que habíamos usado en el anteri
 \subsubsection{Métricas}
 
 Mediremos para cada configuración de cada modelo los siguientes valores:
-
 \begin{itemize}
   \item $PV$: con $n = 5$, $r_1 = 0.1$ y $r_n = 0.3$.
   \item $acc_{CV}$: con 5 particiones.
@@ -700,7 +698,7 @@ Los resultados se muestran en orden para LSTM (\autoref{fig:hiper-LSTM}), SVM (\
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  \hspace*{-1.5cm}
   \includegraphics[width=1.2\textwidth]{hiper_LSTM}
   \caption{Resultados hiperparámetros LSTM.}
   \label{fig:hiper-LSTM}
@@ -716,7 +714,7 @@ Los resultados se muestran en orden para LSTM (\autoref{fig:hiper-LSTM}), SVM (\
 
 \begin{figure}[htbp]
   \centering
-  \hspace*{-1cm}
+  \hspace*{-1.5cm}
   \includegraphics[width=1.2\textwidth]{hiper_RF}
   \caption{Resultados hiperparámetros Random Forest.}
   \label{fig:hiper-RF}

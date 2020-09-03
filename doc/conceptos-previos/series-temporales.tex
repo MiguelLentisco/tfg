@@ -26,18 +26,17 @@ La idea del espacio que hemos mencionado es muy simple: queremos asignar a \text
   \begin{enumerate}
     \item $\Omega \in \mathcal{A}$.
     \item $\forall A \in \mathcal{A} \implies \overline{A} \in \mathcal{A}$.
-    \item $\forall \{A_n\}_{n \in \N} \subseteq \mathcal{A} \implies \bigcup \limits^\infty_{n = 1} A_n \in \mathcal{A}$
+    \item $\forall \{A_n\}_{n \in \N} \subseteq \mathcal{A} \implies \bigcup \limits^\infty_{n = 1} A_n \in \mathcal{A}$.
   \end{enumerate}
   \label{def:sigma-algebra}
 \end{definicion}
 
 \begin{definicion}[Función de probabilidad]
   Sea un espacio $\Omega$, y $\mathcal{A}$ una $\sigma$-álgebra sobre $\Omega$, una función de probabilidad $P : \mathcal{A} \to R$ es una función que cumple lo siguiente:
-
   \begin{itemize}
-    \item (No negativa): $\forall A \in \mathcal{A}, \, P(A) \geq 0$
-    \item (Normalización): $P(\Omega) = 1$
-    \item ($\sigma$-aditividad): $\forall \{A\}_{n \in \N} \subseteq \mathcal{A}$ disjuntos 2 a 2 $\implies P \left(\bigcup \limits^\infty_{n = 1} A_n \right) = \sum \limits^\infty_{n = 1} P(A_n)$
+    \item (No negativa): $\forall A \in \mathcal{A}, \, P(A) \geq 0$.
+    \item (Normalización): $P(\Omega) = 1$.
+    \item ($\sigma$-aditividad): $\forall \{A\}_{n \in \N} \subseteq \mathcal{A}$ disjuntos 2 a 2 $\implies P \left(\bigcup \limits^\infty_{n = 1} A_n \right) = \sum \limits^\infty_{n = 1} P(A_n)$.
   \end{itemize}
   \label{def:probabilidad}
 \end{definicion}
@@ -53,8 +52,7 @@ Como la probabilidad $P$ es realmente una medida normalizada, podemos aplicar as
 
 \begin{definicion}[Aplicación medible]
   Sean dos espacios medibles $(\Omega_1, \mathcal{A}_1)$, $(\Omega_2, \mathcal{A}_2)$, una aplicación $f : \Omega_1 \to \Omega_2$ se dice medible, si y solamente si:
-
-  $$\forall A \in \mathcal{A}_2, \, f^{-1}(A) = \{\omega \in \Omega_1 : f(\omega) \in A\} \in \mathcal{A}_1$$
+  $$\forall A \in \mathcal{A}_2, \, f^{-1}(A) = \{\omega \in \Omega_1 : f(\omega) \in A\} \in \mathcal{A}_1.$$
   \label{def:aplicacion-medible}
 \end{definicion}
 
@@ -69,10 +67,9 @@ Una variable aleatoria $X$ induce una probabilidad en el espacio de llegada Bore
 
 \begin{definicion}[Distribución de probabilidad]
   Sea un espacio probabilístico $(\Omega, \mathcal{A}, P)$ y una variable aleatoria $X: (\Omega, \mathcal{A}, P) \to (\R, \mathcal{B})$, llamamos distribución de probabilidad de una variable aleatoria a una función de probabilidad definida en el espacio Borel, dada por:
-
   $$\begin{aligned} P_X : \mathcal{B} & \to \R \\
-      B & \mapsto P_X(B) = P(X^{-1}(B)) = P[X \in B]
-    \end{aligned}.$$
+      B & \mapsto P_X(B) = P(X^{-1}(B)) = P[X \in B].
+    \end{aligned}$$
   \label{def:distribucion-probabilidad}
 \end{definicion}
 
@@ -80,10 +77,9 @@ Si recordamos, la $\sigma$-álgebra Borel $\mathcal{B}$ estaba generada por las 
 
 \begin{definicion}[Función de distribución]
   Sea un espacio probabilístico $(\Omega, \mathcal{A}, P)$ y una variable aleatoria $X: (\Omega, \mathcal{A}, P) \to (\R, \mathcal{B})$, Llamamos función de distribución a la función definida de la siguiente forma:
-
   $$\begin{aligned} F_X : \R & \to \R \\
-      x & \mapsto F_X(x) = P_X((-\infty, x]) = P[X \leq x]
-    \end{aligned}.$$
+      x & \mapsto F_X(x) = P_X((-\infty, x]) = P[X \leq x].
+    \end{aligned}$$
 \label{def:funcion-distribucion}
 \end{definicion}
 
@@ -101,7 +97,6 @@ Ya podemos definir qué es un \textbf{proceso estocástico}, que no es más que 
 Notamos $T$ como el \textbf{espacio paramétrico} y es a lo que nos referimos como el tiempo. Según quién sea $T$ podemos decir que el proceso es en \textbf{tiempo discreto} ($T = \N \cup \{0\}$) o en \textbf{tiempo continuo} ($T = [0, + \infty)$). Además, el espacio Borel de llegada se denomina como \textbf{espacio de estados} y nos permite clasificar el proceso como \textbf{discreto} (si $E$ es discreto) o \textbf{continuo} (si $E$ es no numerable).
 
 Listamos unos cuantos ejemplos ilustrativos de procesos estocásticos:
-
 \begin{itemize}
   \item Discreto:
     \begin{itemize}
@@ -126,7 +121,7 @@ Así una \textbf{serie temporal} no será nada más que una \textbf{realización
 \end{figure}
 
 \begin{definicion}[Serie temporal]
-  Sea un proceso estocástico $\{X_t\}_{t \in T}$, con $X_t : (\Omega, \mathcal{A}, P) \to (E, \mathcal{B}_E), \, \forall t \in T$. Una serie temporal es una realización del proceso estocástico $\{x_t : x_t \in E, t \in T \}$
+  Sea un proceso estocástico $\{X_t\}_{t \in T}$, con $X_t : (\Omega, \mathcal{A}, P) \to (E, \mathcal{B}_E), \, \forall t \in T$. Una serie temporal es una realización del proceso estocástico $\{x_t : x_t \in E, t \in T \}$.
   \label{def:serie-temporal}
 \end{definicion}
 
@@ -134,30 +129,27 @@ Tenemos en cuenta que al hacer una realización obtendremos siempre una cantidad
 
 \subsection{Momentos}
 
-El estudio de los procesos y de las series está profundamente ligado a la predicción de valores: si conseguimos modelar y captar la estructura del proceso podremos predecir valores para tiempos en el futuro. Sin embargo, en general necesitaremos conocer las distribuciones $n$-dimensionales del proceso dadas por la distribución de probabilidad conjunta \eqref{eq:distri-multidim}
-
-\begin{equation}
+El estudio de los procesos y de las series está profundamente ligado a la predicción de valores: si conseguimos modelar y captar la estructura del proceso podremos predecir valores para tiempos en el futuro. Sin embargo, en general necesitaremos conocer las distribuciones $n$-dimensionales del proceso dadas por la distribución de probabilidad conjunta de la siguiente manera
+\begin{equation*}
   P[X_{t_1} \leq x_{t_1}, \ldots, X_{t_n} \leq x_{t_n}], \; \forall \{t_i\}^n_{i = 1} \subseteq T, \; \forall n \in \N.
   \label{eq:distri-multidim}
-\end{equation}
+\end{equation*}
 
 Esto en la práctica es muy complicado y poco fáctible de obtener, ya que usualmente solo se tiene una única serie temporal del proceso. Una manera más fácil y útil de describir un proceso es mediante los \textbf{momentos}, en particular los momentos de primer y segundo orden que son las funciones \textbf{media} (\autoref{def:func-media}) y \textbf{autocovarianza} (\autoref{def:func-autocovarianza}) respectivamente.
 
 \begin{definicion}[Función media]
   Sea un proceso estocástico $\{X_t\}_{t \in T}$ que cumple que $E[X_t] < +\infty, \, \forall t \in T$. La función media del proceso se define como:
-
   $$\begin{aligned} \mu : T & \to \R \\
-    t & \mapsto \mu(t) = E[X_t]
-  \end{aligned}.$$
+    t & \mapsto \mu(t) = E[X_t].
+  \end{aligned}$$
   \label{def:func-media}
 \end{definicion}
 
 \begin{definicion}[Función autocovarianza]
   Sea un proceso estocástico $\{X_t\}_{t \in T}$ que cumple que $Var[X_t] < +\infty, \, \forall t \in T$. La función media del proceso se define como:
-
   $$\begin{aligned} \gamma : T \times T & \to \R \\
-    (t_1, t_2) & \mapsto \gamma(t_1, t_2) = E\left[(X_{t_1} - \mu(t_1))(X_{t_2} - \mu(t_2))\right] = Cov(X_{t_1}, X_{t_2})
-  \end{aligned}.$$
+    (t_1, t_2) & \mapsto \gamma(t_1, t_2) = E\left[(X_{t_1} - \mu(t_1))(X_{t_2} - \mu(t_2))\right] = Cov(X_{t_1}, X_{t_2}).
+  \end{aligned}$$
   \label{def:func-autocovarianza}
 \end{definicion}
 
@@ -171,28 +163,24 @@ Veamos que significa formalmente que un proceso sea \textbf{estrictamente estaci
 
 \begin{definicion}[Proceso estrictamente estacionario]
   Un proceso estocástico $\{X_t\}_{t \in T}$ se dice que es estrictamente estacionario si $\forall n \in N$, $\forall t_1 < \ldots < t_n \in T$, $\forall \tau \in T$ se cumple que:
-
-    $$\left( X_{t_1}, \ldots, X_{t_n}\right) \sim \left( X_{(t_1 + \tau)}, \ldots, X_{(t_n + \tau)}\right).$$
+  $$\left( X_{t_1}, \ldots, X_{t_n}\right) \sim \left( X_{(t_1 + \tau)}, \ldots, X_{(t_n + \tau)}\right).$$
   \label{def:estrictamente-estacionario}
 \end{definicion}
 
-Lo que nos dice esta propiedad es que la probabilidad conjunta no cambia si se desplaza, por lo que solo dependerá de la probabilidad conjunta para $t_1, \ldots, t_n$, $\forall n \in N$. De hecho si $n=1$ tendremos que los momentos, si existen, serán todos iguales \eqref{eq:estricto-momentos}
-
-\begin{gather}
+Lo que nos dice esta propiedad es que la probabilidad conjunta no cambia si se desplaza, por lo que solo dependerá de la probabilidad conjunta para $t_1, \ldots, t_n$, $\forall n \in N$. De hecho si $n=1$ tendremos que los momentos, si existen, serán todos iguales viendo que
+\begin{gather*}
   \mu(t) = \mu, \\
   \sigma^2(t) = \sigma^2.
   \label{eq:estricto-momentos}
-\end{gather}
+\end{gather*}
 
-Además, si $n = 2$ entonces la distribución conjunta de $X_{t_1}$ y $X_{t_2}$ dependerá solo de la diferencia temporal $(t_2 - t_1) = \tau$ denominada como \textbf{desfase} (\emph{lag}). Por tanto la función autocovarianza puede ser reescrita en función únicamente del desfase, denominándose como \textbf{coeficiente de autocovarianza} con desfase $\tau$ \eqref{eq:estricto-autocovarianza}
-
-\begin{equation}
+Además, si $n = 2$ entonces la distribución conjunta de $X_{t_1}$ y $X_{t_2}$ dependerá solo de la diferencia temporal $(t_2 - t_1) = \tau$ denominada como \textbf{desfase} (\emph{lag}). Por tanto la función autocovarianza puede ser reescrita en función únicamente del desfase, denominándose como \textbf{coeficiente de autocovarianza} con desfase $\tau$ dado por
+\begin{equation*}
   \gamma(t_1, t_2) = Cov(X_{t_1}, X_{t_2}) = Cov(X_{0}, X_{(t_2 - t_1)}) = \gamma(0, \tau) = \gamma(\tau).
   \label{eq:estricto-autocovarianza}
-\end{equation}
+\end{equation*}
 
-Como las dimensiones del coeficiente de autocovarianza depende de las unidades de medida de $X_t$, por motivos de interpretabilidad se suele estandarizar obteniendo así la función de \textbf{autocorrelación} (ACF) que mide la correlación entre $X_t$ y $X_{t + \tau}$ \eqref{eq:autocorrelacion}
-
+Como las dimensiones del coeficiente de autocovarianza depende de las unidades de medida de $X_t$, por motivos de interpretabilidad se suele estandarizar obteniendo así la función de \textbf{autocorrelación} (ACF) que mide la correlación entre $X_t$ y $X_{t + \tau}$ en base a
 \begin{equation}
   \rho(\tau) = \dfrac{\gamma(\tau)}{\gamma(0)}.
   \label{eq:autocorrelacion}
@@ -204,10 +192,9 @@ Sin embargo, podemos relajar las condiciones de la propiedad para hacerlas más 
 
 \begin{definicion}[Proceso estacionario de segundo orden]
   Sea un proceso estocástico $\{X_t\}_{t \in T}$, se dice que el proceso es débilmente estacionario o estacionario de segundo orden si se cumple lo siguiente:
-
   \begin{enumerate}
     \item $\mu(t) = \mu, \, \forall t \in T$.
-    \item $\gamma(t_1, t_2) = \gamma  (t_1 + \tau, t_2 + \tau), \, \forall t_1, t_2, \tau \in T$
+    \item $\gamma(t_1, t_2) = \gamma  (t_1 + \tau, t_2 + \tau), \, \forall t_1, t_2, \tau \in T$.
   \end{enumerate}
 
   La condición 2, como ya vimos, implica que $\gamma(t_1, t_2) = \gamma(\tau)$.
@@ -223,17 +210,15 @@ El \textbf{ruido independiente idénticamente distribuido} (ruido iid.) es el ej
 \label{def:ruido-iid}
 \end{definicion}
 
-Debido a la independencia de las variables tendremos que la función media del proceso será $\mu$, y la función autocovarianza será \eqref{eq:autocov-ruido}
-
+Debido a la independencia de las variables tendremos que la función media del proceso será $\mu$, y la función autocovarianza será
 \begin{equation}
   \gamma(\tau) =
   \begin{cases}
-    \sigma^2, & \tau = 0 \\
-    0, & \tau \neq 0
-  \end{cases},
+    \sigma^2, & \tau = 0, \\
+    0, & \tau \neq 0.
+  \end{cases}
   \label{eq:autocov-ruido}
 \end{equation}
-
 que no depende del tiempo $t$ y junto a la independencia de las variables nos dice que el proceso es estrictamente estacionario.
 
 Uno puede relajar la condición de independencia e distribución idéntica para obtener un tipo de proceso estacionario de segundo orden, el llamado \textbf{ruido blanco} (\autoref{def:ruido-blanco}).
@@ -245,16 +230,15 @@ Uno puede relajar la condición de independencia e distribución idéntica para 
 
 En este caso el ruido blanco obtiene la misma función media y autocovarianza que el ruido iid. \eqref{eq:autocov-ruido} haciendo que el proceso sea estacionario de segundo orden. Así, cualquier proceso $IID(\mu, \sigma^2)$ es $WN(\mu, \sigma^2)$ pero no al revés.
 
-Para ambos procesos podemos calcular la función de autocorrelación \eqref{eq:ruido-autocorrelacion}
-
-\begin{equation}
+Para ambos procesos podemos calcular la función de autocorrelación como
+\begin{equation*}
   \rho(\tau) =
   \begin{cases}
-    1, & \tau = 0 \\
-    0, & \tau \neq 0
-  \end{cases}.
+    1, & \tau = 0, \\
+    0, & \tau \neq 0.
+  \end{cases}
   \label{eq:ruido-autocorrelacion}
-\end{equation}
+\end{equation*}
 
 Mostramos un ejemplo de un proceso $\{X_n\}_{n = 1}^{500} \sim IID(0, 1)$ generado con $X_n \sim N(0, 1), \, n = 1, \ldots, 500$ junto con su correlograma (el valor de la función de autocorrelación en función del desfase) (\autoref{fig:ruido-ej}, \cite{chatfield2019analysis}).
 
@@ -270,11 +254,8 @@ Un proceso muy simple que no es estacionario es el \textbf{camino aleatorio} (\a
 
 \begin{definicion}[Camino aleatorio]
   Se dice que un proceso $\{X_t\}_{t \in T}$ es un camino aleatorio si
-
   $$X_t = X_{t - 1} + Z_t, \, \forall t \in T,$$
-
   donde $\{Z_t\}_{t \in T} \sim IID(\mu , \sigma^2)$. Generalmente cuando $t = 1$ se toma $X_1 = Z_1$, haciendo que el proceso sea como:
-
   $$X_t = \sum \limits^t_{i = 1} Z_i, \, \forall t \in T.$$
   \label{def:random-walk}
 \end{definicion}
@@ -297,11 +278,8 @@ Finalmente veremos unas pocas propiedades interesantes sobre las funciones de au
 
 \begin{proposicion}[Propiedades de $\gamma$]
   Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con función de autocovarianza definida como
-
   $$\gamma(\tau) = Cov(X_{t + \tau}, X_t), \; \forall \tau \in T,$$
-
   entonces se cumplen las siguientes afirmaciones
-
   \begin{enumerate}
     \item $\gamma(0) = \sigma^2 \geq 0$.
     \item $|\gamma(\tau)| \leq \gamma(0), \, \forall \tau \in T$.
@@ -312,11 +290,9 @@ Finalmente veremos unas pocas propiedades interesantes sobre las funciones de au
 
 \begin{proof}
   La primera propiedad es consecuencia directa de que $Var[X_t] = \sigma^2 \geq 0, \, \forall t \in T$. Para la segunda aplicamos la desigualdad de Cauchy-Schwarz para el valor absoluto de la covarianza
-
     $$|\gamma(\tau)| = |Cov(X_{t+\tau}, X_t)| \leq \sqrt{Var[X_{t+\tau}]Var[X_t]} = \sqrt{\gamma(0)\gamma(0)} = \sqrt{\gamma(0)^2} = \gamma(0), \; \forall \tau \in T.$$
 
-  Finalmente la tercera propiedad es inmediata
-
+  Finalmente, la tercera propiedad es inmediata
   $$\gamma(\tau) = Cov(X_{t + \tau}, X_t) = Cov(X_t, X_{t + \tau}) = \gamma(\tau), \; \forall \tau \in T.$$
 \end{proof}
 
@@ -324,11 +300,8 @@ Como $\rho$ está definida en base a $\gamma$, las propiedades se siguen de esta
 
 \begin{proposicion}[Propiedades de $\rho$]
   Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con función de autocorrelación definida como
-
   $$\rho(\tau) = \dfrac{\gamma(\tau)}{\gamma(0)} = \dfrac{\gamma(\tau)}{\sigma^2}, \; \forall \tau \in T,$$
-
   entonces se cumplen las siguientes afirmaciones
-
   \begin{enumerate}
     \item $\rho(0) = 1$.
     \item $|\rho(\tau)| \leq 1, \, \forall \tau \in T$.
@@ -339,11 +312,9 @@ Como $\rho$ está definida en base a $\gamma$, las propiedades se siguen de esta
 
 \begin{proof}
   Todas se demuestran por consecuencia de las propiedades de $\gamma$: la primera ya que $\gamma(0) = \sigma^2$, y por tanto $\rho(0) = \gamma(0) / \sigma^2 = 1$. La segunda por $|\gamma(\tau)| \leq \sigma^2$ se tiene
-
   $$|\rho(\tau)| = \dfrac{|\gamma(\tau)|}{\sigma^2} \leq \dfrac{\sigma^2}{\sigma^2} = 1, \; \forall \tau \in T.$$
 
-  Finalmente la tercera por ser $\gamma$ par tenemos
-
+  Finalmente, la tercera por ser $\gamma$ par tenemos
   $$\rho(\tau) = \dfrac{\gamma(\tau)}{\sigma^2} = \dfrac{\gamma(-\tau)}{\sigma^2} = \rho(-\tau), \; \forall \tau \in T.$$
 \end{proof}
 
@@ -366,56 +337,51 @@ Primero mostramos el proceso de \textbf{medias móviles} que construye el proces
 
 \begin{definicion}[Proceso de media móvil]
   Sea un proceso de ruido blanco $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$ y constantes reales $\{\theta_t\}_{t = 0}^q \subset \R$. Se define el proceso de media móvil de orden $q$, denotado como $\{X\}_{t \in T} \sim MA(q)$, con la siguiente expresión:
-
   $$X_t = \theta_0 Z_t + \theta_1 Z_{t - 1} + \ldots + \theta_q Z_{t - q} = \sum \limits^q_{i = 0} \theta_i Z_{t - i}, \; \forall t \in T.$$
   \label{def:media-movil}
 \end{definicion}
 
-Es posible que el ruido tenga media $\mu$ distinta de cero, pero consideramos que es nula para simplificar el proceso. Si analicemos estos procesos, por un lado obtenemos inmediatamente al ser $Z_t$ incorreladas que \eqref{eq:media-media-auto}
-
+Es posible que el ruido tenga media $\mu$ distinta de cero, pero consideramos que es nula para simplificar el proceso. Si analicemos estos procesos, por un lado obtenemos inmediatamente al ser $Z_t$ incorreladas que
 \begin{gather}
   E[X_t] = 0, \\
   Var[X_t] = \sigma^2 \sum \limits^q_{i = 0} \theta_i^2.
   \label{eq:media-media-auto}
 \end{gather}
 
-También calculamos el coeficiente de autocovarianza \eqref{eq:media-coef-auto}
-
-\begin{equation}
+También podemos calculamos el coeficiente de autocovarianza como
+\begin{equation*}
   \begin{aligned}
     \gamma(\tau) & = Cov(X_t, X_{t + \tau}) \\
     & = Cov\left(\sum \limits^q_{i = 0} \theta_i Z_i, \sum \limits^q_{i = 0} \theta_i Z_{t + \tau - i}\right) \\
     & = \begin{cases}
-      0, & \tau > q \\
-      \sigma^2 \sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}, & 0 \leq \tau \leq q
-    \end{cases}.
+      0, & \tau > q, \\
+      \sigma^2 \sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}, & 0 \leq \tau \leq q.
+    \end{cases}
   \end{aligned}
 \label{eq:media-coef-auto}
-\end{equation}
+\end{equation*}
 
 Como $\gamma(\tau)$ no depende de $t$ y la media es constante, los procesos de media móvil son estacionarios de segundo orden para cualquier $q \in \N$ y $\{\theta_t\}_{t = 0}^q \subset \R$.
 
-Finalmente veamos la función de autocorrelación \eqref{eq:media-autocor}
-
-\begin{equation}
+Finalmente, veamos la función de autocorrelación dada por
+\begin{equation*}
   \rho(\tau) = \begin{cases}
-    1, & \tau = 0 \\
-    \dfrac{\sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}}{\sum \limits^q_{i = 0} \theta_i^2}, & 0 < \tau \leq q \\
-    0, & \tau > q
-  \end{cases}.
+    1, & \tau = 0, \\
+    \dfrac{\sum \limits^{q - \tau}_{i = 0} \theta_i \theta_{i + \tau}}{\sum \limits^q_{i = 0} \theta_i^2}, & 0 < \tau \leq q, \\
+    0, & \tau > q.
+  \end{cases}
   \label{eq:media-autocor}
-\end{equation}
+\end{equation*}
 
-De la construcción de estos modelos vemos que cada $X_t$ es dependiente de otros $X_s$ cuando $|\tau| = |t-s| \leq q$, es decir son $q$-dependientes y cuando $\tau > q$ entonces las variables son independientes. Una idea análoga se encuentra para los momentos de segundo orden, donde hablamos de procesos $q$-correlados. (\autoref{def:q-correlacion}).
+De la construcción de estos modelos vemos que cada $X_t$ es dependiente de otros $X_s$ cuando $|\tau| = |t-s| \leq q$, es decir son $q$-dependientes y cuando $\tau > q$ entonces las variables son independientes. Una idea análoga se encuentra para los momentos de segundo orden, donde hablamos de procesos $q$-correlados (\autoref{def:q-correlacion}).
 
 \begin{definicion}[Proceso $q$-correlado]
   Un proceso estacionario $\{X\}_{t \in T}$ se dice que es $q$-correlado si se cumple lo siguiente:
-
-  $$\gamma(\tau) = 0, \; \forall |\tau| > q$$.
+  $$\gamma(\tau) = 0, \; \forall |\tau| > q.$$
   \label{def:q-correlacion}
 \end{definicion}
 
-Por \eqref{eq:media-media-auto} tenemos que un modelo $MA(q)$ es $q$-correlado, y de hecho la otra implicación se da también (\autoref{prop:q-correlado}, demostración en \cite{brockwell1991time} Sección 3.2)
+Por \eqref{eq:media-media-auto} tenemos que un modelo $MA(q)$ es $q$-correlado, y de hecho la otra implicación se da también (\autoref{prop:q-correlado}, demostración en \cite{brockwell1991time} Sección 3.2).
 
 \begin{proposicion}
   Sea un proceso estacionario de segundo orden $\{X_t\}_{t \in T}$ con media 0 y $q$-correlado. Entonces el proceso puede representarse como un modelo $MA(q)$.
@@ -440,53 +406,44 @@ Consideramos un modelo que se basa en la idea de las medias móviles de utilizar
 
 \begin{definicion}[Proceso autorregresivo]
   Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso autorregresivo de orden $p$, notado como $\{X_t\} \sim AR(p)$, si se puede expresar de la siguiente forma:
-
   $$X_t = \phi_1 X_{t-1} + \ldots + \phi_p X_{t - p} + Z_t = \sum \limits^p_{i = 1} \left(\phi_i X_{t - i}\right) + Z_t, \; \forall t \in T,$$
-
   donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, y coeficientes reales $\{\phi_i\}_{i = 1}^p \subset \R$.
   \label{def:proceso-autorregresivo}
 \end{definicion}
 
-Se ha considerado que $\mu = 0$, aunque es posible trabajar con una media no nula. Así, estudiamos el caso más simple $p = 1$, $AR(1)$ expresado como \eqref{eq:ar-simple}
-
+Se ha considerado que $\mu = 0$, aunque es posible trabajar con una media no nula. Así, estudiamos el caso más simple $p = 1$, $AR(1)$ expresado como
 \begin{equation}
   X_t = \phi X_{t - 1} + Z_t, \, \forall t \in T.
   \label{eq:ar-simple}
 \end{equation}
 
-Si sustituimos los $X_{t - i}$ mediante recursividad obtenemos \eqref{eq:ar-simple2}
-
-\begin{equation}
+Si sustituimos los $X_{t - i}$ mediante recursividad obtenemos
+\begin{equation*}
   X_t = \phi\left(\phi X_{t-2} + Z_{t-1}\right) + Z_t = \phi^2\left(\phi X_{t-3} + Z_{t-2}\right) + \phi Z_{t-1} + Z_t, \, \forall t \in T.
   \label{eq:ar-simple2}
-\end{equation}
+\end{equation*}
 
-Si repetimos este proceso infinitamente entonces \eqref{eq:ar-simple3}
-
-\begin{equation}
+Si repetimos este proceso infinitamente entonces se tiene
+\begin{equation*}
   X_t = Z_t + \phi Z_{t-1} + \phi^2 Z_{t-2} + \ldots = \sum \limits^{+\infty}_{i = 0} \phi^i Z_{t - i}, \; \forall t \in T,
   \label{eq:ar-simple3}
-\end{equation}
-
+\end{equation*}
 escogido $|\phi| < 1$ para que la suma converja, $AR(1)$ se comporta como un modelo $MA(\infty)$, indicando que hay una cierta dualidad entre los modelos $AR$ y $MA$.
 
-Estudiamos el primer y segundo orden del proceso considerando que las variables $Z_t$ son incorreladas, entonces $\forall t \in T$ se tiene \eqref{eq:ar-momentos}
-
-\begin{gather}
+Estudiamos el primer y segundo orden del proceso considerando que las variables $Z_t$ son incorreladas, entonces $\forall t \in T$ tenemos que
+\begin{gather*}
   E[X_t] = 0, \\
   Var[X_t] = \sigma^2 \sum \limits^{+\infty}_{i = 0} \left(\phi^{2i}\right).
   \label{eq:ar-momentos}
-\end{gather}
+\end{gather*}
 
-La varianza será finita si $|\phi|^2 < 1$, por lo que al tomar $|\phi| < 1$ se tiene \eqref{eq:ar-var}
-
-\begin{equation}
+La varianza será finita si $|\phi|^2 < 1$, por lo que al tomar $|\phi| < 1$ obtenemos la expresión
+\begin{equation*}
   Var[X_t] = \dfrac{\sigma^2}{1 - \phi^2}, \; \forall t \in T.
   \label{eq:ar-var}
-\end{equation}
+\end{equation*}
 
-La función de autocovarianza viene dada por \eqref{eq:ar-autocovarianza}
-
+La función de autocovarianza vendrá dada por
 \begin{equation}
   \begin{aligned}
     \gamma(\tau) & = E[X_t X_{t + k}] = E\left[\left(\sum \limits^{+\infty}_{i = 0} \phi^i Z_{t - i}\right)\left(\sum \limits^{+\infty}_{i = 0} \phi^i Z_{t + \tau - i}\right)\right] \\
@@ -495,12 +452,11 @@ La función de autocovarianza viene dada por \eqref{eq:ar-autocovarianza}
   \label{eq:ar-autocovarianza}
 \end{equation}
 
-Por tanto como $\gamma(\tau)$ no depende de $t$, el proceso $AR(1)$ es un proceso estacionario de segundo orden (bajo la condición de que $|\phi| < 1$). La función de autocorrelación será \eqref{eq:ar-autocorrelacion}
-
-\begin{equation}
+Por tanto como $\gamma(\tau)$ no depende de $t$, el proceso $AR(1)$ es un proceso estacionario de segundo orden (bajo la condición de que $|\phi| < 1$). La función de autocorrelación será
+\begin{equation*}
   \rho(\tau) = \phi^\tau, \; \tau \in T.
   \label{eq:ar-autocorrelacion}
-\end{equation}
+\end{equation*}
 
 Simulemos unos cuantos procesos autorregresivos mediante ruido $Z_t \sim N(0, 1)$: $X_t = \frac{4}{5}X_{t-1} + Z_t$, $X_t = -\frac{4}{5}X_{t-1} + Z_t$ y $X_t = \frac{3}{10}X_{t-1} + Z_t$ cuyas series mostramos de arriba a bajo respectivamente, junto a sus correlogramas en \autoref{fig:ar-simulado} (\cite{chatfield2019analysis}).
 
@@ -514,48 +470,41 @@ Simulemos unos cuantos procesos autorregresivos mediante ruido $Z_t \sim N(0, 1)
 
 Observamos como los correlogramas van convergiendo a 0, decreciendo absolutamente. Cuando $1 > \phi > 0$ (1er y 3er proceso) los valores son todos positivos mientras que cuando $-1 < \phi < 0$ (2o proceso) se van alternando entre positivos (desfase par) y negativos (desfase negativo).
 
-Por otro lado, la función de autocovarianza \eqref{eq:ar-autocovarianza} era posible obtenerla de otra manera. Asumimos de antemano que el proceso es estacionario, entonces $E[X_t]$ debe ser constante (asumamos que es 0). Si multiplicamos el modelo \eqref{eq:ar-simple} por $X_{t-k}$ y tomamos esperanzas obtenemos \eqref{eq:ar-truco}
-
-\begin{equation}
+Por otro lado, la función de autocovarianza \eqref{eq:ar-autocovarianza} era posible obtenerla de otra manera. Asumimos de antemano que el proceso es estacionario, entonces $E[X_t]$ debe ser constante (asumamos que es 0). Si multiplicamos el modelo \eqref{eq:ar-simple} por $X_{t-k}$ y tomamos esperanzas obtenemos
+\begin{equation*}
   \gamma(\tau) = \phi \gamma(-\tau + 1), \; \forall \tau > 0,
   \label{eq:ar-truco}
-\end{equation}
-
-ya que $E[Z_t X_{t-\tau}] = 0$, $\forall \tau > 0$ debido a la incorrelación de las $Z_t$. Además como $\gamma$ es función par entonces \eqref{eq:ar-truco2}
-
-\begin{equation}
+\end{equation*}
+ya que $E[Z_t X_{t-\tau}] = 0$, $\forall \tau > 0$ debido a la incorrelación de las $Z_t$. Además como $\gamma$ es función par entonces
+\begin{equation*}
   \gamma(\tau) \phi \gamma(\tau - 1), \; \forall \tau > 0.
   \label{eq:ar-truco2}
-\end{equation}
+\end{equation*}
 
 Finalmente como $\gamma(0) = \sigma^2_X$ entonces $\gamma(\tau) = \phi^\tau \sigma^2_X, \; \forall \tau \geq 0$ y además $\rho(\tau) = \phi^\tau, \; \forall \tau > 0$.
 
 Recordando una de las propiedades de $\rho$ cuando el proceso era estacionario se tenía que $|\rho(\tau)| \leq 1, \, \forall \tau \geq 0$ entonces se debe cumplir que $|\phi| \leq 1$. Excluimos el caso degenerado $|\phi| = 1$ y por tanto se debe cumplir que $|\phi| < 1$.
 
-Esta forma alternativa es aplicable para el caso de un modelo $AR(p)$ general, obteniendo Las siguiente ecuaciones para la función de autocorrelación \eqref{eq:ar-general}
-
+Esta forma alternativa es aplicable para el caso de un modelo $AR(p)$ general, obteniendo la siguiente expresión para la función de autocorrelación
 \begin{equation}
   \rho(\tau) = \phi_1 \rho(\tau - 1) + \cdots + \phi_p \rho(\tau - p) =
   \begin{cases}
-    \sigma^2, & \tau = 0 \\
-    0, & 0 < \tau \leq p
+    \sigma^2, & \tau = 0, \\
+    0, & 0 < \tau \leq p.
   \end{cases}
   \label{eq:ar-general}
 \end{equation}
 
-Estas son las llamadas ecuaciones de Yule-Walker \cite{yule1971method, walker1931periodicity}, un conjunto de ecuaciones en diferencias que tienen la solución general \eqref{eq:sol-general}
-
+Estas son las llamadas ecuaciones de Yule-Walker \cite{yule1971method, walker1931periodicity}, un conjunto de ecuaciones en diferencias que tienen la solución general dada por
 \begin{equation}
   \rho(\tau) = A_1 \pi_1^{|\tau|} + \cdots + A_p \pi_p^{|\tau|}, \; \forall \tau > 0,
   \label{eq:sol-general}
 \end{equation}
-
-donde $\{\pi_i\}_{i = 0}^p$ son las raíces de la ecuación auxiliar \eqref{eq:sol-auxiliar}
-
-\begin{equation}
+donde $\{\pi_i\}_{i = 0}^p$ son las raíces de la siguiente ecuación auxiliar
+\begin{equation*}
   y^p - \phi_1 y^{p-1} - \cdots - \phi_p = 0.
   \label{eq:sol-auxiliar}
-\end{equation}
+\end{equation*}
 
 Las constantes $\{A_i\}_{i = 0}^p$ se escogen para satisfacer las condiciones iniciales dependientes de $\rho(0) = 1$, que implican que $\sum_{i = 0}^p A_i = 1$. Las $(p - 1)$ primeras ecuaciones de Yule-Walker añaden $(p-1)$ restricciones más en $\{A_i\}_{i = 0}^p$ usando $\rho(0) = 1$ e $\rho(\tau) = \rho(\tau)$.
 
@@ -567,9 +516,7 @@ Si generalizamos el funcionamiento de los modelos $AR$ y $MA$ llegamos a los pro
 
 \begin{definicion}[Proceso lineal]
   Un proceso $\{X\}_{t \in T}$ se dice que es un proceso lineal si se puede representar de la siguiente forma:
-
   $$X_t = \sum \limits^{+\infty}_{i = -\infty} \psi_{j} Z_{t - i}, \; \forall t \in T,$$
-
   con $\{Z\}_{t \in T} \sim WN(0, \sigma^2)$ y $\{\psi_i\}^{+\infty}_{i = -\infty} \subset \R$ constantes que cumplen que $\sum \limits^{+\infty}_{i = -\infty} |\psi_j| < \infty$.
   \label{def:proceso-lineal}
 \end{definicion}
@@ -580,36 +527,27 @@ Veamos entonces que si cualquier proceso lineal es estacionario de segundo orden
 
 \begin{proposicion}
   Sea $\{Y_t\}_{t \in T}$ un proceso estacionario de segundo orden con media 0 y función de autocovarianza $\gamma_Y$. Si $\sum_{i = -\infty}^{+\infty} |\psi_i| < \infty$, entonces el proceso definido por:
-
   $$X_t = \sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t - i},$$
-
-  es estacionario de segundo orden con media 0 y función de autocovarianza
-
+  es estacionario de segundo orden con media 0 y función de autocovarianza dada por
   $$\gamma_X(\tau)= \sum \limits^{+\infty}_{i=-\infty}\sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j \gamma_Y(\tau + j - i), \, \tau \in T.$$
 
   De hecho si $\{X_t\}_{t \in T}$ es un proceso lineal, se tiene que
-
   $$\gamma_X(\tau) = \sum \limits^{+\infty}_{i = -\infty} \psi_{i} \psi_{i + \tau}\sigma^2, \, \tau \in T.$$
   \label{prop:proceso-estacionario}
 \end{proposicion}
 
 \begin{proof}
   Debido a que la suma absoluta de los coeficientes es finita podemos asegurar que la suma $X_t$ es convergente, $\forall t \in T$ se cumple que
+  $$E[|X_t|] \leq \sum \limits^{+\infty}_{i = -\infty} |\psi_j| E[|Y_{t-i}|] \leq \sum \limits^{+\infty}_{i = -\infty} \left(|\psi_j|\right) \sqrt{\gamma_Y(0)} < \infty.$$
 
-  $$E[|X_t|] \leq \sum \limits^{+\infty}_{i = -\infty} |\psi_j| E[|Y_{t-i}|] \leq \sum \limits^{+\infty}_{i = -\infty} \left(|\psi_j|\right) \sqrt{\gamma_Y(0)} < \infty$$
-
-  Como $E[Y_t] = 0, \, \forall t \in T$ Entonces
-
-  $$E[X_t] = E\left[\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t - i}\right] = \sum \limits^{+\infty}_{i = -\infty} \psi_i E[Y_{t-i}] = 0$$
-
-  y además para $\tau \in T$
-
+  Como $E[Y_t] = 0, \, \forall t \in T$ entonces
+  $$E[X_t] = E\left[\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t - i}\right] = \sum \limits^{+\infty}_{i = -\infty} \psi_i E[Y_{t-i}] = 0,$$
+  y además para $\tau \in T$ tenemos que
   $$\begin{aligned}
     E[X_{t+\tau}X_t] & = E\left[\left(\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t + \tau - i}\right)\left(\sum \limits^{+\infty}_{i = -\infty} \psi_i Y_{t -i}\right)\right] \\
     & = \sum \limits^{+\infty}_{i = -\infty} \sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j E[Y_{t+\tau-i}Y_{t-j}] \\
     & = \sum \limits^{+\infty}_{i = -\infty}  \sum \limits^{+\infty}_{j = -\infty} \psi_i \psi_j \gamma_Y(\tau + j - i),
   \end{aligned}$$
-
   que no depende de $t$ y por tanto $\{X_t\}$ es estacionario de segundo orden. Finalmente si $\{Y_t\}$ es ruido blanco entonces $\gamma_Y(\tau + i - j) = \sigma^2$ si $j = i - \tau$ y 0 en caso contrario, obteniendo el último resultado.
 \end{proof}
 
@@ -621,11 +559,8 @@ En todos los modelos que consideramos siembre buscamos que sean procesos no dete
 
 \begin{teorema}[Descomposición de Wold]
   Sea $\{X_t\}_{t \in T}$ un proceso no determinista estacionario de segundo orden, entonces el proceso se puede descomponer de manera única con los procesos $\{Z_t\}_{t \in T}$, $\{V_t\}_{t \in T}$ y coeficientes $\{\psi_i\}_{i = 0}^{\infty}$ de la siguiente forma
-
   $$ X_t = \sum \limits^{+\infty}_{i = 0} \psi_i Z_{t - i} + V_t, \, \forall t \in T,$$
-
   y además se cumple lo siguiente
-
   \begin{enumerate}
     \item $\psi_0 = 1$ y $\sum^{+\infty}_{i = 0} \psi^2_i < \infty$.
     \item $\{Z_t\}_{t \in T} \sum WN(0, \sigma^2)$.
@@ -647,9 +582,7 @@ Este modelo está formado combinando los dos modelos que hemos considerado, $MA$
 
 \begin{definicion}[Proceso ARMA]
   Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso $ARMA(p, q)$ si $\{X_t\}$ es estacionario y se cumple que
-
   $$X_t = \psi X_{t-1} + \ldots + \psi_p X_{t-p} + Z_t + \theta_1 Z_{t-1} + \ldots + \theta_q Z_{t - q}, \; \forall t \in T,$$
-
   donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$ y además los polinomios $\phi(z) = 1 - \phi_1 z - \ldots - \phi_p z^p$ y $\theta(z) = 1 + \theta_1z + \ldots + z_q z^q$ no tienen factores comunes.
 \label{def:arma}
 \end{definicion}
@@ -662,7 +595,6 @@ En la definición vemos que es esencial que $\{X_t\}$ sea estacionario, haciendo
 
 \begin{teorema}[Existencia y unicidad de ARMA]
   Existe una solución estacionaria $\{X_t\}_{t \in T}$ para el modelo $ARMA(p, q)$, y además es la única, si y solo si
-
   $$\phi(z) = 1 - \phi_1 z - \cdots - \phi_p z^p \neq 0, \; \forall |z| = 1.$$
   \label{th:existencia-unicidad-arma}
 \end{teorema}
@@ -716,21 +648,18 @@ Analicemos cada serie para observar los patrones en cada una:
   \item Abajo-derecha: sin ningún patrón observable, son fluctuaciones aleatorias.
 \end{itemize}
 
-En base a estos patrones, el análisis clásico de series temporales se basa en la descomposición de estas en los componentes que hemos comentado \eqref{eq:decomposition}
-
-\begin{equation}
+En base a estos patrones, el análisis clásico de series temporales se basa en la descomposición de estas en los componentes que hemos comentado, dado por
+\begin{equation*}
   X_t = m_t + s_t + Y_t, \, \forall t \in T,
   \label{eq:decomposition}
-\end{equation}
-
+\end{equation*}
 donde $m_t$ es la componente de la tendencia-ciclos (que se dice solamente tendencia), $s_t$ la componente estacional e $Y_t$ ruido aleatorio (débilmente) estacionario.
 
-Esta descomposición se dice que es \textbf{aditiva} pues suma sus componentes y existe otra forma llamada \textbf{multiplicativa}, que suele ser útil cuando las fluctuaciones de la serie son proporcionales al tiempo de la serie \eqref{eq:decomposition-mult}
-
-\begin{equation}
+Esta descomposición se dice que es \textbf{aditiva} pues suma sus componentes y existe otra forma llamada \textbf{multiplicativa}, que suele ser útil cuando las fluctuaciones de la serie son proporcionales al tiempo de la serie, dada por
+\begin{equation*}
   X_t = m_t \cdot s_t \cdot Y_t, \, \forall t \in T.
   \label{eq:decomposition-mult}
-\end{equation}
+\end{equation*}
 
 El enfoque de realizar la descomposición consiste en extraer de las series estas componentes $m_t$, $s_t$ y esperar que el ruido $Y_t$ sea estacionario. Crearemos así un modelo para el proceso estacionario en el que podemos simular valores junto con $m_t$ y $s_t$.
 
@@ -740,11 +669,8 @@ Si tenemos un proceso que no presenta la componente estacional entonces obtenemo
 
 \begin{definicion}[Descomposición con solo tendencia]
   Sea $\{X_t\}$ un proceso entonces una descomposición con solo tendencia está definida por:
-
   $$ X_t = m_t + Y_t, \; \forall t \in T,$$
-
   donde $m_t$ es la tendencia e $Y_t$ los residuos y se tiene que $E[Y_t] = 0, \forall t \in T$. Si esto último no fuese así, el modelo se cambiaría por:
-
   $$ X_t = (m_t + E[Y_t]) + (Y_t - E[Y_t]), \; \forall t \in T.$$
   \label{def:solo-tendencia}
 \end{definicion}
@@ -755,8 +681,7 @@ Para poder estimar la tendencia $m_t$ podemos utilizar varias técnicas. La prim
 
 \begin{definicion}[Ajuste polinómico]
   Sea un $\{X_t\}_{t = 1}^n$ un proceso y $\{x_t\}_{t = 1}^n$ una serie temporal observada del proceso. El ajuste polinómico de gradp $k$ considera que la tendencia es un polinomio de grado $k$ de la forma
-
-  $$m_t = \sum \limits^k_{i = 0} a_i t^i,$$
+  $$m_t = \sum \limits^k_{i = 0} a_i t^i.$$
 
   La tendencia estimada $\hat{m}_t$ determinada por los parámetros $\hat{a}_0, \hat{a}_1, \ldots, \hat{a}_k$ se obtienen al minimizar el error cuadrático medio $$\sum \limits^n_{t = 1} (x_t - m_t)^2.$$
   \label{def:ajuste-polinomico}
@@ -778,24 +703,21 @@ La siguiente técnica consiste en estimar la tendencia mediante el \textbf{suavi
 
 \begin{definicion}[Suavizado con media móvil]
   Sea un proceso $\{X_t\}_{t = 1}^n$, y un natural $q \in N$. Se define el proceso suavizado con media móvil simétrica de orden $q$ de $\{X_t\}$ como:
-
   $$ W_t = \dfrac{1}{2q + 1} \sum \limits^q_{i = -q} X_{t - i}, \, \forall t = 1, \ldots, n.$$
   \label{def:suavizacion-media}
 \end{definicion}
 
-Asumiendo que $m_t$ es aproximadamente lineal en el intervalo $[t - q, t + q]$ y que la media de los errores en el mismo intervalo es aproximadamente cero, aplicamos el suavizado al modelo \autoref{def:solo-tendencia} obteniendo \eqref{eq:suavizacion}
-
-\begin{equation}
+Asumiendo que $m_t$ es aproximadamente lineal en el intervalo $[t - q, t + q]$ y que la media de los errores en el mismo intervalo es aproximadamente cero, aplicamos el suavizado al modelo \autoref{def:solo-tendencia} obteniendo
+\begin{equation*}
   W_t = \dfrac{1}{2q + 1} \sum \limits^q_{i = -q} m_{t - i} + \dfrac{1}{2q + 1} \sum \limits^q_{i = -q} Y_{t - i} \approx m_t, \; t = q + 1, \ldots, n - q.
   \label{eq:suavizacion}
-\end{equation}
+\end{equation*}
 
-Por tanto la tendencia estimada para un proceso $\{X_t\}_{t = 1}^n$ quedaría como \eqref{eq:suavizacion-estimada}
-
-\begin{equation}
+Por tanto la tendencia estimada para un proceso $\{X_t\}_{t = 1}^n$ quedaría como
+\begin{equation*}
   \hat{m}_t = \dfrac{1}{2q + 1} \sum \limits^q_{i = -q} X_{t - i}, \; t = q + 1, \ldots, n - q.
   \label{eq:suavizacion-estimada}
-\end{equation}
+\end{equation*}
 
 Notamos que $\hat{m}_t$ no está definida para $t > n - q$ o $t \leq q$ que podría dejarse así o extender los términos definiendo $X_t := X_1, \forall t < 1$ y $X_t := X_n, \forall t > n$.
 
@@ -815,19 +737,16 @@ Finalmente consideramos una técnica que realiza el suavizado como una combinaci
 
 \begin{definicion}[Suavizado exponencial]
   Sea $\{X_t\}_{t = 1}^n$ un proceso y $\alpha \in [0, 1]$, el suavizado exponencial se define como la estimación de la tendencia del proceso de la siguiente forma:
-
   $$\hat{m}_t = \alpha X_t + (1 - \alpha)\hat{m}_{t - 1}, \; t = 2, \ldots, n,$$
-
   donde $\hat{m}_1 = X_1$.
   \label{def:suavizado-exponencial}
 \end{definicion}
 
-Este método se denomina suavizado exponencial debido a que $\forall t \geq 2$ se cumple \eqref{eq:exponencial-desarrollada}
-
-\begin{equation}
+Este método se denomina suavizado exponencial debido a que $\forall t \geq 2$ se cumple la expresión
+\begin{equation*}
   \hat{m}_t = \sum \limits^{t - 2}_{i = 1} \alpha(1 - \alpha)^i X_{t - i} + (1 - \alpha)^{t - 1} X_1,
   \label{eq:exponencial-desarrollada}
-\end{equation}
+\end{equation*}
 
 donde se puede ver el proceso estimado como una media móvil con pesos decrecientes exponencialmente. Un ejemplo lo tenemos en \autoref{fig:ej-suavizado} (\cite{brockwell2002introduction})
 
@@ -845,9 +764,7 @@ Ahora consideramos la descomposición completa, añadiendo al modelo que hemos e
 
 \begin{definicion}[Descomposición completa]
   Sea $\{X_t\}$ un proceso entonces una descomposición completa está definida por:
-
   $$ X_t = m_t + s_t + Y_t, \; \forall t \in T,$$
-
   donde $m_t$ es la tendencia, $s_t$ es la estacionalidad con periodo $S$ e $Y_t$ los residuos.  Además se tiene que $E[Y_t] = 0$, $s_{t + S} = s_{t}$ y $\sum \limits^{S}_{i = 1} s_i = 0$, $\forall t \in T$.
   \label{def:descomposicion-entera}
 \end{definicion}
@@ -856,49 +773,40 @@ Ahora consideramos la descomposición completa, añadiendo al modelo que hemos e
 
 Explicaremos el método clásico básico para obtener una descomposición de un proceso ya que es el funcionamiento básico del resto de descomposiciones que han ido surgiendo.
 
-El primer paso es estimar la tendencia $\hat{m}_t$ mediante una media móvil con pesos especiales para eliminar la estacionalidad y disminuir el ruido. Si el periodo $S$ es par, elegimos $q = S / 2$ y obtenemos la estimación como \eqref{eq:decomp-1}
-
-\begin{equation}
+El primer paso es estimar la tendencia $\hat{m}_t$ mediante una media móvil con pesos especiales para eliminar la estacionalidad y disminuir el ruido. Si el periodo $S$ es par, elegimos $q = S / 2$ y obtenemos la estimación como
+\begin{equation*}
   \hat{m}_t = \dfrac{\dfrac{1}{2}X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + \dfrac{1}{2}X_{t + q}}{S}, \; t = q + 1, \ldots, n - q,
   \label{eq:decomp-1}
-\end{equation}
-
-y si el periodo es impar tomamos $q = (d-1)/2$ y estimando como \eqref{eq:decomp-2}
-
-\begin{equation}
+\end{equation*}
+y si el periodo es impar tomamos $q = (d-1)/2$ y estimando como
+\begin{equation*}
   \hat{m}_t = \dfrac{X_{t - q} + X_{t-q+1} + \cdots + X_{t+q+1} + X_{t + q}}{S}, \; t = q + 1, \ldots, n - q.
   \label{eq:decomp-2}
-\end{equation}
+\end{equation*}
 
-El siguiente paso es estimar la componente estacional $\hat{s}_t$, para ello primero calculamos la media de las desviaciones de la serie respecto la tendencia estimada \eqref{eq:decomp-3}
-
+El siguiente paso es estimar la componente estacional $\hat{s}_t$, para ello primero calculamos la media de las desviaciones de la serie respecto la tendencia estimada con la expresión
 \begin{equation}
   w_t = \dfrac{S}{n - 2q} \sum \limits^{\frac{n - q - t}{S}}_{i = \frac{q - t}{S} + 1} \left(X_{t + iS} - \hat{m}_{t + iS}\right), \; t = 1, \ldots, T,
   \label{eq:decomp-3}
 \end{equation}
-
-que ajustamos para conseguir que la suma sea 0 \eqref{eq:decomp-4}
-
-\begin{equation}
+que ajustamos para conseguir que la suma sea 0, obteniendo
+\begin{equation*}
   \hat{s}_t = w_t - \dfrac{1}{S}\sum \limits^S_{i = 1} w_i, \; t = 1, \ldots, T.
   \label{eq:decomp-4}
-\end{equation}
+\end{equation*}
 
-Es posible obtener la serie sin la componente de estacionalidad \eqref{eq:decomp-5}
-
-\begin{equation}
+Es posible obtener la serie sin la componente de estacionalidad, dada por
+\begin{equation*}
   d_t = X_t - \hat{s}_t, \; t = 1, \ldots, n,
   \label{eq:decomp-5}
-\end{equation}
-
+\end{equation*}
 de manera que ahora podemos descomponer $\{d_t\}_{t = 1}^n$ para obtener solamente la tendencia usando un ajuste polinómico. Este paso es posible no realizarlo, pero es interesante tener una forma paramétrica para la tendencia que puede ser extrapolada fácilmente.
 
-Finalmente obtenemos estimamos la componente de residuos \eqref{eq:decomp-6}
-
-\begin{equation}
+Finalmente, obtenemos estimamos la componente de residuos como
+\begin{equation*}
   \hat{Y}_t = X_t - \hat{m}_t - \hat{s}_t, \; t = 1, \ldots, n.
   \label{eq:decomp-6}
-\end{equation}
+\end{equation*}
 
 Un ejemplo de descomposición de un proceso lo tenemos en \autoref{fig:ej-descomposicion} (\cite{hyndman2018forecasting}).
 
@@ -934,9 +842,7 @@ Empecemos primero por el \textbf{método de la media} (\emph{average method}), q
 
 \begin{definicion}[Método de la media]
   Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método de la media como el predictor dado por
-
   $$\hat{x}_{n + \tau | n} = \hat{x} = \dfrac{1}{n}\sum \limits^n_{i = 1} x_i, $$
-
   donde $\hat{x}_{n + \tau | n}$ indica la estimación de $x_{n + \tau}$ en base a los datos $x_1, \ldots, x_n$.
   \label{def:metodo-medio}
 \end{definicion}
@@ -945,8 +851,7 @@ El \textbf{método del camino aleatorio} (\emph{random walk method}) predice med
 
 \begin{definicion}[Método del camino aleatorio]
   Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método del camino aleatorio como el predictor dado por
-
-  $$\hat{x}_{n + \tau | n} = x_n$$
+  $$\hat{x}_{n + \tau | n} = x_n.$$
   \label{def:metodo-ingenuo}
 \end{definicion}
 
@@ -954,9 +859,7 @@ Para series con una alta estacionalidad funciona muy bien el \textbf{método de 
 
 \begin{definicion}[Método de la ingenuidad estacional]
   Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
-
   $$\hat{x}_{n + \tau | n} = x_{n + \tau - S(k + 1)},$$
-
   donde $S$ es el periodo de la componente estacional y $k$ la parte integral de $(\tau - 1)/S$.
   \label{def:seasonal-naive}
 \end{definicion}
@@ -965,7 +868,6 @@ Finalmente el \textbf{método de deriva} (\emph{drift method}) que modifica el m
 
 \begin{definicion}[Método de deriva]
   Sea un proceso $\{X_t\}_{t = 1}^n$ del cual se toma una serie temporal $\{x_t\}_{t = 1}^n$, se define el método medio como el predictor dado por
-
   $$\hat{x}_{n + \tau | n} = x_n + \tau \left(\dfrac{x_n - x_1}{n - 1}\right).$$
   \label{def:metodo-deriva}
 \end{definicion}
@@ -992,22 +894,18 @@ Y otro con el método de deriva (\emph{drift}, en rojo), de la media (\emph{mean
 
 \subsubsection{Predictores con descomposición}
 
-Cuando nos encontramos con un proceso general $\{X_t\}$ que parece presentar componentes estacionales y tendencia, realizamos una descomposición \eqref{eq:pred-decomp}
-
-\begin{equation}
+Cuando nos encontramos con un proceso general $\{X_t\}$ que parece presentar componentes estacionales y tendencia, realizamos una descomposición
+\begin{equation*}
   X_t = m_t + s_t + Y_t, \; \forall t \in T,
   \label{eq:pred-decomp}
-\end{equation}
-
+\end{equation*}
 de manera que hacemos las predicciones por separado para cada componente. Para la estacionalidad $s_t$, debido a su carácter periódico se puede utilizar el predictor ingenuo estacional, para la tendencia $m_t$ podemos predecir con el método de deriva o el método usado para el modelado de la tendencia (ajuste polinómico, suavizado) y finalmente para los residuos $Y_t$ que son estacionarios se puede modelar por ejemplo con un $ARMA$.
 
-También es interesante considerar la descomposición \eqref{eq:decomp-nueva}
-
+También es interesante considerar la siguiente descomposición
 \begin{equation}
   X_t = s_t + a_t, \; \forall t \in T,
   \label{eq:decomp-nueva}
 \end{equation}
-
 donde $a_t = m_t + Y_t$ es la componente estacionalmente ajustada. En este caso se puede usar el predictor del camino aleatorio y también una modificación de $ARMA$ que veremos más adelante que utiliza otro enfoque para obtener una serie estacionaria.
 
 Veamos un ejemplo de descomposición STL que predice utilizando el método ingenuo estacional para la estacionalidad y el método de camino aleatorio para la componente estacionalmente ajustada, junto con los intervalos de confianza \autoref{fig:stl-predict} (\cite{hyndman2018forecasting}).
@@ -1031,75 +929,62 @@ Primero veamos como aplicar el método de la diferenciación para procesos que n
 Intentamos eliminar la tendencia usando la diferenciación. Introduzcamos antes  el operador de diferenciación con desfase 1 como \autoref{def:operador-diff}.
 
 \begin{definicion}[Operador diferenciación $\nabla$]
-
 Sea un proceso $\{X_t\}_{t \in T}$, se define el operador de diferenciación con desfase 1, notado como $\nabla$, aplicado al proceso $\{X_t\}$ como la siguiente expresión:
-
 $$\nabla X_t = X_t - X_{t - 1} = (1 - B)X_t, \; \forall t \in T,$$
-
 donde $B$ es el operador de desplazamiento hacia atrás definido por
-
 $$BX_t = X_{t-1}, \; \forall t \in T.$$
 \label{def:operador-diff}
 \end{definicion}
 
-Las potencias de los operadores se definen como uno podría esperar \eqref{eq:potencias-op}
-
-\begin{gather}
+Las potencias de los operadores se definen con la siguiente expresión
+\begin{gather*}
   B^i(X_t) = X_{t-i}, \; \forall i \geq 1, \\
   \nabla^i(X_t) = \nabla(\nabla^{i-1}(X_t)), \; \forall i \geq 1, \\
   \nabla^0(X_t) = X_t.
 \label{eq:potencias-op}
-\end{gather}
+\end{gather*}
 
-Podemos manipular polinomios de $B$ y $\nabla$ de la misma manera que con polinomios de variables reales, por ejemplo \eqref{eq:diff-ej}
-
-\begin{equation}
+Podemos manipular polinomios de $B$ y $\nabla$ de la misma manera que con polinomios de variables reales, por ejemplo
+\begin{equation*}
   \nabla^2X_t = \nabla(\nabla(X_t)) = (1-B)(1-B)X_t = (1 - 2B + B^2)X_t = X_t - 2X_{t-1} + X_{t-2}.
   \label{eq:diff-ej}
-\end{equation}
+\end{equation*}
 
-Sea un proceso $\{X_t\}$ dado por \autoref{def:solo-tendencia} y supongamos que la tendencia es lineal, $m_t = c_0 + c_1t$. Aplicando la diferenciación a $\{X_t\}$ obtenemos \eqref{eq:diff-tendencia}
-
-\begin{equation}
+Sea un proceso $\{X_t\}$ dado por \autoref{def:solo-tendencia} y supongamos que la tendencia es lineal, $m_t = c_0 + c_1t$. Aplicando la diferenciación a $\{X_t\}$ obtenemos
+\begin{equation*}
   \nabla X_t = \nabla m_t + \nabla Y_t = c_0 + c_1 t - c_0 - c_1(t - 1) + \nabla Y_t = c_1 + \nabla Y_t, \; \forall t \in T,
   \label{eq:diff-tendencia}
-\end{equation}
-
-queda una constante $c_1 \in \R$. Para ver que $\nabla X_t$ sea estacionario podemos ignorarla (la constante es la media), y ver si $\nabla Y_t$ es estacionario \eqref{eq:diff-estacionario}
-
-\begin{equation}
+\end{equation*}
+donde queda una constante $c_1 \in \R$. Para ver que $\nabla X_t$ sea estacionario podemos ignorarla (la constante es la media), y ver si $\nabla Y_t$ es estacionario calculando la covarianza mediante
+\begin{equation*}
   \begin{aligned}
   Cov[\nabla Y_t, \nabla Y_s] & = Cov[Y_t, Y_s] - Cov[Y_{t-1}, Y_s] - Cov[Y_t, Y_{s-1}] + Cov[Y_{t-1}, Y_{s-1}] \\
   & = \gamma_Y(t - s) - \gamma_Y(t - s - 1) - \gamma_Y(t - s + 1) + \gamma_Y(t - s) \\
   & = 2\gamma_Y(t - s) - \gamma_Y(t - s + 1) - \gamma_Y(t - s - 1), \; \forall t,s \in T,
   \end{aligned}
   \label{eq:diff-estacionario}
-\end{equation}
-
-al ser $Y_t$ estacionario. Como la covarianza no depende de $t$ y la media es constante ($c_1$) $\nabla X_t$ es estacionario. Para un ajuste polinómico general, $m_t = \sum \limits^n_{i = 0} c_i t^i$, e $Y_t$ estacionario tenemos que \eqref{eq:diff-general}
-
-\begin{equation}
+\end{equation*}
+al ser $Y_t$ estacionario. Como la covarianza no depende de $t$ y la media es constante ($c_1$) $\nabla X_t$ es estacionario. Para un ajuste polinómico general, $m_t = \sum \limits^n_{i = 0} c_i t^i$, e $Y_t$ estacionario tenemos que
+\begin{equation*}
   \nabla^i X_t = i!c_i + \nabla^i Y_t, \; \forall t \in T,
   \label{eq:diff-general}
-\end{equation}
-
-un proceso estacionario con media $i!c_i$. Si la serie se puede ajustar relativamente bien con un polinomio de grado bajo, entonces al aplicar $\nabla$ unas cuantas veces obtendremos una serie estacionaria. En la práctica el orden de diferenciación necesario suele ser de 1 ó 2 nada más.
+\end{equation*}
+es un proceso estacionario con media $i!c_i$. Si la serie se puede ajustar relativamente bien con un polinomio de grado bajo, entonces al aplicar $\nabla$ unas cuantas veces obtendremos una serie estacionaria. En la práctica el orden de diferenciación necesario suele ser de 1 ó 2 nada más.
 
 Un ejemplo lo tenemos aplicando $\nabla^2$ a la serie \autoref{fig:strikes} (\cite{brockwell2002introduction}) que produce la serie \autoref{fig:strikes-diff} \cite{brockwell2002introduction}, sin tendencias aparentes.
 
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.35\textwidth]{strikes}
+  \includegraphics[width=.4\textwidth]{strikes}
   \caption{Huelgas en EE.UU, 1951-1980.}
   \label{fig:strikes}
 \end{figure}
 
-
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.35\textwidth]{strikes-diff}
+  \includegraphics[width=.4\textwidth]{strikes-diff}
   \caption{Segundas diferencias ($\nabla^2$) en la serie de huelgas.}
   \label{fig:strikes-diff}
 \end{figure}
@@ -1110,18 +995,15 @@ Cuando el modelo contiene una componente estacional \autoref{def:descomposicion-
 
 \begin{definicion}[Operador diferenciación $\nabla_d$]
   Sea un proceso $\{X_t\}_{t \in T}$, el operador de diferenciación con desfase $d$, notado como $\nabla_d$, aplicado al proceso $\{X_t\}$ se define como
-
   $$\nabla_d X_t = X_t - X_{t - d} = (1 - B^d)X_t, \; \forall t \in T.$$
 \label{def:diff-estacional}
 \end{definicion}
 
-Considerando un proceso $\{X_t\}$ dado como \autoref{def:descomposicion-entera}, donde el proceso estacional $\{s_t\}$ tiene periodo $S$, entonces podemos aplicar $\nabla_S$ obteniendo \eqref{eq:diff-estacional}
-
-\begin{equation}
+Considerando un proceso $\{X_t\}$ dado como \autoref{def:descomposicion-entera}, donde el proceso estacional $\{s_t\}$ tiene periodo $S$, entonces podemos aplicar $\nabla_S$ obteniendo
+\begin{equation*}
   \nabla_S X_t = m_t - m_{t - S} + Y_t - Y_{t - S}, \; \forall t \in T,
 \label{eq:diff-estacional}
-\end{equation}
-
+\end{equation*}
 mostrando que el proceso $\nabla_S X_t$ no tiene estacionalidad, por lo que se le pueden aplicar los métodos conocidos para los métodos no estacionales. En particular ahora se le puede aplicar una potencia del operador $\nabla$.
 
 Un ejemplo de modelo donde hemos aplicado $\nabla_12 \nabla$ lo tenemos en \autoref{fig:diff-season} (\cite{hyndman2018forecasting}) que se ha aplicado primero una transformación logarítmica, una transformación común para series que aumentan o decrecen con el tiempo (es equivalente a usar un modelo multiplicativo).
@@ -1142,9 +1024,7 @@ Existe una modificación de los modelos ARMA para considerar directamente el mod
 
 \begin{definicion}[Modelo ARIMA]
   Un proceso $\{X_t\}_{t \in T}$ se dice que es un proceso $ARIMA(p, d, q)$ si el proceso definido por
-
-  $$ Y_t = (1 - B)^d X_t, \; \forall t \in T,$$
-
+  $$Y_t = (1 - B)^d X_t, \; \forall t \in T,$$
   es un proceso $ARMA(p, q)$.
 \label{def:arima}
 \end{definicion}
@@ -1154,7 +1034,7 @@ Mostramos ejemplos $ARIMA$ simulados con sus correlogramas: $ARIMA(1, 1, 1)$ dad
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.7\textwidth]{ej-arima}
+  \includegraphics[width=.75\textwidth]{ej-arima}
   \caption{Modelos simulados $ARIMA(1, 1, 1)$ (arriba) y $ARIMA(1, 1, 2)$ (abajo).}
   \label{fig:ej-arima}
 \end{figure}
@@ -1165,9 +1045,7 @@ Si incluimos la diferenciación estacional $\nabla_S$ al modelo ARIMA podremos e
 
 \begin{definicion}[Modelo SARIMA]
   Un proceso $\{X_t\}_{t \in T}$ se dice que es un modelo $SARIMA(p,d,q)\times(P,D,Q)_S$ con periodo $S$ si la serie diferenciada $Y_t = (1 - B)^d(1 - B^S)^D X_t$ es un proceso ARMA definido por
-
   $$\phi(B)\Phi(B^S)Y_t = \theta(B)\Theta(B^S)Z_t, \; \forall \tau \in T,$$
-
   donde $\{Z_t\}_{t \in T} \sim WN(0, \sigma^2)$, $\phi(z) = 1 - \phi_1 z - \cdots - \phi_p z^p$, $\Phi(z) = 1 - \Phi_1z - \cdots - \Phi_P z^P$, $\theta(z) = 1 + \theta_1 z + \cdots + \theta_qz^q$ y $\Theta(z) = 1 + \Theta_1z + \cdots + \Theta_Q z^Q$.
 \label{def:sarima}
 \end{definicion}
@@ -1201,7 +1079,6 @@ La \textbf{discretización con mismo grosor} (\emph{equal width discretizacion},
 
 \begin{definicion}[Discretización con mismo grosor]
   Sea una serie temporal continua $\{x_t\}_{t = 1}^n \subset [a, b]$, el método de discretización con mismo grosor en $k$ contenedores transforma la serie $\{x_t\}$ en una serie discreta $\{y_t\}_{t = 1}^n$ definida de la siguiente manera para $t = 1, \ldots n$:
-
   $$y_t = i-1, \; \text{ tal que } \; x_t \in \left[a + (i-1) \dfrac{b - a}{k}, a + i \dfrac{b-a}{k}\right).$$
   \label{def:ewd}
 \end{definicion}
@@ -1224,9 +1101,7 @@ La \textbf{discretización con misma frecuencia} utiliza una idea parecida a la 
 
 \begin{definicion}[Discretización con misma frecuencia]
   Sea una serie temporal continua $\{x_t\}_{t = 1}^n \subset I$  siendo $I$ un intervalo, el método de discretización con misma frecuencia en $k$ contenedores transforma la serie $\{x_t\}$ en una serie discreta $\{y_t\}_{t = 1}^n$ definida para $t = 1, \ldots n$, como:
-
   $$y_t = i-1, \; \text{ tal que } \; x_t \in I_i,$$
-
   donde $I = \cup_{i = 1}^k I_i$ y $\ell(I_i) = \frac{n}{k}, \, i = 1, \ldots, k$.
   \label{def:efd}
 \end{definicion}
@@ -1251,7 +1126,6 @@ Cada grupo está representado por un \textbf{centroide} de manera que a cada dat
 
 \begin{definicion}[$k$-medias]
   Sea la matriz de datos $X = \begin{bmatrix} \textbf{x}_1 & \cdots & \textbf{x}_m \end{bmatrix}^T$ donde $\textbf{x}_i \in \R^n, \, i = 1, \ldots m$. El objetivo del algoritmo de $k$-medias es particionar los $m$ datos en $k$ grupos determinados por sus centroides $\textbf{C} = \{\pmb{\mu}_1, \ldots, \pmb{\mu}_k\}$ de manera que se minimize la inercia definida por
-
   $$\sum \limits^m_{i = 0} \min \limits_{\pmb{\mu} \in C} \left(||\textbf{x}_i - \pmb\mu ||^2 \right).$$
   \label{def:k-means}
 \end{definicion}
@@ -1261,7 +1135,7 @@ En \autoref{fig:kmeans} \cite{ruiz2018kmeans} mostramos un ejemplo con datos con
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=1\textwidth]{kmeans}
+  \includegraphics[width=.85\textwidth]{kmeans}
   \caption{Ejemplo del algoritmo $k$-medias con $k=3$ aplicado a unos datos con 2 características (izquierda) del que se obtienen 3 grupos (derecha).}
   \label{fig:kmeans}
 \end{figure}
@@ -1270,9 +1144,7 @@ Con este algoritmo obtenemos los $k$ contenedores como si fuesen los grupos repr
 
 \begin{definicion}[Discretización con $k$-medias]
   Sea una serie temporal continua $\{x_t\}_{t = 1}^n$, el método de discretización con $k$-medias transforma la serie $\{x_t\}$ en una serie discreta $\{y_t\}_{t = 1}^n$ definida para $t = 1, \ldots, n$ como:
-
   $$y_t = i-1 \in N, \; \text{ tal que } \; i = \argmin \limits_{j = 1, \ldots, k} ||x_t - \pmb\mu_j||,$$
-
   donde $\pmb \mu_j$, $j = 1, \ldots, k$ son los centroides obtenidos en el algoritmo de $k$-medias.
   \label{def:kd}
 \end{definicion}
@@ -1299,9 +1171,7 @@ El algoritmo tiene tres pasos fundamentales: primero se toma la serie original y
 
 \begin{definicion}[Normalización]
   Sea una serie temporal $\{x_t\}_{t = 1}^n$, su serie normalizada $\{s_t\}_{t = 1}^n$ está definida de la siguiente forma para $t = 1, \ldots, n$:
-
   $$s_t = \dfrac{x_t - \overline{x}}{\sigma_x},$$
-
   donde $\overline{x}$ es le media de la serie y $\sigma_x$ la desviación típica de la serie.
   \label{def:normalizacion}
 \end{definicion}
@@ -1310,7 +1180,6 @@ Después se aplica a la serie normalizada una reducción de dimensión mediante 
 
 \begin{definicion}[PAA]
   Sea una serie temporal $\{x_t\}_{t = 1}^n$ y un tamaño de ventana $w$, el método PAA reduce la dimensión de la serie transformándola en una serie de longitud $m = \frac{n}{w}$ denotado $\{\overline{x}_t\}_{t = 1}^m$ determinado por la siguiente expresión para $t = 1, \ldots, m$:
-
   $$\overline{x}_t = \dfrac{1}{n} \sum \limits_{i = (t-1)w + 1}^{tw} x_i.$$
   \label{def:paa}
 \end{definicion}
@@ -1320,7 +1189,7 @@ Este método reduce la dimensión de la serie dividiendo en $m$ ventanas la seri
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.55\textwidth]{paa}
+  \includegraphics[width=.48\textwidth]{paa}
   \caption{Método PAA aplicado a una serie temporal con $w = 157$.}
   \label{fig:paa}
 \end{figure}
@@ -1331,9 +1200,7 @@ La asignación de las letras se realiza de una manera similar a las técnicas de
 
 \begin{definicion}[SAX]
   Sea una serie temporal $\{x_t\}_{t = 1}^n$ y un alfabeto de tamaño $k$ denotado por $A = \{a_1, \ldots, a_k\}$ el método SAX asigna a la serie una palabra $w = \alpha_1\alpha_2\ldots\alpha_n$, $\alpha_t \in A, \, t = 1, \ldots, n$ de la siguiente manera para $t = 1, \ldots n$:
-
-  $$\alpha_t = a_i, \; \text{ si } \; \beta_{i-1} \leq x_t < \beta_i.$$
-
+  $$\alpha_t = a_i, \; \text{ si } \; \beta_{i-1} \leq x_t < \beta_i,$$
   donde $\beta_i$, $i = 1, \ldots n$, llamados puntos de ruptura (\emph{breakpoints}), son los valores tales que el área debajo de la curva de una distribución normal $N(0,1)$ desde $\beta_i$ hasta $\beta_{i+1}$ es $\frac{1}{k}$, $i = 1, \ldots n-1$.
   \label{def:sax}
 \end{definicion}
@@ -1343,7 +1210,7 @@ Utilizando la función inversa de distribución acumulada podemos obtener fácil
 \begin{figure}[htpb]
   \centering
   %\hspace*{-2.5cm}
-  \includegraphics[width=.85\textwidth]{sax}
+  \includegraphics[width=.65\textwidth]{sax}
   \caption{Método SAX aplicado a una serie temporal con $w = 16$ y $k = 3$. Se aplica el método PAA y a cada sección se le asigna una letra.}
   \label{fig:sax}
 \end{figure}
