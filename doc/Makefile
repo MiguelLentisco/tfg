@@ -1,11 +1,11 @@
 all: compile
 
 compile:
-	latexmk -pdf libro.tex
+	latexmk -pdf tfg.tex
 
 open:
-	evince libro.pdf &
+	evince tfg.pdf &
 
 clean:
 	find . -name "*.aux" -type f -delete
-	rm -f libro.toc libro.out libro.lot libro.log libro.lof libro.ind libro.ilg libro.fls libro.fdb_latexmk libro.brf libro.blg libro.bbl libro.idx
+	rm -f tfg.toc tfg.out tfg.lot tfg.log tfg.lof tfg.ind tfg.ilg tfg.fls tfg.fdb_latexmk tfg.brf tfg.blg tfg.bbl tfg.idx
