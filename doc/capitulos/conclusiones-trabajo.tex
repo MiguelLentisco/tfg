@@ -3,15 +3,15 @@
 
 \chapter{Conclusiones y trabajo futuro}\label{ch:conclusiones-trabajo}
 
-Recapitulamos todo el trabajo realizado en el proyecto presentamos las conclusiones principales de cada parte, así como líneas futuras de trabajo que quedan abiertas para más investigación posterior.
+Recapitulamos todo el trabajo realizado en el proyecto: presentamos las conclusiones principales de cada parte, así como líneas futuras de trabajo que quedan abiertas para realizar investigaciones posteriores.
 
 \section{Conclusiones}
 
 \subsection{Selección de modelos}
 
-Habiendo estudiado experimentalmente la heurística \emph{Perturbated Validation} en una gran cantidad de modelos, incluyendo el modelo basado en LSTM, y un conjunto extenso de \emph{datasets} hemos comprobado que puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado el que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
+Habiendo estudiado experimentalmente la heurística \emph{Perturbated Validation} en una gran cantidad de modelos, incluyendo el modelo basado en LSTM, y un conjunto extenso de \emph{datasets} hemos comprobado que puede ser una nueva métrica que puede ayudar en el proceso de selección de modelos como método de validación complementario, ya que nos permite discernir entre los modelos con mayor ajuste estimado, aquel que mejor está adaptándose a la relación subyacente de los datos haciendo que sea el modelo más robusto.
 
-También resalta su eficacia en la búsqueda de hiperparámetros, que capta donde se realizan los cambios importantes en la métrica y permite ser discernir los hiperparámetros al considerar también la complejidad del espacio, efecto que no tiene en cuenta la métrica clásica. En el modelo LSTM hemos visto que se obtiene una mayor discriminación del $PV$ en la variación del número de neuronas que el $CV$, que se mantenía casi igual y por tanto no tiene en cuenta las implicaciones de aumentar la complejidad del modelo.
+También resalta su eficacia en la búsqueda de hiperparámetros, al captar donde se realizan los cambios importantes en la métrica y permite discernir los hiperparámetros al considerar también la complejidad del espacio, efecto que no tiene en cuenta la métrica clásica. En el modelo LSTM hemos visto que se obtiene una mayor discriminación del $PV$ en la variación del número de neuronas que el $CV$, que se mantenía casi igual y por tanto no tiene en cuenta las implicaciones de aumentar la complejidad del modelo.
 
 Sin embargo, hay que tener cuidado con modelos que presentan una alta varianza a la hora de aprender las soluciones como es el caso del modelo LSTM, que puede haber problemas de aprendizaje o convergencia. En estos casos habría que comprobar que el modelo realizado y el cálculo del $PV$ se está realizando correctamente.
 
@@ -27,7 +27,7 @@ También hemos podido comprobar la eficacia de los métodos de alteraciones que 
 
 Entre los temas para una investigación posterior queda el intentar realizar una extensión del cálculo del $PV$ para otras métricas e incluso para problemas de regresión donde las etiquetas son continuas. Para esto último se podría intentar una discretización de las etiquetas, realizar las perturbaciones y deshacer la transformación.
 
-También seria interesante un estudio sobre los propios hiperparámetros del $PV$: el rango de errores y el número de conjuntos perturbados. En principio ver posibles efectos de rendimiento en función de estos, y sobre todo el cambio en modelos más inestables como las redes.
+También sería interesante realizar un estudio sobre los propios hiperparámetros del $PV$: el rango de errores y el número de conjuntos perturbados. En principio ver posibles efectos de rendimiento en función de estos, y sobre todo el cambio en modelos más inestables como las redes.
 
 \subsection{Detección de anomalías}
 

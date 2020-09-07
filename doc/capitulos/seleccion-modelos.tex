@@ -23,7 +23,7 @@ Estos son los métodos clásicos que se han usado generalmente para obtener valo
 
 Estos problemas se puede presentar perfectamente cuando el problema es muy grande y es muy difícil obtener muchas muestras, o cuando se ha cometido algún error al tomar las muestras que nadie se ha percatado. Por ejemplo, en la detección de caras en imágenes, debido a la gran cantidad de posibilidades de formas en las que podrían estar, se necesita una muestra muy grande que abarque múltiples y diversas maneras para poder tener una representación buena de la distribución y además que no haya sesgos (solo salen caras en fotos con buena iluminación, o de gente con tez blanca...).
 
-Por estas razones se presenta un nuevo método para valorar modelos basado en una heurística: $PV$ (\emph{Perturbated Validation}) \cite{zhang2019perturbation}. Este método \textbf{no} utiliza las mismas técnicas clásicas de utilizar un conjunto aparte sino que considera todo el conjunto entero, sin divisiones. En lineas generales trata de valorar si el modelo ha entendido realmente \textbf{la relación subyacente de los datos} midiendo como varía el comportamiento del modelo frente a \textbf{perturbaciones graduales} en los datos.
+Por estas razones se presenta un nuevo método para valorar modelos basado en una heurística: $PV$ (\emph{Perturbation Validation}) \cite{zhang2019perturbation}. Este método \textbf{no} utiliza las mismas técnicas clásicas de utilizar un conjunto aparte sino que considera todo el conjunto entero, sin divisiones. En lineas generales trata de valorar si el modelo ha entendido realmente \textbf{la relación subyacente de los datos} midiendo como varía el comportamiento del modelo frente a \textbf{perturbaciones graduales} en los datos.
 
 Nuestro objetivo será ver el funcionamiento de esta heurística, su comportamiento en casos reales, mediante una experimentación utilizando muchos modelos y conjuntos de datos para observar y analizar si nos resulta de utilidad y puede aportar algo nuevo en el paradigma actual de selección de modelos.
 
@@ -53,7 +53,7 @@ La validación en este caso consiste en entrenar el modelo en el subconjunto de 
 
 Para problemas de clasificación consideraremos la métrica \emph{accuracy} $acc$ que ya vimos en \autoref{ch:metricas} que básicamente mide el porcentaje de etiquetas predichas correctamente. Utilizando esta métrica junto a la validación cruzada para cada modelo se obtendrá $acc_{CV}$, y en base a este valor podremos hacer la selección de modelos tomando en cuenta que es un estimador de la métrica en el conjunto test $acc_{test}$; por tanto lo esperable es que el mejor $acc_{CV}$ será probablemente el mejor $acc_{test}$.
 
-\section{Perturbated Validation}
+\section{Perturbation Validation}
 
 \subsection{Funcionamiento}
 
@@ -115,7 +115,7 @@ Sea $r \in [0, 1]$ el ratio de etiquetas perturbadas para cada clase (para mante
 
 Con todos estos elementos ya podemos definir formalmente la heurística $PV$ (\autoref{def:pv}, \cite{zhang2019perturbation}).
 
-\begin{definicion}[Perturbated Validation]\label{def:pv}
+\begin{definicion}[Perturbation Validation]\label{def:pv}
   $PV$ es el valor absoluto del coeficiente de la regresión lineal (la pendiente) entre la variable independiente, ratio de etiquetas perturbadas $r_i$, frente la variable dependiente, acierto en el \emph{dataset} perturbado $acc(S_{r_i})$, es decir,
   $$PV = \Bigg|\dfrac{\sum \limits^n_{i = 0} (r_i - \overline{r})(acc(S_{r_{i}}) - \overline{acc(S_r)})}{\sum \limits^n_{i = 0}(r_i - \overline{r})^2}\Bigg|.$$
 \end{definicion}
@@ -363,7 +363,7 @@ Utilizamos la base de datos "\emph{UEA \& UCR Time Series Classification}" \cite
   \item La clase mayoritaria no tiene una \textbf{proporción mayor al 70\%}: usamos la métrica $acc$ por lo que evitamos \emph{datasets} con un gran desequilibrio entre número de instancias por clase.
 \end{enumerate}
 
-Además de considerar los \emph{datasets} originales en medida temporal (TS), también tomaremos su versión en medidas de complejidad (CMFTS). La lista final de los 95 \emph{datasets} se encuentra detallada en \autoref{table:pv-datasets1} y \autoref{table:pv-datasets2}.
+Además de considerar los \emph{datasets} originales en medida temporal (TS), también tomaremos su versión en medidas de complejidad (CMFTS) \cite{baldan2020complexity, baldan2020complexityugr}. La lista final de los 95 \emph{datasets} se encuentra detallada en \autoref{table:pv-datasets1} y \autoref{table:pv-datasets2}.
 
 \begin{table}[htbp]
 \centering
