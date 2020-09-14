@@ -21,3 +21,7 @@ PV/resultados/res_pv.py
 doc/README.md
 SD/
 doc_extra/
+*.nav
+*.snm
+*.vrb
+presentacion/guion.md
