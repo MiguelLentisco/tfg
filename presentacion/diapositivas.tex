@@ -44,7 +44,7 @@
 \maketitle
 
 \begin{frame}{Índice de contenidos}
-  \tableofcontents
+  \tableofcontents[hideallsubsections]
 \end{frame}
 
 \section{Introducción y objetivos}
@@ -52,7 +52,7 @@
 \begin{frame}{Introducción}
   En los últimos años se ha dado una extensa popularización y uso de las \textbf{redes neuronales} que ha dado lugar a una gran cantidad de trabajos de investigación diversos.\pause
 
-  De aquí surge nuestra para explorar en este campo ciertos temas que están \textbf{poco tratados} actualmente, en concreto, problemas con dominio de \textbf{series temporales} resueltos mediante redes neuronales \textbf{LSTM}.
+  De aquí surge nuestra motivación de explorar en este campo ciertos temas que están \textbf{poco tratados} actualmente, en concreto, problemas con dominio de \textbf{series temporales} resueltos mediante redes neuronales \textbf{LSTM}.
 
   \pause
 
@@ -68,7 +68,7 @@
   Los objetivos fundamentales de este proyecto son:
   \pause
   \begin{itemize}[<+->]
-    \item Estudio y análisis de todo el \textbf{marco teórico} relacionado con el campo del aprendizaje profundo, con hincapié en la arquitectura \textbf{LSTM}; y las \textbf{series temporales}, incluyendo las técnicas y modelos más utilizados.
+    \item Estudio y análisis del \textbf{marco teórico} relacionado con el campo del aprendizaje profundo, con hincapié en la arquitectura \textbf{LSTM}; y las \textbf{series temporales}, incluyendo las técnicas y modelos utilizados usualmente.
     \item Implementación y análisis del funcionamiento de una nueva heurística llamada \emph{Perturbation Validation} utilizada para la \textbf{selección} de modelos.
     \item Modelado y validación de un \textbf{detector} de series anómalas junto con el desarrollo de diversas \textbf{técnicas} que crean artificialmente series con perturbaciones.
   \end{itemize}
@@ -76,7 +76,7 @@
 
 \section{Conceptos base}
 
-\subsection{LSTM}
+\subsection{Aprendizaje profundo}
 
 \begin{frame}{Aprendizaje profundo}
   El \textbf{aprendizaje profundo} es el campo encargado de solucionar tareas del \textbf{aprendizaje automático} mediante el desarrollo de modelos basados en \textbf{redes neuronales}.
@@ -165,8 +165,6 @@
 
 \section{Selección de modelos}
 
-\subsection{Selección clásica}
-
 \begin{frame}{Planteamiento}
   \textbf{Pregunta}: tengo varios modelos que han aprendido para resolver cierta tarea de clasificación de series temporales, ¿cual es el mejor?
 
@@ -205,7 +203,7 @@
 \subsection{Perturbation Validation}
 
 \begin{frame}{Perturbated Validation}
-  \emph{Perturbation Validation} ($PV$) es una heurística que evalúa el ajuste del modelo frente a su espacio de hipótesis, midiendo el nivel de cambio del $acc$ obtenido en varios conjuntos de etiquetas perturbadas.
+  \emph{Perturbation Validation} ($PV$) es una heurística que evalúa el ajuste del modelo frente a su espacio de hipótesis, midiendo el nivel de cambio del $acc$ al introducir etiquetas erróneas.
 
   \pause
 
@@ -271,9 +269,9 @@
 \end{frame}
 
 \begin{frame}{Complementación}
-  PV no \textbf{sustituye} a CV pero puede \textbf{complementarlo}:
+  PV no \textbf{sustituye} a $acc_{CV}$ pero puede \textbf{complementarlo}:
   \begin{enumerate}
-    \item Seleccionamos los modelos con CV más altos.
+    \item Seleccionamos los modelos con $acc_{CV}$ más altos.
     \item Calculamos el PV para estos modelos.
     \item Escogemos el modelo con PV más alto si $PV >> 0$.
   \end{enumerate}
@@ -420,7 +418,8 @@
   En este trabajo hemos logrado:
   \pause
   \begin{itemize}[<+->]
-    \item Estudiar y comprobar la efectividad de \emph{Perturbation Validation}, que puede complementar el método clásico de selección de modelos.
+    \item Estudiar con detalle el marco teórico actual de las redes neuronales y las series temporales.
+    \item Analizar y comprobar la efectividad de \emph{Perturbation Validation}, que puede complementar el método clásico de selección de modelos.
     \item Modelar un detector de series anómalas efectivo y fácil de desplegar en diversas tareas, junto con métodos para crear muestras anómalas para su uso en validación o entrenamiento.
   \end{itemize}
 \end{frame}
